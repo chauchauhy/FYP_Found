@@ -34,5 +34,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics:17.2.0'
     implementation 'com.google.firebase:firebase-messaging:20.0.0'
 
+    // facebook sdk for login and analysis
+    implementation 'com.facebook.android:facebook-android-sdk:[4,5)'
+
 
 }
