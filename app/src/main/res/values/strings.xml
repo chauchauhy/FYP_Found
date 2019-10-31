@@ -1,4 +1,20 @@
 <resources>
     <string name="app_name">FYP_Found</string>
-    <string name="facebook_app_id">1154434514751382</string> <string name="fb_login_protocol_scheme">fb1154434514751382</string>
+    <string name="facebook_app_id">1154434514751382</string>
+    <string name="fb_login_protocol_scheme">fb1154434514751382</string>
+    <!-- Facebook application ID and custom URL scheme (app ID prefixed by 'fb'). -->
+    <string name="facebook_application_id" translatable="false">1154434514751382</string>
+    <string name="facebook_login_protocol_scheme" translatable="false">fb1154434514751382</string>
+    <!--    login page text-->
+    <string name="loginpage_account">Account / Email</string>
+    <string name="loginpage_password">Password</string>
+    <string name="send">Submit</string>
+    <string name="loginpage_signupText">Go to sign up?</string>
+    <!--    sign up text-->
+    <string name="signup_name">Name</string>
+    <string name="signup_account">Account</string>
+    <string name="signup_email">Email</string>
+    <string name="signup">Sign up!</string>
+    <string name="signup_invaild">Your </string>
+    <string name="existed"> is invalid or exist</string>
 </resources>

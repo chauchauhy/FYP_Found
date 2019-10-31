@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Login">
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/loginpage_account"
+        android:id="@+id/ac_login_page"
+        ></EditText>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/loginpage_password"
+        android:id="@+id/pw_login_page"
+        ></EditText>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:text="@string/loginpage_signupText"
+        android:clickable="true"
+        android:id="@+id/Login_page_signup"
+        android:textColor="@color/colorAccent"
+        android:gravity="end"
+        ></TextView>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_enter_login_page"
+        android:text = "@string/send"
+        ></Button>
+    <com.facebook.login.widget.LoginButton
+        android:id="@+id/login_button_facebook"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="30dp" />
+
+    <com.google.android.gms.common.SignInButton
+        android:layout_width="207dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/login_button_google"
+        android:layout_gravity="center_horizontal" />
+
+
+</LinearLayout>
