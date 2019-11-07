@@ -86,6 +86,7 @@ public class ImageClassification extends AppCompatActivity {
         select = findViewById(R.id.image_label_select_btn);
         identitfy = findViewById(R.id.image_label_identitfy_btn);
         text = findViewById(R.id.image_label_imagetype_text);
+        // nil via
         text1 = findViewById(R.id.image_label_image_text);
         }
 
