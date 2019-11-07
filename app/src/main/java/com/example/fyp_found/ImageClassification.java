@@ -141,12 +141,17 @@ public class ImageClassification extends AppCompatActivity {
                     if(firebaseVisionImageLabels.size()>0){
                         for (int i = 0; i < firebaseVisionImageLabels.size(); i++) {
                             t_array[i].setText(firebaseVisionImageLabels.get(i).getText());
+                             if(t_array[i].getText().toString().trim().length() > 2){
                             t_array[i].setVisibility(View.VISIBLE);
+                            }else{
+                                 t_array[i].setVisibility(View.GONE);
+                             }
                         }
                         text_recognation();
                     }
                     if(firebaseVisionImageLabels.size() <=0){
                         createDialog(getResources().getString(R.string.cannotfindout));
+                        text_recognation();
                     }
 
 
@@ -179,7 +184,8 @@ public class ImageClassification extends AppCompatActivity {
                             text_re_Str = text_re_Str+ block.getText();
                             text_re.add(new Text_Recognize(block.getText()));
                             Log.i(LOGTAG, String.valueOf(text_re.size())+ String.valueOf(text_re.get(1).getText()));
-//                            text.setText(text_re.get(1).getText());
+                            text.setText(text_re.get(1).getText());
+                            text.setVisibility(View.VISIBLE);
                         }
                 }
             }).addOnFailureListener(new OnFailureListener() {
