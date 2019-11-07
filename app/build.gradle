@@ -39,6 +39,9 @@ dependencies {
     // facebook sdk for login and analysis
     implementation 'com.facebook.android:facebook-android-sdk:[4,5)'
     implementation 'com.google.android.gms:play-services-auth:17.0.0'
+    // firebase ml kit depend
+    implementation 'com.google.firebase:firebase-ml-vision:24.0.0'
+    implementation 'com.google.firebase:firebase-ml-vision-image-label-model:19.0.0'
 
 
 }

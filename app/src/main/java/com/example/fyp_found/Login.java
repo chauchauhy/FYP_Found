@@ -96,19 +96,7 @@ public class Login extends AppCompatActivity  {
         submit.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                account = ac.getText().toString().trim();
-                password = pw.getText().toString().trim();
-                firebaseAuth.createUserWithEmailAndPassword(account,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()){
-                            Toast.makeText(context, "success login", Toast.LENGTH_LONG).show();
-
-                        }else{
-                            Toast.makeText(context, "hihi" , Toast.LENGTH_LONG).show();
-                        }
-                    }
-                });
+             startActivity(new Intent(Login.this,ImageClassification.class));
 
 
 

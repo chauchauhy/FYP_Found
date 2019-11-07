@@ -1,7 +1,11 @@
 <resources>
-    <string name="app_name">FYP_Found</string>
+    <string name="app_name">Found IT!!!!</string>
     <string name="facebook_app_id">1154434514751382</string>
     <string name="fb_login_protocol_scheme">fb1154434514751382</string>
+    <string name="ok">OK</string>
+    <string name="warning">Warning</string>
+    <string name="error">The error</string>
+
     <!-- Facebook application ID and custom URL scheme (app ID prefixed by 'fb'). -->
     <string name="facebook_application_id" translatable="false">1154434514751382</string>
     <string name="facebook_login_protocol_scheme" translatable="false">fb1154434514751382</string>
@@ -17,4 +21,9 @@
     <string name="signup">Sign up!</string>
     <string name="signup_invaild">Your </string>
     <string name="existed"> is invalid or exist</string>
+<!--    image identity-->
+    <string name="select">Select</string>
+    <string name="identity">Identity</string>
+    <string name="cannotfindout">Sorry, I cannot find the tag....</string>
+
 </resources>

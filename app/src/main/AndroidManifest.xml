@@ -14,13 +14,20 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".welcomepage"></activity>
-        <activity android:name=".Login">
+        <activity android:name=".ImageClassification">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".welcomepage" />
+        <activity android:name=".Login">
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
         </activity> <!-- firebase cloud mes -->
         <service
             android:name=".setup.cloudmes"
@@ -31,11 +38,23 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".MainActivity" >
+<!--        <intent-filter>-->
+<!--            <action android:name="android.intent.action.MAIN" />-->
+
+<!--            <category android:name="android.intent.category.LAUNCHER" />-->
+<!--        </intent-filter>-->
+        </activity>
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
+
+        <meta-data
+            android:name="com.google.firebase.ml.vision.DEPENDENCIES"
+             />
+        <!-- To use multiple models: android:value="ocr,model2,model3" -->
+
 
         <activity
             android:name="com.facebook.FacebookActivity"
@@ -53,6 +72,9 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
+
+
+
     </application>
 
 </manifest>

@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
@@ -12,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -33,6 +35,7 @@ public class welcomepage extends AppCompatActivity {
     TextView hint_account, hint_name, hint_email, hint_password;
     Context context;
     FirebaseAuth firebaseAuth;
+    Toolbar toolbar;
 
 
     @Override
@@ -45,6 +48,8 @@ public class welcomepage extends AppCompatActivity {
 
 
     }
+
+
 
     private void initui(){
         account = findViewById(R.id.signup_page_account);
@@ -62,11 +67,14 @@ public class welcomepage extends AppCompatActivity {
 
     }
 
-    private void checknullandstruction(){
+    // user email and password checking...
+    // if not checking, the app will crash
+    private boolean checknullandstruction(){
             initvariable();
-            if(account_str.length()<5 && name_str.length() < 5 ){
-
+            if(account_str.length()<5 && password_str.length() < 5 ){
+                return false;
             }
+            return true;
     }
 
     private void initvariable(){
@@ -84,19 +92,25 @@ public class welcomepage extends AppCompatActivity {
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                firebaseAuth.createUserWithEmailAndPassword(account_str,password_str).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()){
-                            Toast.makeText(context, "success login", Toast.LENGTH_LONG).show();
+                if(checknullandstruction()) {
+                    firebaseAuth.createUserWithEmailAndPassword(account_str, password_str).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(context, "success sign up", Toast.LENGTH_LONG).show();
+                                startActivity(new Intent(welcomepage.this, Login.class));
 
-                        }else{
-                            Toast.makeText(context, "hihi" , Toast.LENGTH_LONG).show();
+                            } else {
+                                Toast.makeText(context, "the account or email are exist", Toast.LENGTH_LONG).show();
+                            }
                         }
-                    }
-                });
+                    });
+                }else{
+                    Toast.makeText(context,"invalid",Toast.LENGTH_LONG).show();
+                }
 
             }
         });
+
     }
 }
