@@ -3,6 +3,7 @@ package com.example.fyp_found;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -26,6 +27,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
@@ -33,6 +35,19 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.io.DataOutputStream;
+import java.util.HashMap;
+
+import static com.example.fyp_found.setup.staticclass.current_dev_code;
+import static com.example.fyp_found.setup.staticclass.final_static_str_Chat_Content;
+import static com.example.fyp_found.setup.staticclass.final_static_str_User_Email;
+import static com.example.fyp_found.setup.staticclass.final_static_str_User_Id;
+import static com.example.fyp_found.setup.staticclass.final_static_str_User_Login_Method;
+import static com.example.fyp_found.setup.staticclass.final_static_str_User_Name;
+import static com.example.fyp_found.setup.staticclass.final_static_str_User_dev_code;
 
 public class Login extends AppCompatActivity  {
 
@@ -49,7 +64,7 @@ public class Login extends AppCompatActivity  {
     private GoogleApiClient googleApiClient;
     private FirebaseAuth firebaseAuth_facebook;
     private CallbackManager callbackManager;
-
+    DatabaseReference reference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +101,9 @@ public class Login extends AppCompatActivity  {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
                             Toast.makeText(context, "Success login", Toast.LENGTH_LONG).show();
+//                            currentUser = firebaseAuth.getCurrentUser();
+                            startActivity(new Intent(Login.this,ImageClassification.class));
+
                         }else{
                             Toast.makeText(context, "login failed" , Toast.LENGTH_LONG).show();
                         }
@@ -97,10 +115,6 @@ public class Login extends AppCompatActivity  {
             @Override
             public boolean onLongClick(View view) {
              startActivity(new Intent(Login.this,ImageClassification.class));
-
-
-
-
                 return false;
             }
         });
@@ -108,7 +122,7 @@ public class Login extends AppCompatActivity  {
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(Login.this , welcomepage.class));
+                startActivity(new Intent(Login.this , Signuppage.class));
             }
         });
 
@@ -123,7 +137,30 @@ public class Login extends AppCompatActivity  {
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
                                     FirebaseUser user = firebaseAuth_facebook.getCurrentUser();
-                                    Toast.makeText(Login.this, " Current user is " + String.valueOf(user.getDisplayName()), Toast.LENGTH_SHORT).show();
+                                    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users").child(user.getUid());
+                                    HashMap<String, String> hashMap = new HashMap<>();
+                                    hashMap.put(final_static_str_User_Id, user.getUid());
+                                    hashMap.put(final_static_str_User_dev_code, Settings.Secure.getString(getContentResolver(),
+                                            Settings.Secure.ANDROID_ID));
+                                    hashMap.put(final_static_str_User_Name, user.getDisplayName());
+                                    if(user.getEmail().contains("@")&& user.getEmail().contains(".com")){
+                                        hashMap.put(final_static_str_User_Email, user.getEmail());
+                                    }else{
+                                        hashMap.put(final_static_str_User_Email, "Invalid");
+                                    }
+                                    databaseReference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            Toast.makeText(Login.this, " Current user is " + String.valueOf(firebaseAuth.getCurrentUser().getDisplayName()), Toast.LENGTH_SHORT).show();
+                                            startActivity(new Intent (Login.this,ImageClassification.class));
+                                        }
+                                    }).addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Toast.makeText(context, getResources().getString(R.string.sorry), Toast.LENGTH_LONG).show();
+
+                                        }
+                                    });
                                 } else {
                                     Toast.makeText(Login.this, "login Fail " + task.getException(), Toast.LENGTH_SHORT).show();
                                     // ("asdfg", String.valueOf(task.getException()));
@@ -189,6 +226,30 @@ public class Login extends AppCompatActivity  {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
+                    FirebaseUser firebaseUser = firebaseAuth_google.getCurrentUser();
+                    DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
+                    current_dev_code = Settings.Secure.getString(getContentResolver(),
+                            Settings.Secure.ANDROID_ID);
+                    HashMap<String, String> hashMap = new HashMap<>();
+                    hashMap.put(final_static_str_User_Id, firebaseUser.getUid());
+                    hashMap.put(final_static_str_User_Name, firebaseUser.getDisplayName());
+                    hashMap.put(final_static_str_User_Login_Method, "Google");
+                    hashMap.put(final_static_str_User_dev_code, current_dev_code);
+
+                    reference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            Toast.makeText(context, getResources().getString(R.string.success_signup), Toast.LENGTH_LONG).show();
+                            startActivity(new Intent(Login.this, ImageClassification.class));
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(context, getResources().getString(R.string.sorry), Toast.LENGTH_LONG).show();
+                        }
+                    });
+
+
                     Toast.makeText(Login.this, "Google sign in success", Toast.LENGTH_SHORT).show();
 
                 } else {

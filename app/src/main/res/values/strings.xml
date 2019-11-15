@@ -5,6 +5,7 @@
     <string name="ok">OK</string>
     <string name="warning">Warning</string>
     <string name="error">The error</string>
+    <string name="sorry">Sorry, There is some problem , please wait for a moment</string>
 
     <!-- Facebook application ID and custom URL scheme (app ID prefixed by 'fb'). -->
     <string name="facebook_application_id" translatable="false">1154434514751382</string>
@@ -15,13 +16,16 @@
     <string name="send">Submit</string>
     <string name="loginpage_signupText">Go to sign up?</string>
     <!--    sign up text-->
+    <string name="the">The </string>
     <string name="signup_name">Name</string>
     <string name="signup_account">Account</string>
     <string name="signup_email">Email</string>
     <string name="signup">Sign up!</string>
     <string name="signup_invaild">Your </string>
-    <string name="existed"> is invalid or exist</string>
-<!--    image identity-->
+    <string name="success_signup">Success Sign Up!</string>
+    <string name="existed"> are invalid or exist</string>
+    <string name="signup_info">The user informations</string>
+    <!--    image identity-->
     <string name="select">Select</string>
     <string name="identity">Identity</string>
     <string name="cannotfindout">Sorry, I cannot find the tag....</string>
