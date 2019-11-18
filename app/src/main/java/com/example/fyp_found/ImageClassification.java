@@ -21,6 +21,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.fyp_found.datastru.Text_Recognize;
+import com.example.fyp_found.setup.staticclass;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -31,14 +32,10 @@ import com.google.firebase.ml.vision.label.FirebaseVisionImageLabeler;
 import com.google.firebase.ml.vision.text.FirebaseVisionText;
 import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer;
 
-import org.w3c.dom.Text;
-
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.example.fyp_found.setup.staticclass.LOGTAG;
 
 public class ImageClassification extends AppCompatActivity {
     TextView main, sec, thir, fou, fiv, text, text1;
@@ -115,18 +112,18 @@ public class ImageClassification extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == picked_image_code && resultCode == RESULT_OK && data!= null && data.getData()!= null){
                 image_uri =data.getData();
-                Log.i(LOGTAG,String.valueOf(image_uri));
+                Log.i(staticclass.TAG,String.valueOf(image_uri));
 
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), image_uri);
                 showimage.setImageBitmap(bitmap);
                 showimage.setVisibility(View.VISIBLE);
             }catch (FileNotFoundException e) {
-                Log.i(LOGTAG, e.toString());
+                Log.i(staticclass.TAG, e.toString());
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
-                Log.i(LOGTAG,e.toString());
+                Log.i(staticclass.TAG,e.toString());
             }
         }
     }
@@ -183,7 +180,7 @@ public class ImageClassification extends AppCompatActivity {
                             Point[] points = block.getCornerPoints();
                             text_re_Str = text_re_Str+ block.getText();
                             text_re.add(new Text_Recognize(block.getText()));
-                            Log.i(LOGTAG, String.valueOf(text_re.size())+ String.valueOf(text_re.get(1).getText()));
+                            Log.i(staticclass.TAG, String.valueOf(text_re.size())+ String.valueOf(text_re.get(1).getText()));
                             text.setText(text_re.get(1).getText());
                             text.setVisibility(View.VISIBLE);
                         }

@@ -13,8 +13,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
+import com.example.fyp_found.setup.staticclass;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -26,11 +26,8 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.HashMap;
 
-import static com.example.fyp_found.setup.staticclass.LOGTAG;
-import static com.example.fyp_found.setup.staticclass.currentUser;
 import static com.example.fyp_found.setup.staticclass.currentUserID;
 import static com.example.fyp_found.setup.staticclass.current_dev_code;
-import static com.example.fyp_found.setup.staticclass.dev_code;
 import static com.example.fyp_found.setup.staticclass.final_static_str_User_Email;
 import static com.example.fyp_found.setup.staticclass.final_static_str_User_Id;
 import static com.example.fyp_found.setup.staticclass.final_static_str_User_Login_Method;
@@ -72,7 +69,7 @@ public class Signuppage extends AppCompatActivity {
         hint_email  = findViewById(R.id.signup_page_email_invalid);
         hint_password  = findViewById(R.id.signup_page_password_invalid);
         current_dev_code = Settings.Secure.getString(getContentResolver(),Settings.Secure.ANDROID_ID);
-        Log.i(LOGTAG,current_dev_code);
+        Log.i(staticclass.TAG,current_dev_code);
 
     }
 

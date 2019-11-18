@@ -1,12 +1,15 @@
 package com.example.fyp_found.setup;
 
+import android.provider.Settings;
+
+
 public final class staticclass {
     public static String login_account;
     public static String login_name;
-    public static String current_dev_code;
-    public static String currentUser;
-    public static String currentUserID;
-    public final static String LOGTAG = "IAMLOG";
+    public static String current_dev_code = null;
+    public static String currentUser = "";
+    public static String currentUserID = "";
+    public final static String TAG = "IAMLOG";
     public final static String url_initizal = "";
     public static String dev_code;
     public final static String localdb_URL = "http:192.168.137.1/dashboard/new/";
@@ -24,7 +27,7 @@ public final class staticclass {
     public final static String final_static_str_Chat_ID = "char_ID";
     public final static String final_static_str_Chat_sender_ID = "Chat_sender_id";
     public final static String final_static_str_Chat_rev_ID = "Chat_rev_ID";
-    public final static String final_static_str_Chat_Time = "Chat_rev_ID";
+    public final static String final_static_str_Chat_Time = "Chat_Time";
     public final static String final_static_str_Chat_Content = "chat_content";
     // User
     public final static String final_static_str_db_name_user = "user";
@@ -70,5 +73,20 @@ public final class staticclass {
     public static final String final_static_str_Current_Lost_type3 = "Current_Lost_Property_type3";
     public static final String final_static_str_Current_Lost_type4 = "Current_Lost_Property_type4";
     public static final String final_static_str_Current_Lost_type5 = "Current_Lost_Property_type5";
+    // firebase
+    public static final String final_static_str_firebasedatabase_child_users = "Users";
+    public static final String final_static_str_firebasedatabase_child_chat = "Chats";
+
+
+    // internal file
+    public static final String final_static_str_file_name_chat = "Chater";
+
+    //Intent String
+    public static final String final_static_str_Intent_Chatoppun = "receiver";
+
+    // chat configure
+    public static final int final_static_int_MSG_TYPE_LEFT = 0;
+    public static final int final_static_int_MSG_TYPE_REGHT = 1;
+
 
 }

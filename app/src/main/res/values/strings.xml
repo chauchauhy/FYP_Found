@@ -30,4 +30,7 @@
     <string name="identity">Identity</string>
     <string name="cannotfindout">Sorry, I cannot find the tag....</string>
 
+<!--    internet error-->
+    <string name="error_404"> Internet error , Please check your internet setting or wait for a few minutes </string>
+
 </resources>

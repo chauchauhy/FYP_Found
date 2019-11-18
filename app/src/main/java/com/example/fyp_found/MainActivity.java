@@ -1,13 +1,9 @@
 package com.example.fyp_found;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -19,18 +15,12 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.fyp_found.datastru.User;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
-import com.facebook.FacebookSdk;
-import com.facebook.appevents.AppEventsLogger;
+import com.example.fyp_found.setup.staticclass;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import static com.example.fyp_found.setup.staticclass.LOGTAG;
 import static com.example.fyp_found.setup.staticclass.final_static_str_User_Account;
 import static com.example.fyp_found.setup.staticclass.final_static_str_User_Email;
 import static com.example.fyp_found.setup.staticclass.final_static_str_User_Id;
@@ -101,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
         stringRequest = new StringRequest(localdb_URL_test, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.i(LOGTAG, response);
+                Log.i(staticclass.TAG, response);
                 jsontoarry(response);
             }
         }, new Response.ErrorListener() {
@@ -128,13 +118,13 @@ public class MainActivity extends AppCompatActivity {
                 String User_Level        =  jsonObject.getString(final_static_str_User_Level);
                 String User_dev_code     =  jsonObject.getString(final_static_str_User_dev_code);
                 User user=  new User(User_Id,User_Name,User_Account,User_Password,User_Email,User_Login_Method,User_Level,User_dev_code);
-                Log.i(LOGTAG,user.toString());
+                Log.i(staticclass.TAG,user.toString());
 
             }
 
         } catch (JSONException e) {
             e.printStackTrace();
-            Log.i(LOGTAG,e.toString());
+            Log.i(staticclass.TAG,e.toString());
         }
     }
 

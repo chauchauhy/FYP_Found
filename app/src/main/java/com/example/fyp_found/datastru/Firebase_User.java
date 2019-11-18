@@ -1,24 +1,26 @@
 package com.example.fyp_found.datastru;
 
-public class FIrebase_User {
+public class Firebase_User {
     String User_Id;
     String User_Name;
     String User_Email;
     String User_Login_Method;
     String User_dev_code;
 
-    public FIrebase_User() {
+    public Firebase_User() {
     }
 
-    public FIrebase_User(String user_Id, String user_Name, String user_Email) {
+    public Firebase_User(String user_Id, String user_Name, String user_Email) {
         User_Id = user_Id;
         User_Name = user_Name;
         User_Email = user_Email;
+        this.User_dev_code = "unknown";
+        this.User_Login_Method = "unknown";
     }
 
     @Override
     public String toString() {
-        return "FIrebase_User{" +
+        return "Firebase_User{" +
                 "User_Id='" + User_Id + '\'' +
                 ", User_Name='" + User_Name + '\'' +
                 ", User_Email='" + User_Email + '\'' +
@@ -32,6 +34,11 @@ public class FIrebase_User {
     }
 
     public void setUser_Name(String user_Name) {
+        User_Name = user_Name;
+    }
+
+    public Firebase_User(String user_Id, String user_Name) {
+        User_Id = user_Id;
         User_Name = user_Name;
     }
 
@@ -67,11 +74,12 @@ public class FIrebase_User {
         return User_dev_code;
     }
 
-    public FIrebase_User(String user_Id, String user_Name, String user_Email, String user_Login_Method, String user_dev_code) {
+    public Firebase_User(String user_Id, String user_Name, String user_Email, String user_Login_Method, String user_dev_code) {
         User_Id = user_Id;
         User_Name = user_Name;
         User_Email = user_Email;
         User_Login_Method = user_Login_Method;
         User_dev_code = user_dev_code;
     }
+
 }
