@@ -29,6 +29,7 @@ public final class staticclass {
     public final static String final_static_str_Chat_rev_ID = "Chat_rev_ID";
     public final static String final_static_str_Chat_Time = "Chat_Time";
     public final static String final_static_str_Chat_Content = "chat_content";
+    public final static String final_static_str_Chat_Date = "Chat_Date";
     // User
     public final static String final_static_str_db_name_user = "user";
     public final static String final_static_str_User_Id = "user_id";

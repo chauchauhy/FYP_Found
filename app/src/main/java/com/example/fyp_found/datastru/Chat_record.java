@@ -1,11 +1,15 @@
 package com.example.fyp_found.datastru;
 
-public class Chat_record {
+import java.util.Comparator;
+
+public class Chat_record implements Comparator<Chat_record> {
     String Chat_ID;
     String Chat_sender_ID;
-    User   Chat_rev_ID;
-    User   Chat_Time;
+    String   Chat_rev_ID;
+    String Chat_Date;
+    String   Chat_Time;
     String Chat_Content;
+    String Chat_DateTime;
 
     public Chat_record() {
     }
@@ -21,12 +25,30 @@ public class Chat_record {
                 '}';
     }
 
-    public Chat_record(String chat_ID, String chat_sender_ID, User chat_rev_ID, User chat_Time, String chat_Content) {
+    public String getChat_Date() {
+        return Chat_Date;
+    }
+
+    public void setChat_Date(String chat_Date) {
+        Chat_Date = chat_Date;
+    }
+
+    public String getChat_DateTime() {
+        return Chat_DateTime;
+    }
+
+    public void setChat_DateTime(String chat_DateTime) {
+        Chat_DateTime = chat_DateTime;
+    }
+
+    public Chat_record(String chat_ID, String chat_sender_ID, String chat_rev_ID, String chat_Date, String chat_Time, String chat_Content) {
         Chat_ID = chat_ID;
         Chat_sender_ID = chat_sender_ID;
         Chat_rev_ID = chat_rev_ID;
+        this.Chat_Date = chat_Date;
         Chat_Time = chat_Time;
         Chat_Content = chat_Content;
+        this.Chat_DateTime = this.Chat_Date + this.Chat_Time;
     }
 
     public String getChat_ID() {
@@ -45,19 +67,19 @@ public class Chat_record {
         Chat_sender_ID = chat_sender_ID;
     }
 
-    public User getChat_rev_ID() {
+    public String getChat_rev_ID() {
         return Chat_rev_ID;
     }
 
-    public void setChat_rev_ID(User chat_rev_ID) {
+    public void setChat_rev_ID(String chat_rev_ID) {
         Chat_rev_ID = chat_rev_ID;
     }
 
-    public User getChat_Time() {
+    public String getChat_Time() {
         return Chat_Time;
     }
 
-    public void setChat_Time(User chat_Time) {
+    public void setChat_Time(String chat_Time) {
         Chat_Time = chat_Time;
     }
 
@@ -67,5 +89,13 @@ public class Chat_record {
 
     public void setChat_Content(String chat_Content) {
         Chat_Content = chat_Content;
+    }
+
+    @Override
+    public int compare(Chat_record chat_record, Chat_record t1) {
+        int com = chat_record.getChat_DateTime().compareTo(t1.getChat_DateTime());
+
+        return com;
+
     }
 }

@@ -105,6 +105,15 @@ public class ImageClassification extends AppCompatActivity {
                 }
             }
         });
+        select.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                startActivity(new Intent(context, ChatBoxMatrix.class));
+
+
+                return false;
+            }
+        });
      }
      // find out the image path on device
          @Override
@@ -155,8 +164,6 @@ public class ImageClassification extends AppCompatActivity {
             }});
         }
         }
-
-
 
     private void createDialog(String exception ){
         new AlertDialog.Builder(context).setTitle(getResources().getString(R.string.warning)).setMessage(getResources().getString(R.string.error) + "\n" + exception).setPositiveButton("OK", new DialogInterface.OnClickListener() {
