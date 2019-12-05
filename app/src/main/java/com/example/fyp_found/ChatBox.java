@@ -42,6 +42,7 @@ import static com.example.fyp_found.setup.staticclass.final_static_str_Chat_ID;
 import static com.example.fyp_found.setup.staticclass.final_static_str_Chat_Time;
 import static com.example.fyp_found.setup.staticclass.final_static_str_Chat_rev_ID;
 import static com.example.fyp_found.setup.staticclass.final_static_str_Chat_sender_ID;
+import static com.example.fyp_found.setup.staticclass.final_static_str_Chat_unixTime;
 import static com.example.fyp_found.setup.staticclass.final_static_str_Found_Property_ID;
 import static com.example.fyp_found.setup.staticclass.final_static_str_User_Email;
 import static com.example.fyp_found.setup.staticclass.final_static_str_User_Id;
@@ -78,9 +79,7 @@ public class ChatBox extends AppCompatActivity {
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
         String time = simpleDateFormat.format(new Date());
-
-        String str = time;
-        Log.i(staticclass.TAG, str);
+        Log.i(staticclass.TAG, time);
         initui();
         initvar();
 
@@ -152,9 +151,7 @@ public class ChatBox extends AppCompatActivity {
         if (message.equals("")) {
 
         } else {
-            Calendar c = Calendar.getInstance();
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            String strDate = simpleDateFormat.format(c.getTime());
+
 
 
             databaseReference = FirebaseDatabase.getInstance().getReference(final_static_str_firebasedatabase_child_chat);
@@ -163,9 +160,8 @@ public class ChatBox extends AppCompatActivity {
             hashMap.put(final_static_str_Chat_sender_ID, senderID);
             hashMap.put(final_static_str_Chat_Content, message);
             hashMap.put(final_static_str_Chat_rev_ID, receiver.getUser_Id());
-            hashMap.put(final_static_str_Chat_Date, DateFormat.getDateInstance().format(Calendar.getInstance().getTime()));
-            hashMap.put(final_static_str_Chat_Time, DateFormat.getTimeInstance().format(Calendar.getInstance().getTime()));
-            hashMap.put(final_static_str_Chat_ID, strDate + senderID + receiverID);
+            hashMap.put(final_static_str_Chat_unixTime, String.valueOf(Chat_record.getUnixTime()));
+            hashMap.put(final_static_str_Chat_ID,  String.valueOf(Chat_record.getUnixTime())+ senderID + receiverID);
             Log.i(staticclass.TAG, receiver.getUser_Id());
 
             databaseReference.push().setValue(hashMap);
@@ -191,7 +187,7 @@ public class ChatBox extends AppCompatActivity {
                             Chat_record chat_record ;
                             HashMap<String, Object> chat = (HashMap<String, Object>) data;
                             chat_record = new Chat_record((String) chat.get(final_static_str_Chat_ID),(String)chat.get(final_static_str_Chat_sender_ID),
-                                    (String) chat.get(final_static_str_Chat_rev_ID),(String) chat.get(final_static_str_Chat_Date),(String)chat.get(final_static_str_Chat_Time),(String)chat.get(final_static_str_Chat_Content));
+                                    (String) chat.get(final_static_str_Chat_rev_ID),(String) chat.get(final_static_str_Chat_Content),(String)chat.get(final_static_str_Chat_unixTime));
                             if((chat_record.getChat_sender_ID().equals(mid)&& chat_record.getChat_rev_ID().equals(userid)) ||
                                     chat_record.getChat_sender_ID().equals(userid)&&chat_record.getChat_rev_ID().equals(mid)){
 

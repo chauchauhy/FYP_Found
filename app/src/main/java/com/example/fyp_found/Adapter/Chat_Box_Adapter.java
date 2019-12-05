@@ -51,10 +51,22 @@ public class Chat_Box_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         VH viewholder = (VH) holder;
         viewholder.sender.setText(chat_record.getChat_Content());
         viewholder.time.setText(chat_record.getChat_Time());
-        if(position%5 == 0 && position> 5 || position ==1){
+//        viewholder.time.setVisibility(View.VISIBLE);
+        if(position == 0){
             viewholder.time.setVisibility(View.VISIBLE);
-        }else{
-            viewholder.time.setVisibility(View.GONE);
+        }
+        if(position > 5){
+            int a = 1;
+            int i = position - a;
+            for (int x = i ; x <chat_records.size();x++) {
+                if (chat_records.get(position).getUnix_long_type() - chat_records.get(x).getUnix_long_type() > 1000) {
+                    viewholder.time.setVisibility(View.VISIBLE);
+                    break;
+                }else{
+                    break;
+                }
+            }
+
         }
 
 

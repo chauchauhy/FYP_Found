@@ -1,6 +1,8 @@
 package com.example.fyp_found.datastru;
 
+import java.text.SimpleDateFormat;
 import java.util.Comparator;
+import java.util.Date;
 
 public class Chat_record implements Comparator<Chat_record> {
     String Chat_ID;
@@ -10,8 +12,14 @@ public class Chat_record implements Comparator<Chat_record> {
     String   Chat_Time;
     String Chat_Content;
     String Chat_DateTime;
+    // Time
+    Date date;
+    Long unix;
+    SimpleDateFormat simpleDateFormat;
+
 
     public Chat_record() {
+        AutoSetUnix();
     }
 
     @Override
@@ -26,7 +34,7 @@ public class Chat_record implements Comparator<Chat_record> {
     }
 
     public String getChat_Date() {
-        return Chat_Date;
+        return getYear() + "-" + getMouth() + "-" + getDay();
     }
 
     public void setChat_Date(String chat_Date) {
@@ -34,21 +42,34 @@ public class Chat_record implements Comparator<Chat_record> {
     }
 
     public String getChat_DateTime() {
-        return Chat_DateTime;
+        return  getHours() + ":" + getMinutes() + ":" + getSecounds();
     }
 
     public void setChat_DateTime(String chat_DateTime) {
         Chat_DateTime = chat_DateTime;
     }
 
-    public Chat_record(String chat_ID, String chat_sender_ID, String chat_rev_ID, String chat_Date, String chat_Time, String chat_Content) {
+    public Chat_record(String chat_ID, String chat_sender_ID, String chat_rev_ID, String chat_Content) {
+        AutoSetUnix();
         Chat_ID = chat_ID;
         Chat_sender_ID = chat_sender_ID;
         Chat_rev_ID = chat_rev_ID;
-        this.Chat_Date = chat_Date;
-        Chat_Time = chat_Time;
         Chat_Content = chat_Content;
-        this.Chat_DateTime = this.Chat_Date + this.Chat_Time;
+        this.Chat_DateTime =getAllTime();
+
+    }
+
+    public Chat_record(String chat_ID, String chat_sender_ID, String chat_rev_ID, String chat_Content, String unixTime) {
+        Chat_ID = chat_ID;
+        Chat_sender_ID = chat_sender_ID;
+        Chat_rev_ID = chat_rev_ID;
+        setUnix(unixTime);
+        Chat_Content = chat_Content;
+        this.Chat_Date = getAllDate();
+        this.Chat_Time = getTime();
+        this.Chat_DateTime =getAllTime();
+
+
     }
 
     public String getChat_ID() {
@@ -76,7 +97,7 @@ public class Chat_record implements Comparator<Chat_record> {
     }
 
     public String getChat_Time() {
-        return Chat_Time;
+        return getHours() + ":" + getMinutes() ;
     }
 
     public void setChat_Time(String chat_Time) {
@@ -93,9 +114,83 @@ public class Chat_record implements Comparator<Chat_record> {
 
     @Override
     public int compare(Chat_record chat_record, Chat_record t1) {
-        int com = chat_record.getChat_DateTime().compareTo(t1.getChat_DateTime());
-
+        int com = chat_record.getAllTime().compareTo(t1.getAllTime());
         return com;
+    }
+
+
+    // Set time :////
+    /////////////////////
+
+
+    public void setUnix(String unixTime){
+        this.unix = Long.valueOf(unixTime);
+        this.date = new Date(unix*1000L);
+    }
+    public String getUnix(){return String.valueOf(this.unix);}
+
+    public long getUnix_long_type(){return this.unix;}
+
+
+    public void AutoSetUnix(){
+        this.unix =  System.currentTimeMillis() / 1000L;
+        this.date = new Date(unix*1000L);
+    }
+    public static long getUnixTime(){
+        return System.currentTimeMillis() / 1000L;
 
     }
+
+    public String getHours(){
+        simpleDateFormat = new SimpleDateFormat("HH");
+        return (simpleDateFormat.format(date));
+    }
+    public String getSecounds(){
+        simpleDateFormat = new SimpleDateFormat("ss");
+        return (simpleDateFormat.format(date));
+    }
+    public String getMinutes(){
+        simpleDateFormat = new SimpleDateFormat("mm");
+        return (simpleDateFormat.format(date));
+    }
+    public  String getTime(){
+        simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
+        return (simpleDateFormat.format(date));
+    }
+    public String getDay(){
+        simpleDateFormat = new SimpleDateFormat("dd");
+        return (simpleDateFormat.format(date));
+    }
+    public String getMouth(){
+        simpleDateFormat = new SimpleDateFormat("MM");
+        return (simpleDateFormat.format(date));
+    }
+    public String getYear(){
+        simpleDateFormat = new SimpleDateFormat("yyyy");
+        return (simpleDateFormat.format(date));
+    }
+    public String getAllDate(){
+        return getYear() + "-" + getMouth() + "-" + getDay();
+    }
+    public String getAllTime(){
+        return getYear() + "-" + getMouth() + "-" + getDay() + "  " + getHours() + ":" + getMinutes() + ":" + getSecounds();
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

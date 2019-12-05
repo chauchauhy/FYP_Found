@@ -1,4 +1,4 @@
-package com.example.fyp_found.datastru;
+package com.example.fyp_found.datastru.non_str;
 
 public class User {
     String User_Id;

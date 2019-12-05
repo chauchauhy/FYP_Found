@@ -2,12 +2,14 @@ package com.example.fyp_found.setup;
 
 import android.provider.Settings;
 
+import com.google.firebase.auth.FirebaseUser;
+
 
 public final class staticclass {
     public static String login_account;
     public static String login_name;
     public static String current_dev_code = null;
-    public static String currentUser = "";
+    public static FirebaseUser currentUser = null;
     public static String currentUserID = "";
     public final static String TAG = "IAMLOG";
     public final static String url_initizal = "";
@@ -30,7 +32,8 @@ public final class staticclass {
     public final static String final_static_str_Chat_Time = "Chat_Time";
     public final static String final_static_str_Chat_Content = "chat_content";
     public final static String final_static_str_Chat_Date = "Chat_Date";
-    // User
+    public final static String final_static_str_Chat_unixTime = "unixTime";
+    // User'
     public final static String final_static_str_db_name_user = "user";
     public final static String final_static_str_User_Id = "user_id";
     public final static String final_static_str_User_Name = "User_Name";
@@ -65,15 +68,19 @@ public final class staticclass {
     // current lost record
     public final static String final_static_str_db_name_current = "current_lost_record";
     public static final String final_static_str_Current_Lost_ID = "Current_Lost_ID";
-    public static final String final_static_str_Current_Lost_Name = "Current_Lost_Name";
-    public static final String final_static_str_Current_Lost_Content = "Current_Lost_Content";
-    public static final String final_static_str_Current_Lost_UserID_Post = "Current_Lost_UserID_post";
+    public static final String final_static_str_Current_Lost_User_Name = "Current_Lost_User_Name";
+    public static final String final_static_str_Current_Lost_Property_QA1 = "Current_Lost_Property_QA1";
+    public static final String final_static_str_Current_Lost_Property_QA2 = "Current_Lost_Property_QA2";
+    public static final String final_static_str_Current_Lost_Property_QA1_Ans = "Current_Lost_Property_QA1_Ans";
+    public static final String final_static_str_Current_Lost_Property_QA2_Ans = "Current_Lost_Property_QA2_Ans";
+    public static final String final_static_str_Current_Lost_Property_Name = "Current_Lost_Property_Name";
     public static final String final_static_str_Current_Lost_Address = "Current_Lost_Address";
     public static final String final_static_str_Current_Lost_Property_MainType = "Current_Lost_Property_MainType";
     public static final String final_static_str_Current_Lost_type2 = "Current_Lost_Property_type2";
     public static final String final_static_str_Current_Lost_type3 = "Current_Lost_Property_type3";
     public static final String final_static_str_Current_Lost_type4 = "Current_Lost_Property_type4";
     public static final String final_static_str_Current_Lost_type5 = "Current_Lost_Property_type5";
+    public static final String final_static_str_Current_Lost_Text = "Current_Lost_Property_Text";
     // firebase
     public static final String final_static_str_firebasedatabase_child_users = "Users";
     public static final String final_static_str_firebasedatabase_child_chat = "Chats";

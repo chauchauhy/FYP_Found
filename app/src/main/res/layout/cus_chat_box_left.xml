@@ -10,12 +10,14 @@
         android:layout_gravity="center"
         android:text="Time"
         android:visibility="gone"
+
         android:id="@+id/chatbox_record_time"
         />
     <TextView
         android:id="@+id/chatbox_message"
         android:layout_width="wrap_content"
         android:layout_gravity="start"
+        android:background="@drawable/chat_left_bg"
         android:layout_height="wrap_content" />
 
 

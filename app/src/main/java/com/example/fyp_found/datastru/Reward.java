@@ -1,10 +1,12 @@
 package com.example.fyp_found.datastru;
 
+import com.example.fyp_found.datastru.non_str.User;
+
 public class Reward {
     String Reward_ID;
     String Reward_Title;
     String Reward_Content;
-    User   Reward_UserID;
+    User Reward_UserID;
     String Reward_property_Type;
     String Reward_Lost_Address;
 

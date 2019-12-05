@@ -1,10 +1,12 @@
 package com.example.fyp_found.datastru;
 
+import com.example.fyp_found.datastru.non_str.User;
+
 public class Found_Record {
     String Found_Property_ID;
     String Found_Property_Name;
     String Found_property_Content;
-    User   Found_Property_UserID;
+    User Found_Property_UserID;
     User   Found_Property_OwnerID;
     String Found_Lost_Address;
     String Found_Property_MainType;
