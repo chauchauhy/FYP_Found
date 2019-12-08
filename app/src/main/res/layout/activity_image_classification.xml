@@ -5,10 +5,16 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".ImageClassification">
+    <ImageView
+        android:id="@+id/image_label_image"
+        android:layout_width="match_parent"
+        android:layout_height="220dp"
+        android:visibility="gone" />
 
     <Button
         android:id="@+id/image_label_select_btn"
         android:layout_width="wrap_content"
+        android:layout_gravity="end"
         android:layout_height="wrap_content"
         android:text="@string/select"
 
@@ -18,19 +24,55 @@
         android:id="@+id/image_label_identitfy_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:visibility="gone"
         android:text="@string/identity" />
-
-    <Button
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="question A"
+        />
+
+    <Spinner
+        android:id="@+id/spinner_questionA"
+        android:layout_width="wrap_content"
+
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Question A answer"
+        android:id="@+id/questionA_Ans"
+        />
+    <TextView
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="question B"
+        />
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:id="@+id/spinner_questionB"
+        />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:id="@+id/questionB_Ans"
+        android:layout_height="wrap_content"
+        android:hint="Question B Answer"
+        />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_gravity="end"
+        android:layout_height="wrap_content"
+
         android:id="@+id/image_label_upload"
         android:text="@string/upload"
         />
-    <ImageView
-        android:id="@+id/image_label_image"
-        android:layout_width="match_parent"
-        android:layout_height="220dp"
-        android:visibility="gone" />
+
 
 
 
@@ -38,39 +80,57 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="the picture may be about above tag : "
+            />
 
         <TextView
             android:id="@+id/image_label_imagetype_main"
             android:layout_width="wrap_content"
+            android:visibility="gone"
+
             android:layout_height="wrap_content" />
 
         <TextView
             android:id="@+id/image_label_imagetype_sec"
             android:layout_width="wrap_content"
+            android:visibility="gone"
+
             android:layout_height="wrap_content" />
 
         <TextView
             android:id="@+id/image_label_imagetype_thr"
             android:layout_width="wrap_content"
+            android:visibility="gone"
+
             android:layout_height="wrap_content" />
 
         <TextView
             android:id="@+id/image_label_imagetype_fou"
             android:layout_width="wrap_content"
+            android:visibility="gone"
+
             android:layout_height="wrap_content" />
 
         <TextView
             android:id="@+id/image_label_imagetype_fiv"
             android:layout_width="wrap_content"
+            android:visibility="gone"
+
             android:layout_height="wrap_content" />
 
         <TextView
             android:id="@+id/image_label_imagetype_text"
             android:layout_width="wrap_content"
+            android:visibility="gone"
             android:layout_height="wrap_content" />
         <TextView
             android:id="@+id/image_label_image_text"
             android:layout_width="wrap_content"
+            android:visibility="gone"
+
             android:layout_height="wrap_content" />
 
     </LinearLayout>

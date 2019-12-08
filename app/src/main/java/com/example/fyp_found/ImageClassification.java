@@ -2,6 +2,8 @@ package com.example.fyp_found;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,19 +18,23 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Looper;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
@@ -57,11 +63,17 @@ import com.google.firebase.ml.vision.text.FirebaseVisionText;
 import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
+import static com.example.fyp_found.setup.staticclass.current_dev_code;
 
 public class ImageClassification extends AppCompatActivity {
     TextView text, text1;
@@ -69,6 +81,11 @@ public class ImageClassification extends AppCompatActivity {
     Button select, identitfy, upload;
     Context context;
     Bitmap bitmap;
+    Spinner questionA, questionB;
+    EditText questionA_ans, questionB_ans;
+    String questionA_str , questionB_str;
+    ArrayList<String> question =new ArrayList<>();
+    String[] question_arr_final =  {"What is the name of the item?", "How much of this item?", "Where find this item? (in locker or somewhere?)" ,"When find this item" ,"What in this item?"};
     TextView t_array[] = new TextView[5];
     List[] list;
     ArrayList<Text_Recognize> text_re = new ArrayList<Text_Recognize>();
@@ -86,6 +103,7 @@ public class ImageClassification extends AppCompatActivity {
     String text_re_Str = "";
     // pick up image
     private int picked_image_code = 1;
+    private int take_carma_code = 2;
     private Uri image_uri;   // uri == url for android file
 
 
@@ -106,6 +124,10 @@ public class ImageClassification extends AppCompatActivity {
 
     }
 
+
+
+
+
     private void initvarible() {
         context = this;
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -114,10 +136,10 @@ public class ImageClassification extends AppCompatActivity {
         }
         if(LocationServices.getFusedLocationProviderClient(this)!=null){
             fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-
         }
+        current_dev_code = Settings.Secure.getString(getContentResolver(),
+                Settings.Secure.ANDROID_ID);
     }
-
     private void initui() {
         // image's type
         t_array[0] = findViewById(R.id.image_label_imagetype_main);
@@ -131,6 +153,7 @@ public class ImageClassification extends AppCompatActivity {
         //button
         select = findViewById(R.id.image_label_select_btn);
         identitfy = findViewById(R.id.image_label_identitfy_btn);
+        identitfy.setVisibility(View.GONE);
         upload = findViewById(R.id.image_label_upload);
 
 
@@ -138,24 +161,100 @@ public class ImageClassification extends AppCompatActivity {
         text1 = findViewById(R.id.image_label_image_text);
         text = findViewById(R.id.image_label_imagetype_text);
 
+        // question
+        questionA = findViewById(R.id.spinner_questionA);
+        questionB = findViewById(R.id.spinner_questionB);
+        questionA_ans = findViewById(R.id.questionA_Ans);
+        questionB_ans = findViewById(R.id.questionB_Ans);
+        spinnerAdapter();
+
     }
+    private void spinnerAdapter(){
+        for(String i : question_arr_final){
+            question.add(i);
+        }
+        questionA.setPrompt("QuestionA");
+        questionA.setSelection(0, true);
+        questionA.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                questionA_str = question.get(i).toString();
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                questionA_str = question.get(0).toString();
+
+            }
+        });
+
+
+        ArrayAdapter<String> questionA_adapter = new ArrayAdapter<>(ImageClassification.this, R.layout.support_simple_spinner_dropdown_item, question);
+        questionA.setAdapter(questionA_adapter);
+
+
+
+        questionB.setPrompt("QuestionB");
+        questionB.setSelection(0, true);
+        questionB.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                questionB_str = question.get(i);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                questionB_str = question.get(0);
+
+            }
+        });
+
+
+
+        ArrayAdapter<String> questionB_adapter = new ArrayAdapter<>(ImageClassification.this, R.layout.support_simple_spinner_dropdown_item, question);
+
+        questionB.setAdapter(questionB_adapter);
+
+    }
+
+    private void upload(){
+        if(bitmap!=null){
+            String bitmapToString = bitmaptoString(bitmap);
+
+        }
+    }
+
 
     private void buttonclicked() {
         select.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent();
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent, "Please select a image from gallary"), 1);
-            }
-        });
-        identitfy.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (bitmap != null) {
-                    image_defin(bitmap);
-                }
+                final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                final CharSequence[] options = {"Take picture", "Select picture", "Cancel"};
+                final String[] option =  {"Take picture", "Select picture", "Cancel"};
+                builder.setTitle("Select options ...").setItems(options, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        if(options[i].equals(option[0])){
+                            dialogInterface.dismiss();
+                            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                            startActivityForResult(intent, take_carma_code);
+
+                        }else if(options[i].equals(option[1])){
+                            dialogInterface.dismiss();
+                            Intent intent = new Intent();
+                            intent.setType("image/*");
+                            intent.setAction(Intent.ACTION_GET_CONTENT);
+                            startActivityForResult(Intent.createChooser(intent, "Please select a image from gallary"), picked_image_code);
+
+
+                        }else if(options[i].equals(option[2])){
+                            dialogInterface.dismiss();
+                        }
+                    }
+                }).show();
+
             }
         });
         select.setOnLongClickListener(new View.OnLongClickListener() {
@@ -174,10 +273,19 @@ public class ImageClassification extends AppCompatActivity {
     }
 
     // find out the image path on device
+    // request code == the intent action number;
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        // if the result code == picked _ image code
         if (requestCode == picked_image_code && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            for(TextView t : t_array){
+                t.setText("");
+                t.setVisibility(View.GONE);
+                text.setVisibility(View.GONE);
+                text1.setText("");
+                text.setText("");
+            }
             image_uri = data.getData();
             Log.i(staticclass.TAG, String.valueOf(image_uri));
 
@@ -185,6 +293,9 @@ public class ImageClassification extends AppCompatActivity {
                 bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), image_uri);
                 showimage.setImageBitmap(bitmap);
                 showimage.setVisibility(View.VISIBLE);
+                if(bitmap != null){
+                    image_defin(bitmap);
+                }
             } catch (FileNotFoundException e) {
                 Log.i(staticclass.TAG, e.toString());
                 e.printStackTrace();
@@ -192,6 +303,31 @@ public class ImageClassification extends AppCompatActivity {
                 e.printStackTrace();
                 Log.i(staticclass.TAG, e.toString());
             }
+            // if the result code == take carma code
+        }else if(requestCode == take_carma_code && data!=null){
+            for(TextView t : t_array){
+                t.setText("");
+                t.setVisibility(View.GONE);
+                text1.setText("");
+                text.setVisibility(View.GONE);
+                text.setText("");
+            }
+            try {
+                image_uri = data.getData();
+                bitmap = (Bitmap) data.getExtras().get("data");
+                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream);
+
+                showimage.setImageBitmap(bitmap);
+                showimage.setVisibility(View.VISIBLE);
+                if(bitmap != null){
+                    image_defin(bitmap);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }else{
+            Log.i(staticclass.TAG, "loss");
         }
     }
 
@@ -200,31 +336,29 @@ public class ImageClassification extends AppCompatActivity {
     private void image_defin(Bitmap bitmap) {
         if (bitmap != null) {
             final FirebaseVisionImage firebaseVisionImage = FirebaseVisionImage.fromBitmap(bitmap);
-            FirebaseVisionImageLabeler firebaseVisionImageLabeler = FirebaseVision.getInstance().getOnDeviceImageLabeler();
+            final FirebaseVisionImageLabeler firebaseVisionImageLabeler = FirebaseVision.getInstance().getOnDeviceImageLabeler();
             firebaseVisionImageLabeler.processImage(firebaseVisionImage).addOnSuccessListener(new OnSuccessListener<List<FirebaseVisionImageLabel>>() {
                 @Override
                 public void onSuccess(List<FirebaseVisionImageLabel> firebaseVisionImageLabels) {
-                    if (firebaseVisionImageLabels.size() > 0) {
+                    if (firebaseVisionImageLabels.size() > 0&& firebaseVisionImageLabels.size()<6) {
                         for (int i = 0; i < firebaseVisionImageLabels.size(); i++) {
-                            t_array[i].setText(firebaseVisionImageLabels.get(i).getText());
-                            Machine_Learning_key mlclass = new Machine_Learning_key(firebaseVisionImageLabels.get(i).getEntityId(), firebaseVisionImageLabels.get(i).getText(), firebaseVisionImageLabels.get(i).getConfidence());
-                            machine_learning_keys.add(mlclass);
-
-
-                            if (t_array[i].getText().toString().trim().length() > 2) {
-                                t_array[i].setVisibility(View.VISIBLE);
-                            } else {
-                                t_array[i].setVisibility(View.GONE);
+                            if (firebaseVisionImageLabels.get(i).getText() != null) {
+                                t_array[i].setText(firebaseVisionImageLabels.get(i).getText());
+//                                t_array[i].setClickable(true);
+                                Machine_Learning_key mlclass = new Machine_Learning_key(firebaseVisionImageLabels.get(i).getEntityId(), firebaseVisionImageLabels.get(i).getText(), firebaseVisionImageLabels.get(i).getConfidence());
+                                machine_learning_keys.add(mlclass);
+                                if (firebaseVisionImageLabels.get(i).getText().toString() != null) {
+                                    t_array[i].setVisibility(View.VISIBLE);
+                                } else {
+                                    t_array[i].setVisibility(View.GONE);
+                                }
                             }
                         }
                         text_recognation();
                     }else if (firebaseVisionImageLabels.size() <= 0) {
                         createDialog(getResources().getString(R.string.cannotfindout));
                         text_recognation();
-
                     }
-
-
                 }
             });
         }
@@ -241,18 +375,21 @@ public class ImageClassification extends AppCompatActivity {
                         Rect box = block.getBoundingBox();
                         Point[] points = block.getCornerPoints();
                         text_re_Str = text_re_Str + block.getText();
-
                         // this part should be add an error checking such as if else to confirm the firebasevision text array 0 position not null, if not  there will be crash
                         text_re.add(new Text_Recognize(block.getText()));
-//                            Log.i(staticclass.TAG, String.valueOf(text_re.size())+ String.valueOf(text_re.get(0).getText()));
-                        text.setText(text_re.get(0).getText());
-                        text.setVisibility(View.VISIBLE);
+                        if(text_re.get(0).getText().length()>2 && text_re.get(0).getText().length()<14) {
+                            text.setText(text_re.get(0).getText());
+                            text.setVisibility(View.VISIBLE);
+                        }else{
+                            text.setText("");
+                            text.setVisibility(View.GONE);
+                        }
                     }
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-
+                        text.setVisibility(View.GONE);
                 }
             });
         } else {
@@ -364,10 +501,11 @@ public class ImageClassification extends AppCompatActivity {
                         public void onComplete(@NonNull Task<Location> task) {
                            Location location = task.getResult();
                            if(location!=null){
-                               for(String s : convertTheAddress(location.getLongitude(), location.getLatitude()).split(",")){
-                                   addressline.add(s);
-                                   Log.i(staticclass.TAG, s);
-                               }
+//                               for(String s : convertTheAddress(location.getLongitude(), location.getLatitude()).split(",")){
+//                                   addressline.add(s);
+//                                   Log.i(staticclass.TAG, s);
+//                               }
+                               String formated = formatAddress(convertTheAddress(location.getLongitude(),location.getLatitude()));
                            }else{
                                 requestNewLocations();
                            }
@@ -449,21 +587,20 @@ public class ImageClassification extends AppCompatActivity {
         }
 
     }
+
+    private String formatAddress(String address){
+        String formate = "";
+        address.split(",");
+
+        return formate;
+
+    }
+
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////END OF GET CURRENT LONGITUDE AND LATITUDE TO ADDRESS ////////////////////////
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
-    // store
-//    private void firebaseStore(Current_Lost_Record current_lost_record){
-//
-//        if(current_lost_record!=null && firebaseUser !=null){
-//            reference = FirebaseDatabase.getInstance().getReference(final_static_str_db_name_current);
-//            HashMap<String, String > hashMap = new HashMap<>();
-//
-//        }
-//
-//    }
 
 }

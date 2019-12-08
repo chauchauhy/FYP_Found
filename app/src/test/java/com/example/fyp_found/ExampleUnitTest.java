@@ -4,6 +4,7 @@ import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
 
+import com.example.fyp_found.class_Package.CompareText;
 import com.example.fyp_found.datastru.Chat_record;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -36,6 +37,7 @@ import static com.example.fyp_found.setup.staticclass.final_static_str_Current_L
 import static com.example.fyp_found.setup.staticclass.final_static_str_Current_Lost_type3;
 import static com.example.fyp_found.setup.staticclass.final_static_str_Current_Lost_type4;
 import static com.example.fyp_found.setup.staticclass.final_static_str_Current_Lost_type5;
+import static com.example.fyp_found.setup.staticclass.final_static_str_Reward_Content;
 import static com.example.fyp_found.setup.staticclass.final_static_str_db_name_current;
 import static org.junit.Assert.*;
 
@@ -48,32 +50,89 @@ public class ExampleUnitTest {
     @Test
     public void addition_isCorrect() {
         assertEquals(4, 2 + 2);
-        int i =9;
-       HashMap<String,String> hashMap = new HashMap<>();
-        hashMap.put(final_static_str_Current_Lost_ID, "s");
-        hashMap.put(final_static_str_Current_Lost_User_Name, "s");
-        hashMap.put(final_static_str_Current_Lost_Property_QA1 , "s");
-        hashMap.put(final_static_str_Current_Lost_Property_QA2 , "s");
-        hashMap.put(final_static_str_Current_Lost_Property_QA1_Ans , "s");
-        hashMap.put(final_static_str_Current_Lost_Property_QA2_Ans , "s");
-        hashMap.put(final_static_str_Current_Lost_Property_Name , "s");
-        hashMap.put(final_static_str_Current_Lost_Address, "s");
-        hashMap.put(final_static_str_Current_Lost_Property_MainType , "s");
-        hashMap.put(final_static_str_Current_Lost_type2 , "s");
-        hashMap.put(final_static_str_Current_Lost_type3 , "s");
-        hashMap.put(final_static_str_Current_Lost_type4 , "s");
-        hashMap.put(final_static_str_Current_Lost_type5 , "s");
-        hashMap.put(final_static_str_Current_Lost_Text, "s");
-        String s = new String("RM. 1514, 15/F, BLK. A, SHEK TO HSE., SHEK WAI KOK EST., TSUEN WAN, NT, 香港");
-        assert s!=null;
-        ArrayList<String> list = new ArrayList<>();
-        for (String str : s.split(",")){
-            list.add(str);
-        }
-        for(String str: list){
 
-        }
-        System.out.println(list.get(list.size()-1));
-
+        String s = new String("RM. 1514, 15/F, BLK. A, SHEK TO HSE., SHEK WAI KOK EST., TSUEN WAN, NT, Hong Kong");
+        String b = s;
+        assert s != null;
+        String a = "SHEK TO HSE., SHEK WAI KOK EST., TSUEN WAN, NT aaaaaaaaaasssaaa";
+        String aa = "shek ko house shek wai kok estate";
+        CompareText compareText1 = new CompareText(a,aa);
+        System.out.println(compareText1.compareText());
+//        compareText(a,aa);
     }
+
+        private double compareText(String firstText , String secondText){
+        double mark = 0;
+        double total_Mark = 0;
+        if(firstText.toLowerCase().equals(secondText.toLowerCase())){
+            return 100;
+        }else{
+            String first = firstText.toLowerCase();
+            final String second = secondText.toLowerCase();
+            ArrayList<String> first_arrayList = new ArrayList<>();
+            final ArrayList<String> second_arrayList = new ArrayList<>();
+            char[] first_array = new char[first.length()];
+            char[] second_array = new char[second.length()];
+            for(int i = 0 ; i < first.length(); i++){
+                first_array[i] = first.charAt(i);
+            }
+            for(int i = 0 ; i < second.length(); i++){
+                second_array[i] = second.charAt(i);
+            }
+            for(char c : first_array){
+                if((!String.valueOf(c).equals(",")&& !String.valueOf(c).equals(" ") && !String.valueOf(c).equals(".") && !String.valueOf(c).equals("/"))){
+                    first_arrayList.add(String.valueOf(c));
+                }
+            }
+            for(char c : second_array){
+                if((!String.valueOf(c).equals(",")&& !String.valueOf(c).equals(" ") && !String.valueOf(c).equals(".") && !String.valueOf(c).equals("/"))){
+                    second_arrayList.add(String.valueOf(c));
+                }
+            }
+            if(second_arrayList.size()>first_arrayList.size()) {
+                for (int i = 0; i < first_arrayList.size(); i++) {
+                    if (first_arrayList.contains(second_arrayList.get(i))) {
+                        first_arrayList.remove(second_arrayList.get(i));
+                        mark = mark + 1;
+
+                    }
+                }
+            }else {
+                for (int i = 0; i < second_arrayList.size(); i++) {
+                    if (first_arrayList.contains(second_arrayList.get(i))) {
+                        first_arrayList.remove(second_arrayList.get(i));
+                        mark = mark + 1;
+
+                    }
+                }
+
+            }
+            int mark_int = (int) mark;
+            if(mark_int >= second_arrayList.size() && second_arrayList.size()>first_arrayList.size()/2){
+                System.out.println("the ans is " + true);
+            }else {
+                System.out.println("the ans is " + false);
+            }
+
+            System.out.println(mark);
+            System.out.println(second_arrayList.size());
+//            System.out.println(first_arrayList.remove(second_arrayList.get(0)));
+            System.out.println(first_arrayList);
+
+
+            total_Mark = first.length()/100 + first.length()%100;
+
+
+            System.out.println((mark/total_Mark + mark% total_Mark) );
+            System.out.println(mark);
+
+            return mark;
+        }
+
+
+
+        }
+
+
+
 }

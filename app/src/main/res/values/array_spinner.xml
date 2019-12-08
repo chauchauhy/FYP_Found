@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="questions">
+        <item>What is the name of the item?</item>
+        <item>How much of this item?</item>
+        <item>Where find this item?</item>
+        <item>When find this item</item>
+        <item>What in this item?</item>
+    </array>
+
+
+
+
+
+
+
+
+
+
+</resources>
