@@ -418,6 +418,7 @@ public class ImageClassification extends AppCompatActivity {
         return s;
 
     }
+    // need final static
 
     private Bitmap Stringtobitmap(String convert_string) {
         Bitmap bitmap = null;
