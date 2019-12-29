@@ -4,4 +4,8 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
     <color name="chat_bg">#008DFF</color>
+    <color name="white">#25FFFFFF</color>
+    <color name="progressbar">#310466F8</color>
+    <color name="transparent">#00000000</color>
+    <color name="toolbar_text">#B4FFFAFA</color>
 </resources>

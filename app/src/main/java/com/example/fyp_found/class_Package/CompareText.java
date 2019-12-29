@@ -8,6 +8,7 @@ public class CompareText {
     double mark = 0;
     double total_Mark = 0;
     int mark_int = 0;
+    boolean result = false;
     ArrayList<String> first_arrayList = new ArrayList<>();
     ArrayList<String> second_arrayList = new ArrayList<>();
 
@@ -73,9 +74,7 @@ public class CompareText {
 
         }
 
-        if(mark == second_arrayList.size()){
-            return 100;
-        }
+
 
         int mark_int = (int) mark;
         if(mark_int >= second_arrayList.size() && second_arrayList.size()>first_arrayList.size()/4){
@@ -96,5 +95,10 @@ public class CompareText {
 
         return mark;
         }
+
+        public boolean getResult(){
+        return this.result;
+        }
+
     }
 

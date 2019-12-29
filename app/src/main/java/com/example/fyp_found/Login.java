@@ -2,11 +2,14 @@ package com.example.fyp_found;
 
 import android.content.Context;
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,9 +56,9 @@ public class Login extends AppCompatActivity  {
 
     private FirebaseAuth firebaseAuth;
 
-    Button submit;
+    ImageButton submit;
     EditText ac, pw;
-    TextView signup;
+    ImageView signup;
     String account,password;
     Context context;
     SignInButton google;
@@ -64,7 +67,6 @@ public class Login extends AppCompatActivity  {
     private GoogleApiClient googleApiClient;
     private FirebaseAuth firebaseAuth_facebook;
     private CallbackManager callbackManager;
-    DatabaseReference reference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,19 +98,22 @@ public class Login extends AppCompatActivity  {
             public void onClick(View view) {
                 account = ac.getText().toString().trim();
                 password = pw.getText().toString().trim();
-                firebaseAuth.signInWithEmailAndPassword(account,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()){
-                            Toast.makeText(context, "Success login", Toast.LENGTH_LONG).show();
-//                            currentUser = firebaseAuth.getCurrentUser();
-                            startActivity(new Intent(Login.this,ImageClassification.class));
+                if(account.isEmpty() || password.isEmpty()){
+                    Toast.makeText(context, "Account or Email and password can not empty", Toast.LENGTH_LONG).show();
+                }else {
+                    firebaseAuth.signInWithEmailAndPassword(account, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(context, "Success login", Toast.LENGTH_LONG).show();
+                                startActivity(new Intent(Login.this, HomePage.class));
 
-                        }else{
-                            Toast.makeText(context, "login failed" , Toast.LENGTH_LONG).show();
+                            } else {
+                                Toast.makeText(context, "login failed", Toast.LENGTH_LONG).show();
+                            }
                         }
-                    }
-                });
+                    });
+                }
             }
         });
         submit.setOnLongClickListener(new View.OnLongClickListener() {
@@ -152,7 +157,7 @@ public class Login extends AppCompatActivity  {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             Toast.makeText(Login.this, " Current user is " + String.valueOf(firebaseAuth.getCurrentUser().getDisplayName()), Toast.LENGTH_SHORT).show();
-                                            startActivity(new Intent (Login.this,ImageClassification.class));
+                                            startActivity(new Intent (Login.this,HomePage.class));
                                         }
                                     }).addOnFailureListener(new OnFailureListener() {
                                         @Override
@@ -228,8 +233,6 @@ public class Login extends AppCompatActivity  {
                 if (task.isSuccessful()) {
                     FirebaseUser firebaseUser = firebaseAuth_google.getCurrentUser();
                     DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
-                    current_dev_code = Settings.Secure.getString(getContentResolver(),
-                            Settings.Secure.ANDROID_ID);
                     HashMap<String, String> hashMap = new HashMap<>();
                     hashMap.put(final_static_str_User_Id, firebaseUser.getUid());
                     hashMap.put(final_static_str_User_Name, firebaseUser.getDisplayName());
@@ -240,7 +243,7 @@ public class Login extends AppCompatActivity  {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             Toast.makeText(context, getResources().getString(R.string.success_signup), Toast.LENGTH_LONG).show();
-                            startActivity(new Intent(Login.this, ImageClassification.class));
+                            startActivity(new Intent(Login.this, HomePage.class));
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override

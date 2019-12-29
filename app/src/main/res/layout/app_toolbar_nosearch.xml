@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="50dp">
+
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/app_toolbar_nosearch_1"
+        android:background="@drawable/toolbar_background"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/checking_toolbar_forward"
+            android:layout_gravity= "end"
+            android:text="@string/done"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:textSize="20dp"
+            android:textColor="@color/toolbar_text"
+            android:clickable="true"
+            />
+
+    </androidx.appcompat.widget.Toolbar>
+
+</RelativeLayout>

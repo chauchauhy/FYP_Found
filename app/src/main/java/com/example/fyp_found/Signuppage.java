@@ -5,12 +5,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,11 +40,10 @@ import static com.example.fyp_found.setup.staticclass.final_static_str_User_dev_
 // sign up page ....
 
 public class Signuppage extends AppCompatActivity {
-    EditText account, name, email, password;
-    Button send;
+    EditText  email,  password;
+    ImageButton send;
     boolean userinformationisvaild = false;
-    String account_str , name_str , email_str, password_str;
-    TextView hint_account, hint_name, hint_email, hint_password;
+    String  email_str, password_str;
     Context context;
     FirebaseAuth firebaseAuth;
     DatabaseReference reference;
@@ -50,7 +51,9 @@ public class Signuppage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_welcomepage);
+        setContentView(R.layout.activity_signuppage);
+        context = this;
+        firebaseAuth = FirebaseAuth.getInstance();
         initui();
         initvariable();
         responsebutton();
@@ -59,37 +62,25 @@ public class Signuppage extends AppCompatActivity {
 
 
     private void initui(){
-        account = findViewById(R.id.signup_page_account);
-        name   = findViewById(R.id.signup_page_name);
         email   = findViewById(R.id.signup_page_email);
         password = findViewById(R.id.signup_page_password);
         send     = findViewById(R.id.signup_page_send_button);
-        hint_account  = findViewById(R.id.signup_page_account_invalid);
-        hint_name   = findViewById(R.id.signup_page_name_invalid);
-        hint_email  = findViewById(R.id.signup_page_email_invalid);
-        hint_password  = findViewById(R.id.signup_page_password_invalid);
-        current_dev_code = Settings.Secure.getString(getContentResolver(),Settings.Secure.ANDROID_ID);
-        Log.i(staticclass.TAG,current_dev_code);
-
     }
 
     private void initvariable(){
-        account_str = account.getText().toString().trim();
-        name_str   = name.getText().toString().trim();
         email_str   = email.getText().toString().trim();
-        password_str  = password.getText().toString().trim();
-        context = this;
-        firebaseAuth = FirebaseAuth.getInstance();
+        password_str= password.getText().toString().trim();
+
     }
 
     // user email and password checking...
     // if not checking, the app will crash
     private boolean checknullandstruction(){
-            initvariable();
-            if(account_str.length()<5 && password_str.length() < 5 ){
-                return false;
-            }
+        if(!email.getText().toString().trim().isEmpty() && !password.getText().toString().trim().isEmpty()){
             return true;
+        }else{
+            return false;
+        }
     }
 
 
@@ -99,18 +90,18 @@ public class Signuppage extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(checknullandstruction()) {
-                    firebaseAuth.createUserWithEmailAndPassword(account_str, password_str).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    initvariable();
+
+                    firebaseAuth.createUserWithEmailAndPassword(email.getText().toString().trim(), password.getText().toString().trim()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
                                 FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
                                 currentUserID = firebaseUser.getUid();
-                                current_dev_code = Settings.Secure.getString(getContentResolver(),
-                                        Settings.Secure.ANDROID_ID);
                                 reference = FirebaseDatabase.getInstance().getReference("Users").child(currentUserID);
                                 HashMap<String,String> hashMap = new HashMap<String, String>();
                                 hashMap.put(final_static_str_User_Id, currentUserID);
-                                hashMap.put(final_static_str_User_Name, name.getText().toString().trim());
+                                hashMap.put(final_static_str_User_Name, firebaseUser.getDisplayName());
                                 hashMap.put(final_static_str_User_Email, firebaseUser.getEmail());
                                 hashMap.put(final_static_str_User_dev_code, current_dev_code);
                                 hashMap.put(final_static_str_User_Login_Method, "Firebase Email Checking");
@@ -120,7 +111,7 @@ public class Signuppage extends AppCompatActivity {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
                                         Toast.makeText(context, getResources().getString(R.string.success_signup), Toast.LENGTH_LONG).show();
-                                        startActivity(new Intent(Signuppage.this, Login.class));
+                                        startActivity(new Intent(Signuppage.this, HomePage.class));
 
                                     }
                                 }).addOnFailureListener(new OnFailureListener() {

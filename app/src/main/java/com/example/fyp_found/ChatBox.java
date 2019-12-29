@@ -81,7 +81,12 @@ public class ChatBox extends AppCompatActivity {
         String time = simpleDateFormat.format(new Date());
         Log.i(staticclass.TAG, time);
         initui();
-        initvar();
+        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+            startActivity(new Intent(ChatBox.this,Login.class));
+        }else{
+            initvar();
+        }
+
 
 
         send.setOnClickListener(new View.OnClickListener() {

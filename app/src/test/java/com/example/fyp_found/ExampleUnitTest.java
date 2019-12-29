@@ -6,6 +6,7 @@ import android.location.Geocoder;
 
 import com.example.fyp_found.class_Package.CompareText;
 import com.example.fyp_found.datastru.Chat_record;
+import com.example.fyp_found.datastru.Current_Lost_Record;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -39,6 +40,7 @@ import static com.example.fyp_found.setup.staticclass.final_static_str_Current_L
 import static com.example.fyp_found.setup.staticclass.final_static_str_Current_Lost_type5;
 import static com.example.fyp_found.setup.staticclass.final_static_str_Reward_Content;
 import static com.example.fyp_found.setup.staticclass.final_static_str_db_name_current;
+import static com.example.fyp_found.setup.staticclass.question_arr_final;
 import static org.junit.Assert.*;
 
 /**
@@ -54,11 +56,12 @@ public class ExampleUnitTest {
         String s = new String("RM. 1514, 15/F, BLK. A, SHEK TO HSE., SHEK WAI KOK EST., TSUEN WAN, NT, Hong Kong");
         String b = s;
         assert s != null;
-        String a = "SHEK TO HSE., SHEK WAI KOK EST., TSUEN WAN, NT aaaaaaaaaasssaaa";
-        String aa = "shek ko house shek wai kok estate";
-        CompareText compareText1 = new CompareText(a,aa);
-        System.out.println(compareText1.compareText());
-//        compareText(a,aa);
+        String a = " shek wai kok";
+        String aa = "shek kok house";
+        CompareText compareText = new CompareText(s, a);
+        System.out.println(compareText.compareText());
+
+        System.out.println(s.toLowerCase().contains(a));
     }
 
         private double compareText(String firstText , String secondText){

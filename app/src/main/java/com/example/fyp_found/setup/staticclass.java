@@ -2,30 +2,28 @@ package com.example.fyp_found.setup;
 
 import android.provider.Settings;
 
+import com.example.fyp_found.datastru.Chat_record;
 import com.google.firebase.auth.FirebaseUser;
 
 
 public final class staticclass {
-    public static String login_account;
-    public static String login_name;
     public static String current_dev_code = null;
     public static FirebaseUser currentUser = null;
     public static String currentUserID = "";
     public final static String TAG = "IAMLOG";
-    public final static String url_initizal = "";
-    public static String dev_code;
     public final static String localdb_URL = "http:192.168.137.1/dashboard/new/";
     // check ip is needed
     //    http://localhost/dashboard/new/php_get/runq.php
-    public final static String localdb_URL_get = localdb_URL + "php_get/";
-    public final static String localdb_URL_php = ".php";
-    public final static String localdb_URL_test = localdb_URL_get + "runq.php";
+//    public final static String localdb_URL_get = localdb_URL + "php_get/";
+//    public final static String localdb_URL_php = ".php";
+//    public final static String localdb_URL_test = localdb_URL_get + "runq.php";
 //    public final static String localdb_URL_
 
 
     // db col name
+    // should use array to store above ....
     //chat
-    public final static String final_static_str_db_name_chat = "chat_record";
+    public final static String final_static_str_db_name_chat = "Chat_record";
     public final static String final_static_str_Chat_ID = "char_ID";
     public final static String final_static_str_Chat_sender_ID = "Chat_sender_id";
     public final static String final_static_str_Chat_rev_ID = "Chat_rev_ID";
@@ -34,7 +32,7 @@ public final class staticclass {
     public final static String final_static_str_Chat_Date = "Chat_Date";
     public final static String final_static_str_Chat_unixTime = "unixTime";
     // User'
-    public final static String final_static_str_db_name_user = "user";
+    public final static String final_static_str_db_name_user = "User";
     public final static String final_static_str_User_Id = "user_id";
     public final static String final_static_str_User_Name = "User_Name";
     public final static String final_static_str_User_Account = "User_Account";
@@ -45,7 +43,7 @@ public final class staticclass {
     public final static String final_static_str_User_dev_code = "User_dev_code";
 
     //Reward
-    public final static String final_static_str_db_name_reward = "reward";
+    public final static String final_static_str_db_name_reward = "Reward";
     public final static String final_static_str_Reward_ID = "Reward_ID";
     public final static String final_static_str_Reward_Title = "Reward_Title";
     public final static String final_static_str_Reward_Content = "Reward_Content";
@@ -53,7 +51,7 @@ public final class staticclass {
     public final static String final_static_str_Reward_property_Type = "Reward_Property_Type";
     public final static String final_static_str_Reward_Lost_Address = "Reward_Lost_Address";
     // Found_record
-    public final static String final_static_str_db_name_found = "found_record";
+    public final static String final_static_str_db_name_found = "Found_record";
     public final static String final_static_str_Found_Property_ID = "Found_property_ID ";
     public final static String final_static_str_Found_Property_Name = "Found_property_Name";
     public final static String final_static_str_Found_property_Content = "Found_property_content";
@@ -66,8 +64,9 @@ public final class staticclass {
     public final static String final_static_str_Found_Property_type4 = "Found_Property_type4";
     public final static String final_static_str_Found_Property_type5 = "Found_property_type5";
     // current lost record
-    public final static String final_static_str_db_name_current = "current_lost_record";
+    public final static String final_static_str_db_name_current = "Current_lost_record";
     public static final String final_static_str_Current_Lost_ID = "Current_Lost_ID";
+    public static final String final_static_str_Current_Lost_Status = "Current_Lost_Status";
     public static final String final_static_str_Current_Lost_User_Name = "Current_Lost_User_Name";
     public static final String final_static_str_Current_Lost_Property_QA1 = "Current_Lost_Property_QA1";
     public static final String final_static_str_Current_Lost_Property_QA2 = "Current_Lost_Property_QA2";
@@ -81,6 +80,9 @@ public final class staticclass {
     public static final String final_static_str_Current_Lost_type4 = "Current_Lost_Property_type4";
     public static final String final_static_str_Current_Lost_type5 = "Current_Lost_Property_type5";
     public static final String final_static_str_Current_Lost_Text = "Current_Lost_Property_Text";
+    public static final String final_static_str_Current_Lost_URL = "ImageURL";
+    public static final String final_static_str_Current_Lost_Boolean = "Found";
+
     // firebase
     public static final String final_static_str_firebasedatabase_child_users = "Users";
     public static final String final_static_str_firebasedatabase_child_chat = "Chats";
@@ -95,6 +97,9 @@ public final class staticclass {
     // chat configure
     public static final int final_static_int_MSG_TYPE_LEFT = 0;
     public static final int final_static_int_MSG_TYPE_REGHT = 1;
+
+    // sipnner
+    public static final  String[] question_arr_final =  {"What is the name of this item?", "How much of this item (for publish time)?", "Where find this item? (in locker or somewhere?)" ,"When find this item" ,"What in this item?"};
 
 
 }

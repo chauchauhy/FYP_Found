@@ -58,21 +58,12 @@ public class ChatBoxMatrix extends AppCompatActivity{
     private void initui() {
         recyclerView = findViewById(R.id.chatbox_user_recyclerview);
          final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users");
+         final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users");
 
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                assert firebaseUser != null;
-                assert dataSnapshot != null;
-//                 assert same of guard if on swift
-//                meaning :
-//                if(firebaseUser!= null && dataSnapshot !=null ){
-//                    for loop
-//                }
-                //if data snapshot exists  will be do.....
-                // same of assert dataSnapshot != null
-                // use datasnapshot.getValue(String.class) return null
+                // error checking
                 if (dataSnapshot.exists()) {
                     HashMap<String, Object> hashMap = new HashMap<String, Object>();
                     hashMap = (HashMap<String, Object>) dataSnapshot.getValue();

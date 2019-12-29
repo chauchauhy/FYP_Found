@@ -4,7 +4,7 @@
     <string name="fb_login_protocol_scheme">fb1154434514751382</string>
     <string name="ok">OK</string>
     <string name="warning">Warning</string>
-    <string name="error">The error</string>
+    <string name="error">Error Message</string>
     <string name="sorry">Sorry, There is some problem , please wait for a moment</string>
 
     <!-- Facebook application ID and custom URL scheme (app ID prefixed by 'fb'). -->
@@ -25,14 +25,34 @@
     <string name="success_signup">Success Sign Up!</string>
     <string name="existed"> are invalid or exist</string>
     <string name="signup_info">The user informations</string>
+    <string name="terms">I read and agree to all terms and conditions </string>
     <!--    image identity-->
     <string name="select">Select</string>
     <string name="identity">Identity</string>
     <string name="upload">Upload</string>
     <string name="cannotfindout">Sorry, I cannot find the tag....</string>
     <string name="warring_no_select_picture">Please select or take a picture</string>
+    <string name="propertyName">Title / Name </string>
+    <string name="other_info">Other information:</string>
 
-<!--    internet error-->
+    <!--    internet error-->
     <string name="error_404"> Internet error , Please check your internet setting or wait for a few minutes </string>
+
+
+    <!-- bottom nav bar -->
+    <string name="btm_nav_bar_title_home">Home</string>
+    <string name="btm_nav_bar_title_profile">Profile</string>
+    <string name="btm_nav_bar_title_post">Post</string>
+
+    <!-- homepage -->
+    <string name="current_lost">Current Lost</string>
+    <string name="reward">Reward</string>
+    <string name="search">You can enter some keywords to search the property (the keywords can be type or title of property )</string>
+
+    <!-- checking-->
+    <string name="next">Next</string>
+    <string name="done">Done</string>
+    <string name="addressQuestion">Where lost this property?</string>
+    <string name="ans">Ans</string>
 
 </resources>
