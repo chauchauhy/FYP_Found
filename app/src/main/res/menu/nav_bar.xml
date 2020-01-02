@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <item android:id="@+id/bottom_nav_bar_home"
+        android:title="@string/btm_nav_bar_title_home"
+
+        />
+    <item android:id="@+id/bottom_nav_bar_post"
+        android:title="@string/btm_nav_bar_title_post"
+        />
+    <item android:id="@+id/bottom_nav_bar_profile"
+        android:title="@string/btm_nav_bar_title_profile"
+        />
+
+</menu>

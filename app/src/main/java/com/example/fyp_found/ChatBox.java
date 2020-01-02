@@ -21,6 +21,7 @@ import com.example.fyp_found.Adapter.Chat_Box_Adapter;
 import com.example.fyp_found.datastru.Chat_record;
 import com.example.fyp_found.datastru.Firebase_User;
 import com.example.fyp_found.setup.staticclass;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -82,6 +83,7 @@ public class ChatBox extends AppCompatActivity {
         Log.i(staticclass.TAG, time);
         initui();
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+            // message checking
             startActivity(new Intent(ChatBox.this,Login.class));
         }else{
             initvar();

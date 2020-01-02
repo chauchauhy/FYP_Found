@@ -8,7 +8,7 @@ import java.io.ByteArrayOutputStream;
 
 public class Current_Lost_Record {
     String Current_Lost_ID;
-    String Current_Lost_User_Name;         // user name
+    String Current_Lost_User_ID;         // user name
     String Current_Lost_Property_Name;      // property name
     String Current_Lost_Property_QA1;    // question1
     String Current_Lost_Property_QA2;    // question2
@@ -50,7 +50,7 @@ public class Current_Lost_Record {
     public String toString() {
         return "Current_Lost_Record{" +
                 "Current_Lost_ID='" + Current_Lost_ID + '\'' +
-                ", Current_Lost_User_Name='" + Current_Lost_User_Name + '\'' +
+                ", Current_Lost_User_Name='" + Current_Lost_User_ID + '\'' +
                 ", Current_Lost_Property_Name='" + Current_Lost_Property_Name + '\'' +
                 ", Current_Lost_Property_QA1='" + Current_Lost_Property_QA1 + '\'' +
                 ", Current_Lost_Property_QA2='" + Current_Lost_Property_QA2 + '\'' +
@@ -106,7 +106,7 @@ public class Current_Lost_Record {
                                String current_Lost_type3, String current_Lost_type4, String current_Lost_type5,
                                String current_Lost_Text, String imageURL, String found) {
         Current_Lost_ID = current_Lost_ID;
-        Current_Lost_User_Name = current_Lost_User_Name;
+        Current_Lost_User_ID = current_Lost_User_Name;
         Current_Lost_Property_Name = current_Lost_Property_Name;
         Current_Lost_Property_QA1 = current_Lost_Property_QA1;
         Current_Lost_Property_QA2 = current_Lost_Property_QA2;
@@ -134,12 +134,12 @@ public class Current_Lost_Record {
         Current_Lost_ID = current_Lost_ID;
     }
 
-    public String getCurrent_Lost_User_Name() {
-        return Current_Lost_User_Name;
+    public String getCurrent_Lost_User_ID() {
+        return Current_Lost_User_ID;
     }
 
-    public void setCurrent_Lost_User_Name(String current_Lost_User_Name) {
-        Current_Lost_User_Name = current_Lost_User_Name;
+    public void setCurrent_Lost_User_ID(String current_Lost_User_Name) {
+        Current_Lost_User_ID = current_Lost_User_Name;
     }
 
     public String getCurrent_Lost_Property_Name() {
@@ -241,7 +241,7 @@ public class Current_Lost_Record {
 
     public Current_Lost_Record(String current_Lost_ID, String current_Lost_User_Name, String current_Lost_Property_Name, String current_Lost_Property_QA1, String current_Lost_Property_QA2, String current_Lost_Address, String current_Lost_Property_MainType, String current_Lost_type2, String current_Lost_type3, String current_Lost_type4, String current_Lost_type5) {
         Current_Lost_ID = current_Lost_ID;
-        Current_Lost_User_Name = current_Lost_User_Name;
+        Current_Lost_User_ID = current_Lost_User_Name;
         Current_Lost_Property_Name = current_Lost_Property_Name;
         Current_Lost_Property_QA1 = current_Lost_Property_QA1;
         Current_Lost_Property_QA2 = current_Lost_Property_QA2;

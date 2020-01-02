@@ -3,6 +3,8 @@ package com.example.fyp_found.setup;
 import android.provider.Settings;
 
 import com.example.fyp_found.datastru.Chat_record;
+
+// this class is use for save some KEY for hashmap or intent
 import com.google.firebase.auth.FirebaseUser;
 
 
@@ -21,7 +23,7 @@ public final class staticclass {
 
 
     // db col name
-    // should use array to store above ....
+    // should use array to store below key ....
     //chat
     public final static String final_static_str_db_name_chat = "Chat_record";
     public final static String final_static_str_Chat_ID = "char_ID";
@@ -67,7 +69,7 @@ public final class staticclass {
     public final static String final_static_str_db_name_current = "Current_lost_record";
     public static final String final_static_str_Current_Lost_ID = "Current_Lost_ID";
     public static final String final_static_str_Current_Lost_Status = "Current_Lost_Status";
-    public static final String final_static_str_Current_Lost_User_Name = "Current_Lost_User_Name";
+    public static final String final_static_str_Current_Lost_User_ID = "Current_Lost_User_ID";
     public static final String final_static_str_Current_Lost_Property_QA1 = "Current_Lost_Property_QA1";
     public static final String final_static_str_Current_Lost_Property_QA2 = "Current_Lost_Property_QA2";
     public static final String final_static_str_Current_Lost_Property_QA1_Ans = "Current_Lost_Property_QA1_Ans";
@@ -98,7 +100,7 @@ public final class staticclass {
     public static final int final_static_int_MSG_TYPE_LEFT = 0;
     public static final int final_static_int_MSG_TYPE_REGHT = 1;
 
-    // sipnner
+    // spinner
     public static final  String[] question_arr_final =  {"What is the name of this item?", "How much of this item (for publish time)?", "Where find this item? (in locker or somewhere?)" ,"When find this item" ,"What in this item?"};
 
 

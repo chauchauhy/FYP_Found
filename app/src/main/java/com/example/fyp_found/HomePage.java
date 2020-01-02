@@ -56,7 +56,7 @@ import static com.example.fyp_found.setup.staticclass.final_static_str_Current_L
 import static com.example.fyp_found.setup.staticclass.final_static_str_Current_Lost_Property_QA2_Ans;
 import static com.example.fyp_found.setup.staticclass.final_static_str_Current_Lost_Text;
 import static com.example.fyp_found.setup.staticclass.final_static_str_Current_Lost_URL;
-import static com.example.fyp_found.setup.staticclass.final_static_str_Current_Lost_User_Name;
+import static com.example.fyp_found.setup.staticclass.final_static_str_Current_Lost_User_ID;
 import static com.example.fyp_found.setup.staticclass.final_static_str_Current_Lost_type2;
 import static com.example.fyp_found.setup.staticclass.final_static_str_Current_Lost_type3;
 import static com.example.fyp_found.setup.staticclass.final_static_str_Current_Lost_type4;
@@ -109,8 +109,6 @@ public class HomePage extends AppCompatActivity /*implements Toolbar.OnMenuItemC
                         loadData();
                         recyclerView.scrollTo(0, 0);
                         progressBar.setVisibility(View.GONE);
-
-
                         break;
                     case R.id.bottom_nav_bar_post:
                         if (firebaseUser != null) {
@@ -126,12 +124,12 @@ public class HomePage extends AppCompatActivity /*implements Toolbar.OnMenuItemC
                         break;
                     case R.id.bottom_nav_bar_profile:
                         if (firebaseUser != null) {
-                            startActivity(new Intent(context, ChatBoxMatrix.class));
+                            startActivity(new Intent(context, Profile.class));
                         } else {
                             Snackbar.make(linearLayout, "You may need login or sign up before use this function", Snackbar.LENGTH_LONG).setAction("Login / Sign up", new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
-                                    startActivity(new Intent(context, Login.class));
+                                    startActivity(new Intent(context, Profile.class));
                                 }
                             });
                         }
@@ -207,6 +205,13 @@ public class HomePage extends AppCompatActivity /*implements Toolbar.OnMenuItemC
                     homePage_adapter.getFilter().filter(s);
                     Toast.makeText(context,  s, Toast.LENGTH_LONG).show();
                     homePage_adapter.notifyDataSetChanged();
+                    return false;
+                }
+            });
+            searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+                @Override
+                public boolean onClose() {
+                    homePage_adapter.reSetAdapter();
                     return false;
                 }
             });
@@ -299,7 +304,7 @@ public class HomePage extends AppCompatActivity /*implements Toolbar.OnMenuItemC
                             Current_Lost_Record record =
                                     new Current_Lost_Record(
                                             (String) data.get(final_static_str_Current_Lost_ID),
-                                            (String) data.get(final_static_str_Current_Lost_User_Name),
+                                            (String) data.get(final_static_str_Current_Lost_User_ID),
                                             (String) data.get(final_static_str_Current_Lost_Property_Name),
                                             (String) data.get(final_static_str_Current_Lost_Property_QA1),
                                             (String) data.get(final_static_str_Current_Lost_Property_QA2),
@@ -362,8 +367,6 @@ public class HomePage extends AppCompatActivity /*implements Toolbar.OnMenuItemC
 
 
     }
-
-
     ///////////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////////////
     //////////////end of                     initial the UI variable///////////////////////////////

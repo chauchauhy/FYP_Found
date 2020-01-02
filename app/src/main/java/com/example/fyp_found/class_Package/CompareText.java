@@ -2,6 +2,8 @@ package com.example.fyp_found.class_Package;
 
 import java.util.ArrayList;
 
+// this class if using for compare text and compare the part of QA on the checking page
+
 public class CompareText {
     String firstText;
     String secondText;
@@ -11,6 +13,8 @@ public class CompareText {
     boolean result = false;
     ArrayList<String> first_arrayList = new ArrayList<>();
     ArrayList<String> second_arrayList = new ArrayList<>();
+    ArrayList<String> original_word = new ArrayList<>();
+    ArrayList<String> new_word = new ArrayList<>();
 
     public CompareText(String firstText, String secondText) {
         this.firstText = firstText;
@@ -19,7 +23,7 @@ public class CompareText {
             toArrayList(firstText,secondText);
             total_Mark = first_arrayList.size() ;
         }else if(sameText()){
-
+            result = true;
         }
 
 
@@ -52,6 +56,28 @@ public class CompareText {
         }
 
     }
+    public boolean compareWord(){
+        boolean result_Word = false;
+
+        if(!firstText.contains(",")) {
+            for (String x : firstText.split(" ")) {
+                original_word.add(x);
+            }
+            for (String x : secondText.split(" ")) {
+                new_word.add(x);
+            }
+        }else{
+            for (String x : firstText.split(",")){
+                original_word.add(x);
+            }
+            for (String x : secondText.split(",")){
+                new_word.add(x);
+            }
+        }
+
+
+        return result_Word;
+    }
 
     public double compareText() {
         int contarnsMark = 0;
@@ -78,18 +104,18 @@ public class CompareText {
 
         int mark_int = (int) mark;
         if(mark_int >= second_arrayList.size() && second_arrayList.size()>first_arrayList.size()/4){
+            result = true;
             System.out.println("the ans is " + true);
 
         }else {
+            result = false;
             System.out.println("the ans is " + false);
         }
         System.out.println(mark / total_Mark );
 
 
 
-        if(contarnsMark == second_arrayList.size()){
-            return  100;
-        }
+
 
 
 

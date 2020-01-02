@@ -15,6 +15,7 @@ import java.util.Map;
 import javax.net.ssl.HttpsURLConnection;
 
 //this class is use for upload the image / picture to local server
+//
 
 public class RequestHandler {
                                         // get the url for local server php file

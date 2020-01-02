@@ -20,6 +20,7 @@
             android:text="@string/done"
             android:gravity="center"
             android:textAlignment="center"
+            android:visibility="gone"
             android:textSize="20dp"
             android:textColor="@color/toolbar_text"
             android:clickable="true"

@@ -7,14 +7,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Looper;
@@ -32,6 +30,8 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -89,7 +89,7 @@ import static com.example.fyp_found.setup.staticclass.final_static_str_Current_L
 import static com.example.fyp_found.setup.staticclass.final_static_str_Current_Lost_Property_QA1_Ans;
 import static com.example.fyp_found.setup.staticclass.final_static_str_Current_Lost_Property_QA2;
 import static com.example.fyp_found.setup.staticclass.final_static_str_Current_Lost_Property_QA2_Ans;
-import static com.example.fyp_found.setup.staticclass.final_static_str_Current_Lost_User_Name;
+import static com.example.fyp_found.setup.staticclass.final_static_str_Current_Lost_User_ID;
 import static com.example.fyp_found.setup.staticclass.final_static_str_Current_Lost_type2;
 import static com.example.fyp_found.setup.staticclass.final_static_str_Current_Lost_type3;
 import static com.example.fyp_found.setup.staticclass.final_static_str_Current_Lost_type4;
@@ -99,7 +99,7 @@ import static com.example.fyp_found.setup.staticclass.question_arr_final;
 
 public class ImageClassification extends AppCompatActivity {
     ProgressBar progressBar;
-    TextView text, text1 , showlocation;
+    TextView text, text1 , showlocation, newTag;
     ImageView showimage;
     Button select, identitfy, upload;
     Context context;
@@ -161,6 +161,7 @@ public class ImageClassification extends AppCompatActivity {
             startActivity(new Intent(ImageClassification.this,Login.class));
         }
     }
+
     private void initui() {
         // image's type
         t_array[0] = findViewById(R.id.image_label_imagetype_main);
@@ -168,6 +169,8 @@ public class ImageClassification extends AppCompatActivity {
         t_array[2] = findViewById(R.id.image_label_imagetype_thr);
         t_array[3] = findViewById(R.id.image_label_imagetype_fou);
         t_array[4] = findViewById(R.id.image_label_imagetype_fiv);
+        newTag = findViewById(R.id.image_classification_newTag);
+
         //imageview
         showimage = findViewById(R.id.image_label_image);
         //button
@@ -194,6 +197,27 @@ public class ImageClassification extends AppCompatActivity {
         // other ui elements
         progressBar = findViewById(R.id.image_label_progressbar);
     }
+    private void setAddNewTag(){
+        int nowTagCount = 0;
+        try {
+            for (int i = 0 ;i<=t_array.length; i++){
+                if(!t_array[i].getText().toString().isEmpty()){
+                    nowTagCount++;
+                }
+            }
+            if (nowTagCount>t_array.length){
+                Toast.makeText(context, "The Tag maximum is 5", Toast.LENGTH_LONG).show();
+            }else{
+                if(nowTagCount<=t_array.length){
+                    t_array[nowTagCount+1].setVisibility(View.VISIBLE);
+                }
+            }
+      } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
     private void spinnerAdapter(){
         questionA.setPrompt("QuestionA");
         questionA.setSelection(0, true);
@@ -271,7 +295,7 @@ public class ImageClassification extends AppCompatActivity {
             Current_Lost_Record record = current_lost_record;
             HashMap<String, String> hashMap = new HashMap<>();
             hashMap.put(final_static_str_Current_Lost_ID, record.getCurrent_Lost_ID());
-            hashMap.put(final_static_str_Current_Lost_User_Name, record.getCurrent_Lost_User_Name());
+            hashMap.put(final_static_str_Current_Lost_User_ID, record.getCurrent_Lost_User_ID());
             hashMap.put(final_static_str_Current_Lost_Property_Name, record.getCurrent_Lost_Property_Name());
             hashMap.put(final_static_str_Current_Lost_Property_QA1, record.getCurrent_Lost_Property_QA1());
             hashMap.put(final_static_str_Current_Lost_Property_QA2, record.getCurrent_Lost_Property_QA2());
@@ -295,7 +319,7 @@ public class ImageClassification extends AppCompatActivity {
     }
 
     private Current_Lost_Record getBasieData(){
-        Current_Lost_Record record = new Current_Lost_Record(String.valueOf(getUnixTime()) + firebaseUser.getUid(), firebaseUser.getDisplayName(), property_name.getText().toString(), questionA_str, questionB_str
+        Current_Lost_Record record = new Current_Lost_Record(String.valueOf(getUnixTime()) + firebaseUser.getUid(), firebaseUser.getUid(), property_name.getText().toString(), questionA_str, questionB_str
                 , questionA_ans.getText().toString(), questionB_ans.getText().toString(), location_edition.getText().toString(), t_array[0].getText().toString(), t_array[1].getText().toString(), t_array[2].getText().toString(),
                 t_array[3].getText().toString(), t_array[4].getText().toString(), other_info.getText().toString(), url_uploaded, "false");
         return record;
@@ -365,27 +389,32 @@ public class ImageClassification extends AppCompatActivity {
         select.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                final CharSequence[] options = {"Take picture", "Select picture", "Cancel"};
-                final String[] option =  {"Take picture", "Select picture", "Cancel"};
-                builder.setTitle("Select options ...").setItems(options, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        if(options[i].equals(option[0])){
-                            dialogInterface.dismiss();
-                            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                            startActivityForResult(intent, take_carma_code);
-                        }else if(options[i].equals(option[1])){
-                            dialogInterface.dismiss();
-                            Intent intent = new Intent();
-                            intent.setType("image/*");
-                            intent.setAction(Intent.ACTION_GET_CONTENT);
-                            startActivityForResult(Intent.createChooser(intent, "Please select a image from gallary"), picked_image_code);
-                        }else if(options[i].equals(option[2])){
-                            dialogInterface.dismiss();
+
+                if (checkPermissionsForSelectImageMethods()) {
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    final CharSequence[] options = {"Take picture", "Select picture", "Cancel"};
+                    final String[] option = {"Take picture", "Select picture", "Cancel"};
+                    builder.setTitle("Select options ...").setItems(options, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            if (options[i].equals(option[0])) {
+                                dialogInterface.dismiss();
+                                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                                startActivityForResult(intent, take_carma_code);
+                            } else if (options[i].equals(option[1])) {
+                                dialogInterface.dismiss();
+                                Intent intent = new Intent();
+                                intent.setType("image/*");
+                                intent.setAction(Intent.ACTION_GET_CONTENT);
+                                startActivityForResult(Intent.createChooser(intent, "Please select a image from gallary"), picked_image_code);
+                            } else if (options[i].equals(option[2])) {
+                                dialogInterface.dismiss();
+                            }
                         }
-                    }
-                }).show();
+                    }).show();
+                }else{
+                    PermissionsAction();
+                }
             }
         });
         select.setOnLongClickListener(new View.OnLongClickListener() {
@@ -400,6 +429,14 @@ public class ImageClassification extends AppCompatActivity {
             public void onClick(View view) {
                 getlocation();
                 upload();
+            }
+        });
+
+        newTag.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setAddNewTag();
+                Log.i(staticclass.TAG, "test click");
             }
         });
     }
@@ -524,17 +561,33 @@ public class ImageClassification extends AppCompatActivity {
                 }
             });
         } else {
+            // if there not any text the app will show up a dialog to note user
             createDialog(getResources().getString(R.string.warring_no_select_picture));
         }
     }
 
     private void createDialog(String exception) {
+        // the context for the activity ...
         new AlertDialog.Builder(context).setTitle(getResources().getString(R.string.warning)).setMessage(getResources().getString(R.string.error) + "\n" + exception).setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-
+                dialogInterface.dismiss();
             }
         }).show();
+    }
+    private void PermissionsAction(){
+        String[] permissions = {Manifest.permission.READ_PHONE_STATE,Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
+        ActivityCompat.requestPermissions(this, permissions, PERMISSIONS_ID);
+    }
+    private boolean checkPermissionsForSelectImageMethods(){
+        if(ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED &&
+            ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED){
+            return true;
+        }else{
+            return false;
+        }
+
     }
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -551,6 +604,8 @@ public class ImageClassification extends AppCompatActivity {
         }
         return false;
     }
+
+
     private void requestPermissions(){
         String[] permissions = {Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION};
         ActivityCompat.requestPermissions(this, permissions, PERMISSIONS_ID);
@@ -560,7 +615,7 @@ public class ImageClassification extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == PERMISSIONS_ID ){
             if(grantResults.length >0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                // todo     haha   do here
+                // nothing to do
             }
         }
     }
@@ -681,7 +736,7 @@ public class ImageClassification extends AppCompatActivity {
             sublayout = findViewById(R.id.image_label_bottom_nav_bar);
             bottomNavigationView = sublayout.findViewById(R.id.bottom_nav_bar);
             // set post button at navigation bar enable
-            bottomNavigationView.getMenu().findItem(R.id.bottom_nav_bar_post).setChecked(false).setEnabled(false).setCheckable(false);
+//            bottomNavigationView.getMenu().findItem(R.id.bottom_nav_bar_post).setChecked(false).setEnabled(false).setCheckable(false);
             bottomNavigationView.getMenu().findItem(R.id.bottom_nav_bar_home).setCheckable(false);
             bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
@@ -691,18 +746,26 @@ public class ImageClassification extends AppCompatActivity {
                             startActivity(new Intent(ImageClassification.this, HomePage.class));
                             break;
                         case R.id.bottom_nav_bar_post:
+                            reload();
                             break;
                         case R.id.bottom_nav_bar_profile:
                             break;
-                            default:
-                                Log.i(staticclass.TAG, "out of navigation bar menu");
+                        default:
                     }
-
-
-
                     return true;
                 }
             });
     }
 
+    private void reload(){
+        Intent reload = new Intent(ImageClassification.this, ImageClassification.class);
+        finish();
+        startActivity(reload);
+
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+    }
 }

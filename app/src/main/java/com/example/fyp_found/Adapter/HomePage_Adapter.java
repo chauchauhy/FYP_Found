@@ -59,7 +59,7 @@ public class HomePage_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         final Current_Lost_Record current_lost_record = records.get(position);
         Picasso.with(context).load(current_lost_record.getImageURL()).into(vh.imageview);
         vh.title.setText(current_lost_record.getCurrent_Lost_Property_Name());
-        vh.otherinfo.setText("Type : " + current_lost_record.getCurrent_Lost_Property_MainType());
+        vh.otherinfo.setText("tag : " + current_lost_record.getCurrent_Lost_Property_MainType());
         vh.constraintLayout.setClickable(true);
         vh.constraintLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,6 +67,7 @@ public class HomePage_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 Intent i = new Intent(context, Checking.class);
                 i.putExtra(final_static_str_Current_Lost_ID, current_lost_record.getCurrent_Lost_ID());
                 context.startActivity(i);
+
             }
         });
 
@@ -75,13 +76,19 @@ public class HomePage_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     @Override
     public int getItemCount() {
-        if(records.size()>1){
+        if(records.size()>0){
             return records.size();
         }else {
             return 0;
         }
     }
 
+    public void reSetAdapter(){
+        records.clear();
+        records.addAll(records_All);
+        notifyDataSetChanged();
+
+    }
     @Override
     public Filter getFilter() {
         return newFilter;
@@ -91,14 +98,14 @@ public class HomePage_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHold
        @Override
        protected FilterResults performFiltering(CharSequence charSequence) {
             List<Current_Lost_Record> filterlist = new ArrayList<>();
+            String charString = charSequence.toString().toLowerCase().trim();
             // get search view text
-            if(charSequence == null || charSequence.toString().length() == 0){
+            if(charString.isEmpty()){
                 filterlist.addAll(records_All);
 
             }else{
-                String filterString = charSequence.toString().toLowerCase().trim();
                 for(Current_Lost_Record record : records_All){
-                    if(record.getForFilter().toLowerCase().trim().contains(filterString)){
+                    if(record.getForFilter().toLowerCase().trim().contains(charString)){
                         filterlist.add(record);
                         Log.i(TAG , record.getForFilter());
                     }

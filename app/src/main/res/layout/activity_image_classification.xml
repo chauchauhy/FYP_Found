@@ -111,8 +111,10 @@
 
                         <TextView
                             android:layout_width="wrap_content"
+                            android:clickable="true"
                             android:layout_height="wrap_content"
-                            android:text="the picture may be about above tag : " />
+                            android:id="@+id/image_classification_newTag"
+                            android:text="@string/tag_hint" />
 
                         <LinearLayout
                             android:layout_width="wrap_content"

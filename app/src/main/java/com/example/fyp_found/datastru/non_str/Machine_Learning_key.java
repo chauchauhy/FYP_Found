@@ -1,5 +1,7 @@
 package com.example.fyp_found.datastru.non_str;
 
+
+// this class is using for save the machine learning data from firebase machine learning kit
 public class Machine_Learning_key {
     String id;
     String title;

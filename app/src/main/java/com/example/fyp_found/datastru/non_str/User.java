@@ -1,5 +1,8 @@
 package com.example.fyp_found.datastru.non_str;
 
+// this class is use for the mainact.. when we not decide use firebase realtime and firestore to store some data
+// and use for upload the user information to local database or not local sql database
+
 public class User {
     String User_Id;
     String User_Name;
@@ -101,4 +104,9 @@ public class User {
     public void setUser_dev_code(String user_dev_code) {
         User_dev_code = user_dev_code;
     }
+
+    public User(String id){
+        this.User_Id = id;
+    }
+
 }
