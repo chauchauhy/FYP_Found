@@ -1,18 +1,23 @@
 package com.example.fyp_found;
 
+import android.app.Notification;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -30,6 +35,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.json.JSONObject;
+
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URI;
+import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -37,6 +48,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 
+import static com.example.fyp_found.setup.staticclass.FCM_TOKEN;
 import static com.example.fyp_found.setup.staticclass.final_static_str_Chat_Content;
 import static com.example.fyp_found.setup.staticclass.final_static_str_Chat_Date;
 import static com.example.fyp_found.setup.staticclass.final_static_str_Chat_ID;
@@ -50,6 +62,9 @@ import static com.example.fyp_found.setup.staticclass.final_static_str_User_Id;
 import static com.example.fyp_found.setup.staticclass.final_static_str_User_Name;
 import static com.example.fyp_found.setup.staticclass.final_static_str_firebasedatabase_child_chat;
 import static com.example.fyp_found.setup.staticclass.final_static_str_firebasedatabase_child_users;
+import static com.example.fyp_found.setup.staticclass.firebase_FCM_Token;
+
+
 
 public class ChatBox extends AppCompatActivity {
 
@@ -59,7 +74,6 @@ public class ChatBox extends AppCompatActivity {
     Firebase_User sender, receiver;
     DatabaseReference databaseReference;
     String receiverID;
-    TextView showusername;
     EditText message_edit;
     Button send;
     RecyclerView recyclerView;
@@ -67,6 +81,8 @@ public class ChatBox extends AppCompatActivity {
     Context context;
     Chat_Box_Adapter chat_box_adapter;
     ArrayList<Chat_record> records = new ArrayList<Chat_record>();
+    View view;
+    Toolbar toolbar;
 
 
 
@@ -84,8 +100,9 @@ public class ChatBox extends AppCompatActivity {
         initui();
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             // message checking
+            Toast.makeText(context,"you may need login to us this action", Toast.LENGTH_LONG).show();
             startActivity(new Intent(ChatBox.this,Login.class));
-        }else{
+        }else {
             initvar();
         }
 
@@ -95,10 +112,10 @@ public class ChatBox extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                if(message_edit.getText().toString().trim().equals("")){
+                if(message_edit.getText().toString().trim().isEmpty() || message_edit.getText().toString().trim().equals("")){
                     Toast.makeText(context, "The message cannot empty", Toast.LENGTH_LONG).show();
                 }else{
-                    send_Message(sender.getUser_Id(),receiverID,message_edit.getText().toString().trim());
+                    send_Message(sender.getUser_Id(),receiverID, message_edit.getText().toString().trim());
                     message_edit.setText(null);
 
                 }
@@ -110,9 +127,38 @@ public class ChatBox extends AppCompatActivity {
 
     public void initui() {
         recyclerView = findViewById(R.id.chat_box_recyclerview);
-        showusername = findViewById(R.id.chat_user_name_text);
         message_edit = findViewById(R.id.chat_box_input_editview);
         send = findViewById(R.id.chat_box_send_btn);
+        view = findViewById(R.id.chat_box_subview);
+        toolbar = view.findViewById(R.id.app_toolbar_nosearch_1);
+        setSupportActionBar(toolbar);
+        context = this;
+        setToolbar();
+    }
+    private void setToolbar(){
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setTitle(null);
+        toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_back));
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(context, HomePage.class));
+            }
+        });
+        ImageView icon = view.findViewById(R.id.user_icon);
+        icon.setVisibility(View.VISIBLE);
+
+
+    }
+
+
+
+    private void setToolbarTitle(String name){
+        TextView username = view.findViewById(R.id.user_name);
+        username.setText(name.trim());
+        username.setVisibility(View.VISIBLE);
     }
 
     // initial the user interface cells and the variable
@@ -122,6 +168,7 @@ public class ChatBox extends AppCompatActivity {
         sender = new Firebase_User(firebaseUser.getUid(), firebaseUser.getDisplayName(), firebaseUser.getEmail());
         databaseReference = FirebaseDatabase.getInstance().getReference(staticclass.final_static_str_firebasedatabase_child_users);
         context = this;
+        // initial the Firebase user for FCM
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -132,10 +179,22 @@ public class ChatBox extends AppCompatActivity {
                         try {
                             HashMap<String, Object> h = (HashMap<String, Object>) data;
                             if (receiverID.equals(h.get(final_static_str_User_Id))) {
-                                Firebase_User firebase_user = new Firebase_User((String) h.get(final_static_str_User_Id), (String) h.get(final_static_str_User_Name), (String) h.get(final_static_str_User_Email));
+                                Firebase_User firebase_user = new Firebase_User();
+                                firebase_user.setUser_Id((String)h.get(final_static_str_User_Id));
+                                firebase_user.setUser_Email((String)h.get(final_static_str_User_Email));
+                                if (h.get(firebase_FCM_Token) != null){
+                                    firebase_user.setToken((String) h.get(firebase_FCM_Token));
+                                }
+                                if(h.get(final_static_str_User_Name) == null){
+                                    firebase_user.setUser_Name((String)h.get(final_static_str_User_Email));
+
+                                }else{
+                                    firebase_user.setUser_Name((String) h.get(final_static_str_User_Name));
+                                }
                                 receiver = firebase_user;
-                                showusername.setText(receiver.getUser_Name());
+                                setToolbarTitle(receiver.getUser_Name());
                                 restrict_message(sender.getUser_Id(),receiverID);
+
 
                             }
                         } catch (Exception e) {
@@ -145,11 +204,13 @@ public class ChatBox extends AppCompatActivity {
                 }
             }
 
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
+
 
 
     }
@@ -158,9 +219,6 @@ public class ChatBox extends AppCompatActivity {
         if (message.equals("")) {
 
         } else {
-
-
-
             databaseReference = FirebaseDatabase.getInstance().getReference(final_static_str_firebasedatabase_child_chat);
 
             HashMap<String, String> hashMap = new HashMap<String, String>();
@@ -168,12 +226,76 @@ public class ChatBox extends AppCompatActivity {
             hashMap.put(final_static_str_Chat_Content, message);
             hashMap.put(final_static_str_Chat_rev_ID, receiver.getUser_Id());
             hashMap.put(final_static_str_Chat_unixTime, String.valueOf(Chat_record.getUnixTime()));
-            hashMap.put(final_static_str_Chat_ID,  String.valueOf(Chat_record.getUnixTime())+ senderID + receiverID);
+            hashMap.put(final_static_str_Chat_ID,  (Chat_record.getUnixTime())+ senderID + receiverID);
             Log.i(staticclass.TAG, receiver.getUser_Id());
 
             databaseReference.push().setValue(hashMap);
+            send_Message_Notification(message);
         }
 
+    }
+
+    private void send_Message_Notification(String message){
+        String token = receiver.getToken();
+        String s = sender.getUser_Name();
+        String message_content = message;
+        new Notification().execute(token, s, message_content);
+//        Notification notification = new Notification();
+//        notification.execute(token, s, message_content);
+
+    }
+
+    public class Notification extends AsyncTask<String, Void, String>{
+
+
+        @Override
+        protected String doInBackground(String... strings) {
+            try {
+
+                URL url = new URL("https://fcm.googleapis.com/fcm/send");
+                // this url is connect to firebase FCM send message interface
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+                conn.setUseCaches(false);
+                conn.setDoInput(true);
+                conn.setDoOutput(true);
+
+                conn.setRequestMethod("POST");
+                // the key of server (latency)
+                conn.setRequestProperty("Authorization", "key=AIzaSyCl3UHa8r4nXO9xLWKXu3fAZsoMHRBI9o0");
+                conn.setRequestProperty("Content-Type", "application/json");
+
+                // the interface allows json object so there convert message body to json object and output it
+
+                JSONObject json = new JSONObject();
+
+                json.put("to", strings[0]);
+
+
+                JSONObject info = new JSONObject();
+                info.put("title", strings[1]);   // Notification title
+                info.put("body", strings[2]); // Notification body
+
+                json.put("notification", info);
+
+                OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+                wr.write(json.toString());
+                wr.flush();
+                conn.getInputStream();
+                return json.toString();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return "";
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+
+            super.onPostExecute(s);
+            Log.i(staticclass.TAG, s);
+        }
     }
 
     private void restrict_message(final String mid, final String userid) {
@@ -222,4 +344,7 @@ public class ChatBox extends AppCompatActivity {
         recyclerView.setAdapter(chat_box_adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
+
+    private void sendMessage_Notification(String message){}
+
 }

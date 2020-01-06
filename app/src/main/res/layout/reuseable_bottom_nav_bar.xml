@@ -6,9 +6,11 @@
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
+        android:background="@drawable/toolbar_background"
         android:layout_alignParentEnd="true"
         android:id="@+id/bottom_nav_bar"
+        app:itemTextColor="@color/toolbar_text"
         android:layout_marginEnd="0dp"
         app:menu="@menu/nav_bar" />
 </RelativeLayout>

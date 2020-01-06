@@ -25,9 +25,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 import java.util.HashMap;
 
+import static com.example.fyp_found.setup.staticclass.FCM_TOKEN;
 import static com.example.fyp_found.setup.staticclass.currentUserID;
 import static com.example.fyp_found.setup.staticclass.current_dev_code;
 import static com.example.fyp_found.setup.staticclass.final_static_str_User_Email;
@@ -99,7 +102,7 @@ public class Signuppage extends AppCompatActivity {
                                 FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
                                 currentUserID = firebaseUser.getUid();
                                 reference = FirebaseDatabase.getInstance().getReference("Users").child(currentUserID);
-                                HashMap<String,String> hashMap = new HashMap<String, String>();
+                                final HashMap<String,String> hashMap = new HashMap<String, String>();
                                 hashMap.put(final_static_str_User_Id, currentUserID);
                                 hashMap.put(final_static_str_User_Name, firebaseUser.getDisplayName());
                                 hashMap.put(final_static_str_User_Email, firebaseUser.getEmail());
@@ -136,4 +139,6 @@ public class Signuppage extends AppCompatActivity {
         });
 
     }
+
+
 }

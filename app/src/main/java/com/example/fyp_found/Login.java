@@ -3,19 +3,24 @@ package com.example.fyp_found;
 import android.content.Context;
 import android.content.Intent;
 import android.media.Image;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.fyp_found.setup.staticclass;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -40,10 +45,13 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 import java.io.DataOutputStream;
 import java.util.HashMap;
 
+import static com.example.fyp_found.setup.staticclass.FCM_TOKEN;
 import static com.example.fyp_found.setup.staticclass.current_dev_code;
 import static com.example.fyp_found.setup.staticclass.final_static_str_Chat_Content;
 import static com.example.fyp_found.setup.staticclass.final_static_str_User_Email;
@@ -67,6 +75,7 @@ public class Login extends AppCompatActivity  {
     private GoogleApiClient googleApiClient;
     private FirebaseAuth firebaseAuth_facebook;
     private CallbackManager callbackManager;
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +96,8 @@ public class Login extends AppCompatActivity  {
         callbackManager = CallbackManager.Factory.create();
         firebaseAuth_facebook = FirebaseAuth.getInstance();
         firebaseAuth_google = FirebaseAuth.getInstance();
+        progressBar = findViewById(R.id.login_progressbar);
+        progressBar.setVisibility(View.GONE);
         initmethodapi();
 
 
@@ -96,6 +107,7 @@ public class Login extends AppCompatActivity  {
         submit.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 account = ac.getText().toString().trim();
                 password = pw.getText().toString().trim();
                 if(account.isEmpty() || password.isEmpty()){
@@ -233,11 +245,14 @@ public class Login extends AppCompatActivity  {
                 if (task.isSuccessful()) {
                     FirebaseUser firebaseUser = firebaseAuth_google.getCurrentUser();
                     DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
-                    HashMap<String, String> hashMap = new HashMap<>();
+                    final HashMap<String, String> hashMap = new HashMap<>();
                     hashMap.put(final_static_str_User_Id, firebaseUser.getUid());
                     hashMap.put(final_static_str_User_Name, firebaseUser.getDisplayName());
                     hashMap.put(final_static_str_User_Login_Method, "Google");
                     hashMap.put(final_static_str_User_dev_code, current_dev_code);
+
+                    hashMap.put(staticclass.firebase_FCM_Token, FCM_TOKEN);
+                    Log.i(staticclass.TAG, hashMap.toString());
 
                     reference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
@@ -251,7 +266,6 @@ public class Login extends AppCompatActivity  {
                             Toast.makeText(context, getResources().getString(R.string.sorry), Toast.LENGTH_LONG).show();
                         }
                     });
-
 
                     Toast.makeText(Login.this, "Google sign in success", Toast.LENGTH_SHORT).show();
 
@@ -267,29 +281,44 @@ public class Login extends AppCompatActivity  {
 
 
 
+    private void ex(){
+        getToken g = new getToken();
+        g.execute();
+    }
+
+    public class getToken extends AsyncTask<String, Void, String>{
+        @Override
+        protected String doInBackground(String... strings) {
+            final String[] token = new String[1];
+            FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                @Override
+                public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                    if (!task.isSuccessful()){
+                        Log.i(staticclass.TAG, String.valueOf(task.getException()));
+
+                    }
+                    token[0] = task.getResult().getToken();
+                    Log.i(staticclass.TAG, token[0]);
+                    FCM_TOKEN = token[0];
+
+                }
+            });
+            return token[0];
+        }
+
+        @Override
+        protected void onPreExecute() {
+            progressBar.setVisibility(View.VISIBLE);
+            super.onPreExecute();
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            progressBar.setVisibility(View.GONE);
+            super.onPostExecute(s);
+        }
+    }
 
 
-
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    /////////////////////////////////TO DO complete the ui and ux here                                                                                            ////////////////////////////////////////////////////
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 }

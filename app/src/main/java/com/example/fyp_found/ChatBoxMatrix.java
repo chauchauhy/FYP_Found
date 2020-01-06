@@ -72,7 +72,16 @@ public class ChatBoxMatrix extends AppCompatActivity{
                         Object data = hashMap.get(key);
                         try {
                             HashMap<String, Object> users = (HashMap<String, Object>) data;
-                            Firebase_User f = new Firebase_User((String) users.get(final_static_str_User_Id), (String) users.get(final_static_str_User_Name), (String) users.get(final_static_str_User_Email));
+                            Firebase_User f = new Firebase_User();
+                            f.setUser_Id((String)users.get(final_static_str_User_Id));
+                            f.setUser_Email((String)users.get(final_static_str_User_Email));
+                            if(users.get(final_static_str_User_Name) == null){
+                                f.setUser_Name((String)users.get(final_static_str_User_Email));
+
+                            }else{
+                                f.setUser_Name((String)users.get(final_static_str_User_Name));
+                            }
+
                             if(!firebaseUser.getUid().equals(f.getUser_Id())) {
                                 firebase_users.add(f);
                                 adapter = new Chat_Box_Matrix_Adapter(firebase_users, context);

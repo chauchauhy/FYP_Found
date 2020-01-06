@@ -68,9 +68,9 @@
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/homePage_SRL"
-        android:layout_width="408dp"
-        android:layout_height="412dp"
-        app:layout_constraintBottom_toTopOf="@+id/home_nav_bttom_nav_bar"
+        android:layout_width="410dp"
+        android:layout_height="484dp"
+        android:layout_marginBottom="24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.013"
         app:layout_constraintStart_toStartOf="parent"
@@ -88,16 +88,18 @@
             tools:visibility="gone" />
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
+
     <include
         android:id="@+id/home_nav_bttom_nav_bar"
         layout="@layout/reuseable_bottom_nav_bar"
-        android:layout_width="415dp"
-        android:layout_height="0dp"
+        android:layout_width="412dp"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/homePage_SRL"
         tools:visibility="visible" />
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -11,15 +11,13 @@
         android:layout_width="3dp"
         android:layout_height="57dp"
         android:layout_weight="3"
-        android:src="@mipmap/ic_launcher"
-
+        android:src="@drawable/user_icon_default"
         />
     <TextView
         android:layout_width="0dp"
         android:layout_weight="10"
-        android:layout_height="match_parent"
-        android:text="nul"
-        android:textSize="30dp"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
         android:gravity="start"
         android:layout_gravity="center"
         android:id="@+id/chatbox_matrix_username"

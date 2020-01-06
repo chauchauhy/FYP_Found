@@ -12,6 +12,31 @@
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
         >
+
+        <ImageView
+            android:id="@+id/user_icon"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:visibility="gone"
+            android:background="@null"
+            android:src="@drawable/user_icon_default" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/user_name"
+            android:layout_gravity="start"
+            android:gravity="center"
+            android:visibility="visible"
+            android:textColor="@color/toolbar_text"
+            android:textAlignment="center"
+            android:textSize="20dp"
+            />
+
+
+
+
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"

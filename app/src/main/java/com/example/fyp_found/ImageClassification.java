@@ -26,7 +26,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -35,6 +34,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import com.example.fyp_found.datastru.Current_Lost_Record;
 import com.example.fyp_found.datastru.Firebase_User;
@@ -101,13 +101,13 @@ public class ImageClassification extends AppCompatActivity {
     ProgressBar progressBar;
     TextView text, text1 , showlocation, newTag;
     ImageView showimage;
-    Button select, identitfy, upload;
+    Button select, upload;
     Context context;
     Bitmap bitmap;
     Spinner questionA, questionB;
     EditText questionA_ans, questionB_ans , location_edition, property_name, other_info;
     String questionA_str , questionB_str;
-    LinearLayout linearLayout;
+    ConstraintLayout mainLayout;
 
     EditText t_array[] = new EditText[5];
 
@@ -175,8 +175,7 @@ public class ImageClassification extends AppCompatActivity {
         showimage = findViewById(R.id.image_label_image);
         //button
         select = findViewById(R.id.image_label_select_btn);
-        identitfy = findViewById(R.id.image_label_identitfy_btn);
-        identitfy.setVisibility(View.GONE);
+
         upload = findViewById(R.id.image_label_upload);
         // nil via show image text but the function need debug...
         text1 = findViewById(R.id.image_label_image_text);
@@ -188,7 +187,7 @@ public class ImageClassification extends AppCompatActivity {
         questionB_ans = findViewById(R.id.questionB_Ans);
         spinnerAdapter();
         //property info
-        linearLayout=findViewById(R.id.image_defind_layout);
+        mainLayout =findViewById(R.id.image_defind_layout);
         showlocation = findViewById(R.id.location);
         location_edition = findViewById(R.id.locationEdit);
         property_name = findViewById(R.id.property_name);
@@ -200,20 +199,26 @@ public class ImageClassification extends AppCompatActivity {
     private void setAddNewTag(){
         int nowTagCount = 0;
         try {
-            for (int i = 0 ;i<=t_array.length; i++){
-                if(!t_array[i].getText().toString().isEmpty()){
+            Log.i(staticclass.TAG, "cc" + nowTagCount+ " wwww " + t_array.length);
+            for (int i = 0 ;i<t_array.length; i++) {
+                if (!t_array[i].getText().toString().isEmpty()) {
                     nowTagCount++;
                 }
+
+
             }
-            if (nowTagCount>t_array.length){
+            if (nowTagCount > t_array.length) {
                 Toast.makeText(context, "The Tag maximum is 5", Toast.LENGTH_LONG).show();
-            }else{
-                if(nowTagCount<=t_array.length){
-                    t_array[nowTagCount+1].setVisibility(View.VISIBLE);
+            } else {
+                if (nowTagCount <= t_array.length) {
+                    t_array[nowTagCount].setVisibility(View.VISIBLE);
+                    t_array[nowTagCount].setHint(getResources().getString(R.string.tag_here) + (nowTagCount + 1));
+                    Log.i(staticclass.TAG, "ccfff" + nowTagCount + " wwww " + t_array.length);
                 }
             }
       } catch (Exception e) {
             e.printStackTrace();
+            Toast.makeText(context, "The Tag maximum is 5", Toast.LENGTH_LONG).show();
         }
 
     }
@@ -259,7 +264,7 @@ public class ImageClassification extends AppCompatActivity {
             progressBar.setVisibility(View.VISIBLE);
             String bitmapToString = bitmaptoString(bitmap);
             if(firebaseUser==null){
-                Snackbar.make(linearLayout,"you may need login before upload image", Snackbar.LENGTH_LONG ).setAction("Login?", new View.OnClickListener() {
+                Snackbar.make(mainLayout,"you may need login before upload image", Snackbar.LENGTH_LONG ).setAction("Login?", new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         startActivity(new Intent(ImageClassification.this, Login.class));
@@ -268,7 +273,7 @@ public class ImageClassification extends AppCompatActivity {
             }else{
                 uploadimage();
                 if(url_uploaded.isEmpty()){
-                    Snackbar.make(linearLayout, "please try again after a few minutes" , Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(mainLayout, "please try again after a few minutes" , Snackbar.LENGTH_LONG).show();
                 }else {
                     DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference(final_static_str_db_name_current);
                     Current_Lost_Record record = getBasieData();
@@ -286,7 +291,7 @@ public class ImageClassification extends AppCompatActivity {
             }
         }else{
             progressBar.setVisibility(View.GONE);
-            Snackbar.make(linearLayout, " you may need select a picture for post", Snackbar.LENGTH_LONG).show();
+            Snackbar.make(mainLayout, " you may need select a picture for post", Snackbar.LENGTH_LONG).show();
         }
     }
 
@@ -547,7 +552,8 @@ public class ImageClassification extends AppCompatActivity {
                         text_re.add(new Text_Recognize(block.getText()));
                         if(text_re.get(0).getText().length()>2 && text_re.get(0).getText().length()<14) {
                             text.setText(text_re.get(0).getText());
-                            text.setVisibility(View.VISIBLE);
+                            // show text in the image
+                            text.setVisibility(View.GONE);
                         }else{
                             text.setText("");
                             text.setVisibility(View.GONE);
@@ -749,6 +755,7 @@ public class ImageClassification extends AppCompatActivity {
                             reload();
                             break;
                         case R.id.bottom_nav_bar_profile:
+                            startActivity(new Intent(context, Profile.class));
                             break;
                         default:
                     }

@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.Image;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -104,6 +105,24 @@ public class Profile extends AppCompatActivity {
         finish();
         startActivity(i);
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.app_toolbar_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.app_toolbar_logout:
+                FirebaseAuth.getInstance().signOut();
+                startActivity(new Intent(context, LoadingPage.class));
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

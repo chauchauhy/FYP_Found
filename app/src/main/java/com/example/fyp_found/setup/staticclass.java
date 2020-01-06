@@ -6,6 +6,7 @@ import com.example.fyp_found.datastru.Chat_record;
 
 // this class is use for save some KEY for hashmap or intent
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 
 public final class staticclass {
@@ -101,7 +102,12 @@ public final class staticclass {
     public static final int final_static_int_MSG_TYPE_REGHT = 1;
 
     // spinner
-    public static final  String[] question_arr_final =  {"What is the name of this item?", "How much of this item (for publish time)?", "Where find this item? (in locker or somewhere?)" ,"When find this item" ,"What in this item?"};
+    public static final  String[] question_arr_final =  {"What is the name of this item?", "How much of this item (for publish time)?", "Where find this item? (in locker or somewhere?)" ,"What is the feature of this item?" ,"What is the texture of this item?"};
+
+    // firebase
+    public static final String firebase_FCM_Token = "Token";
+    public static String FCM_TOKEN = "";
+
 
 
 }

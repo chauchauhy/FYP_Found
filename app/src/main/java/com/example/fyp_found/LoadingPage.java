@@ -9,9 +9,11 @@ import android.view.View;
 import android.widget.ImageButton;
 
 import com.example.fyp_found.datastru.Firebase_User;
+import com.example.fyp_found.setup.cloudmes;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import static com.example.fyp_found.setup.staticclass.FCM_TOKEN;
 import static com.example.fyp_found.setup.staticclass.current_dev_code;
 
 public class LoadingPage extends AppCompatActivity {
@@ -27,6 +29,9 @@ public class LoadingPage extends AppCompatActivity {
 
         // final action
         if(FirebaseAuth.getInstance().getCurrentUser()!=null){
+            cloudmes FCM = new cloudmes();
+            FCM.getToken();
+            FCM_TOKEN = FCM.returnToken();
            startActivity(new Intent(LoadingPage.this, HomePage.class));
         }
     }

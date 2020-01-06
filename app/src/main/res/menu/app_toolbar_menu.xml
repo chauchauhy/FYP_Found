@@ -4,7 +4,9 @@
 
 
 
-
+<item android:id="@+id/app_toolbar_logout"
+    android:title="@string/logout"
+    />
 
 
 

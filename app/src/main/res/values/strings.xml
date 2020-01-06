@@ -6,6 +6,7 @@
     <string name="warning">Warning</string>
     <string name="error">Error Message</string>
     <string name="sorry">Sorry, There is some problem , please wait for a moment</string>
+    <string name="logout">Logout</string>
 
     <!-- Facebook application ID and custom URL scheme (app ID prefixed by 'fb'). -->
     <string name="facebook_application_id" translatable="false">1154434514751382</string>
@@ -36,6 +37,7 @@
     <string name="propertyName">Title / Name </string>
     <string name="tag_hint">The picture may be about above tag : (You can click here to add new tag(Max 5))</string>
     <string name="other_info">Other information:</string>
+    <string name="tag_here">Tag </string>
 
     <!--    internet error-->
     <string name="error_404"> Internet error , Please check your internet setting or wait for a few minutes </string>

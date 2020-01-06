@@ -71,6 +71,15 @@ public class HomePage_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             }
         });
 
+        // if the record is last record, the view will show a space blank for partition the bottom nav bar and list view
+        if(position == getItemCount() -1 ){
+            vh.space.setVisibility(View.VISIBLE);
+            vh.spaccc.setVisibility(View.GONE);
+        }else{
+            vh.spaccc.setVisibility(View.VISIBLE);
+            vh.space.setVisibility(View.GONE);
+        }
+
 
     }
 
@@ -135,6 +144,7 @@ public class HomePage_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         TextView title;
         TextView otherinfo;
         ConstraintLayout constraintLayout;
+        TextView space , spaccc;
 
         public VH(@NonNull View itemView) {
             super(itemView);
@@ -142,6 +152,8 @@ public class HomePage_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             title     = itemView.findViewById(R.id.title);
             otherinfo = itemView.findViewById(R.id.otherinfo);
             constraintLayout = itemView.findViewById(R.id.postView);
+            space = itemView.findViewById(R.id.cus_home_tran);
+            spaccc = itemView.findViewById(R.id.spacee);
 
         }
     }

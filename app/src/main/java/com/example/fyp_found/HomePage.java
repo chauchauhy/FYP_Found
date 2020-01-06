@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,8 +26,11 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.fyp_found.Adapter.HomePage_Adapter;
 import com.example.fyp_found.datastru.Current_Lost_Record;
+import com.example.fyp_found.datastru.Firebase_User;
 import com.example.fyp_found.datastru.Reward;
 import com.example.fyp_found.setup.staticclass;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
@@ -36,6 +40,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -45,6 +51,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import static com.example.fyp_found.datastru.Current_Lost_Record.bitmaptoString;
+import static com.example.fyp_found.setup.staticclass.FCM_TOKEN;
 import static com.example.fyp_found.setup.staticclass.final_static_str_Current_Lost_Address;
 import static com.example.fyp_found.setup.staticclass.final_static_str_Current_Lost_Boolean;
 import static com.example.fyp_found.setup.staticclass.final_static_str_Current_Lost_ID;
@@ -61,7 +68,14 @@ import static com.example.fyp_found.setup.staticclass.final_static_str_Current_L
 import static com.example.fyp_found.setup.staticclass.final_static_str_Current_Lost_type3;
 import static com.example.fyp_found.setup.staticclass.final_static_str_Current_Lost_type4;
 import static com.example.fyp_found.setup.staticclass.final_static_str_Current_Lost_type5;
+import static com.example.fyp_found.setup.staticclass.final_static_str_User_Email;
+import static com.example.fyp_found.setup.staticclass.final_static_str_User_Id;
+import static com.example.fyp_found.setup.staticclass.final_static_str_User_Name;
 import static com.example.fyp_found.setup.staticclass.final_static_str_db_name_current;
+import static com.example.fyp_found.setup.staticclass.final_static_str_firebasedatabase_child_users;
+import static com.example.fyp_found.setup.staticclass.firebase_FCM_Token;
+
+import com.example.fyp_found.setup.cloudmes;
 
 public class HomePage extends AppCompatActivity /*implements Toolbar.OnMenuItemClickListener */ {
     RecyclerView recyclerView, reward_recyclerView;
@@ -78,18 +92,26 @@ public class HomePage extends AppCompatActivity /*implements Toolbar.OnMenuItemC
     Toolbar toolbar;
     SearchView searchView;
     ImageButton messagebox;
+    public static Firebase_User firebase_user_current;
 
     // firebase
     FirebaseUser firebaseUser;
     Boolean logined;
 
+    String token;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
+        if (firebaseUser!=null) {
+            Log.i(staticclass.TAG, FCM_TOKEN + "@@");
+        }
         initVariable();
         initUI();
         loadData();
+
+
 
     }
 
@@ -107,6 +129,8 @@ public class HomePage extends AppCompatActivity /*implements Toolbar.OnMenuItemC
                     case R.id.bottom_nav_bar_home:
                         progressBar.setVisibility(View.VISIBLE);
                         loadData();
+                        uploadTokenToFirebaseDataBase(FCM_TOKEN);
+                        setFirebaseUser();
                         recyclerView.scrollTo(0, 0);
                         progressBar.setVisibility(View.GONE);
                         break;
@@ -143,6 +167,49 @@ public class HomePage extends AppCompatActivity /*implements Toolbar.OnMenuItemC
                 return true;
             }
         });
+    }
+
+    private void setFirebaseUser(){
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference(final_static_str_firebasedatabase_child_users);
+
+        if (FirebaseAuth.getInstance().getCurrentUser()!=null){
+            firebase_user_current = new Firebase_User();
+            firebase_user_current.setUser_Id(firebaseUser.getUid());
+            firebase_user_current.setUser_Email(firebaseUser.getEmail());
+            if (firebaseUser.getDisplayName() != null){
+                firebase_user_current.setUser_Name(firebaseUser.getDisplayName());
+            }else{
+                firebase_user_current.setUser_Name(firebaseUser.getEmail());
+            }
+
+            databaseReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        HashMap<String, Object> hashMap = (HashMap<String, Object>) dataSnapshot.getValue();
+                        for (String key : hashMap.keySet()) {
+                            Object data = hashMap.get(key);
+                            try {
+                                HashMap<String, Object> h = (HashMap<String, Object>) data;
+                                if (firebaseUser.getUid().equals(h.get(final_static_str_User_Id))) {
+                                    if (h.get(firebase_FCM_Token) != null){
+                                        firebase_user_current.setToken((String) h.get(firebase_FCM_Token));
+                                    }
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
+
     }
 
     private void setRecyclerView_Reward() {
@@ -203,7 +270,6 @@ public class HomePage extends AppCompatActivity /*implements Toolbar.OnMenuItemC
                 @Override
                 public boolean onQueryTextChange(String s) {
                     homePage_adapter.getFilter().filter(s);
-                    Toast.makeText(context,  s, Toast.LENGTH_LONG).show();
                     homePage_adapter.notifyDataSetChanged();
                     return false;
                 }
@@ -345,7 +411,6 @@ public class HomePage extends AppCompatActivity /*implements Toolbar.OnMenuItemC
             }
         });
 
-
     }
 
     private void ImageChecking(Current_Lost_Record record) {
@@ -394,5 +459,12 @@ public class HomePage extends AppCompatActivity /*implements Toolbar.OnMenuItemC
 //    }
 
 
+    public void uploadTokenToFirebaseDataBase(String token){
+        if (!token.isEmpty()){
+            Log.i(staticclass.TAG, token + "@@");
+            cloudmes FCM = new cloudmes();
+            FCM.uploadToken(token);
+        }
+    }
 }
 
