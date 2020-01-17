@@ -1,12 +1,15 @@
 package com.example.fyp_found;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.ContactsContract;
+import android.text.AlteredCharSequence;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,6 +20,7 @@ import android.widget.SearchView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -136,7 +140,23 @@ public class HomePage extends AppCompatActivity /*implements Toolbar.OnMenuItemC
                         break;
                     case R.id.bottom_nav_bar_post:
                         if (firebaseUser != null) {
-                            startActivity(new Intent(HomePage.this, ImageClassification.class));
+                            final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                            final CharSequence[] options = {"Post Lost Property", "Post Reward", getResources().getString(R.string.cancel) };
+                            final String[] option = {"Post Lost Property", "Post Reward", getResources().getString(R.string.cancel) };
+                            builder.setTitle("Select option").setItems(options, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    if (options[i].equals(option[0])){
+                                        dialogInterface.dismiss();
+                                        startActivity(new Intent(context, ImageClassification.class));
+                                    }else if (options[i].equals(option[1])){
+                                        dialogInterface.dismiss();
+                                        startActivity(new Intent(context, Post.class));
+                                    }else if (options[i].equals(option[2])){
+                                        dialogInterface.cancel();
+                                    }
+                                }
+                            }).show();
                         } else {
                             Snackbar.make(linearLayout, "You may need login or sign up before use this function", Snackbar.LENGTH_LONG).setAction("Login/Sign up", new View.OnClickListener() {
                                 @Override
@@ -180,6 +200,9 @@ public class HomePage extends AppCompatActivity /*implements Toolbar.OnMenuItemC
                 firebase_user_current.setUser_Name(firebaseUser.getDisplayName());
             }else{
                 firebase_user_current.setUser_Name(firebaseUser.getEmail());
+            }
+            if (firebase_user_current.getUser_Name().contains("@gmail.com") && firebase_user_current.getUser_Name().length()>10){
+                firebase_user_current.setUser_Name(firebase_user_current.getUser_Name().replace("@gmail.com", ""));
             }
 
             databaseReference.addValueEventListener(new ValueEventListener() {

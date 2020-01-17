@@ -37,12 +37,13 @@ public class Profile extends AppCompatActivity {
 
 
     }
-    // error checking if user not login
+    // error checking if user not login he/she will turn to loading page for select login or sign up
     private void setPortal(){
         if (firebaseUser == null){
             startActivity(new Intent(context, LoadingPage.class));
         }
     }
+
     private void initVar(){
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         context = this;
@@ -56,6 +57,8 @@ public class Profile extends AppCompatActivity {
         setToolbar();
         setBottomNavigationView();
     }
+
+
     private void setBottomNavigationView(){
         bottomNavigationView = nav_bar_subView.findViewById(R.id.bottom_nav_bar);
         MenuItem profile = bottomNavigationView.getMenu().findItem(R.id.bottom_nav_bar_profile);
@@ -100,6 +103,8 @@ public class Profile extends AppCompatActivity {
     private void loadData(){
 
     }
+
+    // re store the profile data
     private void reload(){
         Intent i = new Intent(Profile.this, Profile.class);
         finish();
@@ -107,6 +112,7 @@ public class Profile extends AppCompatActivity {
 
     }
 
+    // apply menu to toolbar ( logout function)
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.app_toolbar_menu, menu);
@@ -114,6 +120,8 @@ public class Profile extends AppCompatActivity {
 
     }
 
+
+    // toolbar menu item On click event
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
@@ -125,6 +133,7 @@ public class Profile extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    // override superclass function to relaod
     @Override
     public void finish() {
         super.finish();

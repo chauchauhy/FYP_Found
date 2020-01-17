@@ -1,9 +1,11 @@
 package com.example.fyp_found.datastru;
 
+import com.example.fyp_found.datastru.non_str.User;
+
 public class Firebase_User {
     String User_Id;
-    String User_Name;
-    String User_Email;
+    String User_Name = " ";
+    String User_Email = " ";
     String User_Login_Method;
     String User_dev_code;
     String token;
@@ -21,10 +23,11 @@ public class Firebase_User {
 
     public Firebase_User(String user_Id, String user_Name, String user_Email) {
         User_Id = user_Id;
-        User_Name = user_Name;
         User_Email = user_Email;
         this.User_dev_code = "unknown";
         this.User_Login_Method = "unknown";
+        setUser_Name(user_Name);
+
     }
 
     @Override
@@ -44,7 +47,14 @@ public class Firebase_User {
     }
 
     public void setUser_Name(String user_Name) {
-        User_Name = user_Name ;
+        if (!user_Name.isEmpty()){
+            this.User_Name = user_Name;
+        }else{
+            this.User_Name = "someone";
+            if (User_Email.length()>5){
+                this.User_Name = User_Email.replace("@gamil.com","");
+            }
+        }
     }
 
     public Firebase_User(String user_Id, String user_Name) {

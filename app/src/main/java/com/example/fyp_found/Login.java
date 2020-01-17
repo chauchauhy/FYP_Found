@@ -128,14 +128,6 @@ public class Login extends AppCompatActivity  {
                 }
             }
         });
-        submit.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-             startActivity(new Intent(Login.this,ImageClassification.class));
-                return false;
-            }
-        });
-
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

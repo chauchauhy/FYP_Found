@@ -134,6 +134,7 @@ public class ChatBox extends AppCompatActivity {
         setSupportActionBar(toolbar);
         context = this;
         setToolbar();
+        send.setText(getResources().getString(R.string.send));
     }
     private void setToolbar(){
         getSupportActionBar().setHomeButtonEnabled(true);
@@ -166,6 +167,11 @@ public class ChatBox extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
         sender = new Firebase_User(firebaseUser.getUid(), firebaseUser.getDisplayName(), firebaseUser.getEmail());
+        if(firebaseUser.getDisplayName() == null){
+            sender.setUser_Name(firebaseUser.getEmail());
+            Log.i(staticclass.TAG, sender.getUser_Name());
+
+        }
         databaseReference = FirebaseDatabase.getInstance().getReference(staticclass.final_static_str_firebasedatabase_child_users);
         context = this;
         // initial the Firebase user for FCM
@@ -216,11 +222,11 @@ public class ChatBox extends AppCompatActivity {
     }
 
     private void send_Message(String senderID, String receiverID, String message) {
+        //error checking
         if (message.equals("")) {
 
         } else {
             databaseReference = FirebaseDatabase.getInstance().getReference(final_static_str_firebasedatabase_child_chat);
-
             HashMap<String, String> hashMap = new HashMap<String, String>();
             hashMap.put(final_static_str_Chat_sender_ID, senderID);
             hashMap.put(final_static_str_Chat_Content, message);
@@ -237,11 +243,21 @@ public class ChatBox extends AppCompatActivity {
 
     private void send_Message_Notification(String message){
         String token = receiver.getToken();
-        String s = sender.getUser_Name();
+        String name = "";
+        if (sender.getUser_Name().isEmpty()){
+            name = "Someone";
+
+        }else if (sender.getUser_Name().length()>10 && sender.getUser_Name().contains("@gmail.com")){
+            name = sender.getUser_Name().replace("@gmail.com","");
+        }else{
+            name = sender.getUser_Name();
+        }
+        Log.i(staticclass.TAG, name);
+
         String message_content = message;
-        new Notification().execute(token, s, message_content);
+        new Notification().execute(token, name, message_content);
 //        Notification notification = new Notification();
-//        notification.execute(token, s, message_content);
+//        notification.execute(token, name, message_content);
 
     }
 
@@ -262,22 +278,25 @@ public class ChatBox extends AppCompatActivity {
 
                 conn.setRequestMethod("POST");
                 // the key of server (latency)
-                conn.setRequestProperty("Authorization", "key=AIzaSyCl3UHa8r4nXO9xLWKXu3fAZsoMHRBI9o0");
-                conn.setRequestProperty("Content-Type", "application/json");
+                // maybe can use volley to connect?
+                conn.setRequestProperty("Authorization", "key=AIzaSyCl3UHa8r4nXO9xLWKXu3fAZsoMHRBI9o0"); // get request property detail to firebase interface(?)
+                conn.setRequestProperty("Content-Type", "application/json"); // set data type
 
-                // the interface allows json object so there convert message body to json object and output it
+                // the interface allows json object so convert message body to json object and output it in this async task
 
                 JSONObject json = new JSONObject();
 
                 json.put("to", strings[0]);
 
+                String content = strings[1] + " : " + strings[2];// for combine content of message
+                String title = "You have a message";
+
 
                 JSONObject info = new JSONObject();
-                info.put("title", strings[1]);   // Notification title
-                info.put("body", strings[2]); // Notification body
+                info.put("title", title);   // Notification title
+                info.put("body", content); // Notification body like Joy : Hi  this part only allow a String
 
                 json.put("notification", info);
-
                 OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
                 wr.write(json.toString());
                 wr.flush();
@@ -345,6 +364,6 @@ public class ChatBox extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
-    private void sendMessage_Notification(String message){}
+
 
 }

@@ -140,6 +140,7 @@ public class ImageClassification extends AppCompatActivity {
         initui();
         initvarible();
         buttonclicked();
+        getlocation();
         setBottomNavigationView();
     }
     private void initvarible() {
@@ -432,7 +433,6 @@ public class ImageClassification extends AppCompatActivity {
         upload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getlocation();
                 upload();
             }
         });

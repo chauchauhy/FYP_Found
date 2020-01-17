@@ -119,8 +119,8 @@ public class Chat_record implements Comparator<Chat_record> {
     }
 
 
-    // Set time :////
-    /////////////////////
+    // get time :////
+    /////////////////
 
 
     public void setUnix(String unixTime){

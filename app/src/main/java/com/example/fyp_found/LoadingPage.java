@@ -27,7 +27,7 @@ public class LoadingPage extends AppCompatActivity {
 
 
 
-        // final action
+        // final action, getToken  from firebase cloud messaging and save it to realtime database
         if(FirebaseAuth.getInstance().getCurrentUser()!=null){
             cloudmes FCM = new cloudmes();
             FCM.getToken();

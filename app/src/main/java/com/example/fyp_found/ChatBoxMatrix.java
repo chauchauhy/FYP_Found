@@ -9,15 +9,20 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.Adapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.example.fyp_found.Adapter.Chat_Box_Matrix_Adapter;
 import com.example.fyp_found.datastru.Firebase_User;
 import com.example.fyp_found.setup.staticclass;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -44,7 +49,8 @@ public class ChatBoxMatrix extends AppCompatActivity{
     ArrayList<Firebase_User> firebase_users = new ArrayList<Firebase_User>();
     Context context;
     Chat_Box_Matrix_Adapter adapter;
-
+    View view;
+    BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,8 +61,12 @@ public class ChatBoxMatrix extends AppCompatActivity{
 
     }
 
+
     private void initui() {
         recyclerView = findViewById(R.id.chatbox_user_recyclerview);
+        view = findViewById(R.id.chatbox_matrix_nav_bar);
+        setBottomNavigationView();
+
          final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
          final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users");
 
@@ -108,5 +118,28 @@ public class ChatBoxMatrix extends AppCompatActivity{
     }
 
 
+    private void setBottomNavigationView(){
+        bottomNavigationView = view.findViewById(R.id.bottom_nav_bar);
+        context = this;
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
 
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                switch (menuItem.getItemId()){
+                    case R.id.bottom_nav_bar_home:
+                        startActivity(new Intent(context, HomePage.class));
+                        break;
+                    case R.id.bottom_nav_bar_post:
+                        startActivity(new Intent(context, ImageClassification.class));
+                        break;
+                    case R.id.bottom_nav_bar_profile:
+                        startActivity(new Intent(context, Profile.class));
+                        break;
+
+                }
+                return false;
+            }
+        });
+
+    }
 }

@@ -28,21 +28,20 @@
 
     <Button
         android:id="@+id/chat_box_send_btn"
-        android:layout_width="84dp"
-        android:layout_height="57dp"
+        android:layout_width="94dp"
+        android:layout_height="59dp"
         android:layout_weight="1"
         android:background="@null"
+        android:textAllCaps="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/chat_box_input_editview"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/chat_box_input_editview"
         tools:text="@string/send" />
 
     <EditText
         android:id="@+id/chat_box_input_editview"
-        android:layout_width="327dp"
+        android:layout_width="308dp"
         android:layout_height="57dp"
         android:layout_weight="5"
         app:layout_constraintBottom_toBottomOf="parent"

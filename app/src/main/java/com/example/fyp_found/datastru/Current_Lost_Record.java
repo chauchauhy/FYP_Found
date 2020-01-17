@@ -27,7 +27,6 @@ public class Current_Lost_Record {
 
     public void setForFilter() {
         this.forFilter = Current_Lost_Address + Current_Lost_Property_MainType +  Current_Lost_type2 + Current_Lost_type3 + Current_Lost_type4 + Current_Lost_type5 + Current_Lost_Property_Name;
-
     }
 
     public String getForFilter(){
@@ -255,9 +254,11 @@ public class Current_Lost_Record {
 
     public Current_Lost_Record(Object o) {
     }
-    // bitmap to String for entering the firebase database ... so we dont need the local or non local database
+    // bitmap to String for entering the firebase database ... so we don't need the local or non local database
     // start of bitmap convert (String to bitmap and bitmap to String)
-    // input to firebase store ....
+    // input to firebase storage....
+
+
    final public static String bitmaptoString(Bitmap bitmap) {
         String s = null;
         // error checking

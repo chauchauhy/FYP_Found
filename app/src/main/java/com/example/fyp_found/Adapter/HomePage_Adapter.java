@@ -111,7 +111,6 @@ public class HomePage_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             // get search view text
             if(charString.isEmpty()){
                 filterlist.addAll(records_All);
-
             }else{
                 for(Current_Lost_Record record : records_All){
                     if(record.getForFilter().toLowerCase().trim().contains(charString)){
@@ -132,7 +131,6 @@ public class HomePage_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHold
        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
             records.clear();
             records.addAll((List) filterResults.values);
-            Log.i(TAG, String.valueOf(records.size()) + "QQQ");
             notifyDataSetChanged();
        }
    };

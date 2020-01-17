@@ -66,6 +66,7 @@
 
     <!-- permission -->
     <string name="grantpermission">We need some permission for this action</string>
+    <string name="needlogin">Sorry, you need login before use this function</string>
 
 
 </resources>
