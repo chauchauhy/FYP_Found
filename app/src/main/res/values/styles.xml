@@ -8,4 +8,11 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="ColorSwitchStyle">
+        <item name="android:colorControlActivated">@color/switchOn</item>
+        <item name="android:colorControlNormal">@color/switchOff</item>
+
+
+    </style>
+
 </resources>

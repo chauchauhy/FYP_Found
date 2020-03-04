@@ -54,6 +54,7 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.5.2'
     // QR code gener for share item
     implementation 'com.google.zxing:core:3.4.0'
+    implementation 'com.google.android.material:material:1.0.0'
 
 
 }

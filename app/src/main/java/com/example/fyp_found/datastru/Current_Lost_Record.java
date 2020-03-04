@@ -5,15 +5,16 @@ import android.graphics.BitmapFactory;
 import android.util.Base64;
 
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
 
 public class Current_Lost_Record {
     String Current_Lost_ID;
-    String Current_Lost_User_ID;         // user name
-    String Current_Lost_Property_Name;      // property name
-    String Current_Lost_Property_QA1;    // question1
-    String Current_Lost_Property_QA2;    // question2
-    String Current_Lost_Property_QA1_Ans;    // question1
-    String Current_Lost_Property_QA2_Ans;    // question2
+    String Current_Lost_User_ID;
+    String Current_Lost_Property_Name;
+    String Current_Lost_Property_QA1;
+    String Current_Lost_Property_QA2;
+    String Current_Lost_Property_QA1_Ans;
+    String Current_Lost_Property_QA2_Ans;
     String Current_Lost_Address;
     String Current_Lost_Property_MainType;
     String Current_Lost_type2;
@@ -24,6 +25,33 @@ public class Current_Lost_Record {
     String ImageURL;
     Boolean found;
     String forFilter;
+    ArrayList<String> array;
+
+    public String[] getArray(){
+        String[] returnarray = new String[array.size()];
+        returnarray = array.toArray(returnarray);
+        return returnarray;
+    }
+    public void toArray(){
+        array = new ArrayList<>();
+        array.add(Current_Lost_ID);
+        array.add(Current_Lost_User_ID);
+        array.add(Current_Lost_Property_Name);
+        array.add(Current_Lost_Property_QA1);
+        array.add(Current_Lost_Property_QA2);
+        array.add(Current_Lost_Property_QA1_Ans);
+        array.add(Current_Lost_Property_QA2_Ans);
+        array.add(Current_Lost_Address);
+        array.add(Current_Lost_Property_MainType);
+        array.add(Current_Lost_type2);
+        array.add(Current_Lost_type3);
+        array.add(Current_Lost_type4);
+        array.add(Current_Lost_type5);
+        array.add(getFound().toString());
+        array.add(Current_Lost_Text);
+        array.add(ImageURL);
+
+    }
 
     public void setForFilter() {
         this.forFilter = Current_Lost_Address + Current_Lost_Property_MainType +  Current_Lost_type2 + Current_Lost_type3 + Current_Lost_type4 + Current_Lost_type5 + Current_Lost_Property_Name;
@@ -38,7 +66,12 @@ public class Current_Lost_Record {
     }
 
     public void setCurrent_Lost_Text(String current_Lost_Text) {
-        Current_Lost_Text = current_Lost_Text;
+        if (current_Lost_Text!=null){
+            Current_Lost_Text = current_Lost_Text;
+
+        }else{
+            Current_Lost_Text = "no any other information";
+        }
     }
 
     public String getCurrent_Lost_Property_QA1_Ans() {
@@ -115,12 +148,13 @@ public class Current_Lost_Record {
         setCurrent_Lost_type3(current_Lost_type3.trim());
         setCurrent_Lost_type4(current_Lost_type4.trim());
         setCurrent_Lost_type5(current_Lost_type5.trim());
-        Current_Lost_Text = current_Lost_Text;
+        setCurrent_Lost_Text(current_Lost_Text);
         this.Current_Lost_Property_QA1_Ans = current_Lost_Property_QA1_Ans ;
         this.Current_Lost_Property_QA2_Ans = current_Lost_Property_QA2_Ans ;
         this.ImageURL = imageURL;
         setFound(found);
         setForFilter();
+        toArray();
     }
 
 
@@ -238,22 +272,7 @@ public class Current_Lost_Record {
         }
     }
 
-    public Current_Lost_Record(String current_Lost_ID, String current_Lost_User_Name, String current_Lost_Property_Name, String current_Lost_Property_QA1, String current_Lost_Property_QA2, String current_Lost_Address, String current_Lost_Property_MainType, String current_Lost_type2, String current_Lost_type3, String current_Lost_type4, String current_Lost_type5) {
-        Current_Lost_ID = current_Lost_ID;
-        Current_Lost_User_ID = current_Lost_User_Name;
-        Current_Lost_Property_Name = current_Lost_Property_Name;
-        Current_Lost_Property_QA1 = current_Lost_Property_QA1;
-        Current_Lost_Property_QA2 = current_Lost_Property_QA2;
-        Current_Lost_Address = current_Lost_Address;
-        Current_Lost_Property_MainType = current_Lost_Property_MainType;
-        Current_Lost_type2 = current_Lost_type2;
-        Current_Lost_type3 = current_Lost_type3;
-        Current_Lost_type4 = current_Lost_type4;
-        Current_Lost_type5 = current_Lost_type5;
-    }
 
-    public Current_Lost_Record(Object o) {
-    }
     // bitmap to String for entering the firebase database ... so we don't need the local or non local database
     // start of bitmap convert (String to bitmap and bitmap to String)
     // input to firebase storage....

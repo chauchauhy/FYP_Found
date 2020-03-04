@@ -146,11 +146,10 @@ public class Login extends AppCompatActivity  {
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
                                     FirebaseUser user = firebaseAuth_facebook.getCurrentUser();
-                                    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users").child(user.getUid());
+                                    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference(staticclass.final_static_str_db_name_user).child(user.getUid());
                                     HashMap<String, String> hashMap = new HashMap<>();
                                     hashMap.put(final_static_str_User_Id, user.getUid());
-                                    hashMap.put(final_static_str_User_dev_code, Settings.Secure.getString(getContentResolver(),
-                                            Settings.Secure.ANDROID_ID));
+                                    hashMap.put(final_static_str_User_dev_code, Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID));
                                     hashMap.put(final_static_str_User_Name, user.getDisplayName());
                                     if(user.getEmail().contains("@")&& user.getEmail().contains(".com")){
                                         hashMap.put(final_static_str_User_Email, user.getEmail());

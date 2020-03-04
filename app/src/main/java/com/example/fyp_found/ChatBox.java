@@ -188,6 +188,7 @@ public class ChatBox extends AppCompatActivity {
                                 Firebase_User firebase_user = new Firebase_User();
                                 firebase_user.setUser_Id((String)h.get(final_static_str_User_Id));
                                 firebase_user.setUser_Email((String)h.get(final_static_str_User_Email));
+                                // receiver icon url needed
                                 if (h.get(firebase_FCM_Token) != null){
                                     firebase_user.setToken((String) h.get(firebase_FCM_Token));
                                 }

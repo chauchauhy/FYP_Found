@@ -24,6 +24,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -86,7 +87,7 @@ public class HomePage extends AppCompatActivity /*implements Toolbar.OnMenuItemC
     public static ArrayList<Current_Lost_Record> records = new ArrayList<>();
     View subView_bottom_Nav_bar, subView_toolbar;
     BottomNavigationView navigationView;
-    ConstraintLayout linearLayout;
+    View linearLayout;
     Context context;
     HomePage_Adapter homePage_adapter;
     SwipeRefreshLayout swipeRefreshLayout;
@@ -102,21 +103,40 @@ public class HomePage extends AppCompatActivity /*implements Toolbar.OnMenuItemC
     FirebaseUser firebaseUser;
     Boolean logined;
 
-    String token;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
-        if (firebaseUser!=null) {
-            Log.i(staticclass.TAG, FCM_TOKEN + "@@");
-        }
+
         initVariable();
         initUI();
         loadData();
 
 
 
+    }
+
+    private void setSnackbar(View view, String text, int duraction, boolean hadAction, String actionText, final int id){
+        Snackbar snackbar = Snackbar.make(view, text, duraction);
+        if (hadAction){
+            snackbar.setAction(actionText, new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (id == 0 ){
+                        startActivity(new Intent(context, LoadingPage.class));
+                    }else if (id == 1){
+                        startActivity(new Intent(context, Login.class));
+                    }
+                }
+            });
+        }
+
+//        CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) snackbar.getView().getLayoutParams();
+//        params.setMargins(0,0,0, 50);
+//        snackbar.getView().setLayoutParams(params);
+
+        snackbar.show();
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -129,6 +149,7 @@ public class HomePage extends AppCompatActivity /*implements Toolbar.OnMenuItemC
         navigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                View view = menuItem.getActionView();
                 switch (menuItem.getItemId()) {
                     case R.id.bottom_nav_bar_home:
                         progressBar.setVisibility(View.VISIBLE);
@@ -139,6 +160,8 @@ public class HomePage extends AppCompatActivity /*implements Toolbar.OnMenuItemC
                         progressBar.setVisibility(View.GONE);
                         break;
                     case R.id.bottom_nav_bar_post:
+                        Log.i(staticclass.TAG, "Run snackbar");
+
                         if (firebaseUser != null) {
                             final AlertDialog.Builder builder = new AlertDialog.Builder(context);
                             final CharSequence[] options = {"Post Lost Property", "Post Reward", getResources().getString(R.string.cancel) };
@@ -158,32 +181,19 @@ public class HomePage extends AppCompatActivity /*implements Toolbar.OnMenuItemC
                                 }
                             }).show();
                         } else {
-                            Snackbar.make(linearLayout, "You may need login or sign up before use this function", Snackbar.LENGTH_LONG).setAction("Login/Sign up", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    startActivity(new Intent(context, Login.class));
-                                }
-                            });
+                            setSnackbar(swipeRefreshLayout, "You may need login or sign up before use this function", -1, true, "Login / Sign up", 0);
                         }
                         break;
                     case R.id.bottom_nav_bar_profile:
                         if (firebaseUser != null) {
                             startActivity(new Intent(context, Profile.class));
                         } else {
-                            Snackbar.make(linearLayout, "You may need login or sign up before use this function", Snackbar.LENGTH_LONG).setAction("Login / Sign up", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    startActivity(new Intent(context, Profile.class));
-                                }
-                            });
+                            // need show the snackbar on the swiperefreshlayout, otherwise the snackbar cannot display
+                            setSnackbar(swipeRefreshLayout, "You may need login or sign up before use this function", -1, true, "Login / Sign up", 0);
                         }
                         break;
-
                     default:
-
                 }
-
-
                 return true;
             }
         });
@@ -196,6 +206,7 @@ public class HomePage extends AppCompatActivity /*implements Toolbar.OnMenuItemC
             firebase_user_current = new Firebase_User();
             firebase_user_current.setUser_Id(firebaseUser.getUid());
             firebase_user_current.setUser_Email(firebaseUser.getEmail());
+            // set icon url needed
             if (firebaseUser.getDisplayName() != null){
                 firebase_user_current.setUser_Name(firebaseUser.getDisplayName());
             }else{
@@ -217,6 +228,8 @@ public class HomePage extends AppCompatActivity /*implements Toolbar.OnMenuItemC
                                 if (firebaseUser.getUid().equals(h.get(final_static_str_User_Id))) {
                                     if (h.get(firebase_FCM_Token) != null){
                                         firebase_user_current.setToken((String) h.get(firebase_FCM_Token));
+                                        // new
+                                        firebase_user_current.setUser_Name((String)h.get(final_static_str_User_Name));
                                     }
                                 }
                             } catch (Exception e) {
@@ -318,7 +331,11 @@ public class HomePage extends AppCompatActivity /*implements Toolbar.OnMenuItemC
         messagebox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(context, ChatBoxMatrix.class));
+                if (firebaseUser!=null) {
+                    startActivity(new Intent(context, ChatBoxMatrix.class));
+                }else{
+                    setSnackbar(swipeRefreshLayout, "You may need login or sign up before use this function", 0, true, "Login / Sign up", 0);
+                }
             }
         });
 

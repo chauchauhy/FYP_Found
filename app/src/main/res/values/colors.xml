@@ -8,4 +8,6 @@
     <color name="progressbar">#310466F8</color>
     <color name="transparent">#00000000</color>
     <color name="toolbar_text">#B4FFFAFA</color>
+    <color name="switchOn">#313582F7</color>
+    <color name="switchOff">#3193F834</color>
 </resources>

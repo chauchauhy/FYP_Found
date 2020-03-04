@@ -1,15 +1,20 @@
 package com.example.fyp_found;
 
 import com.example.fyp_found.class_Package.CompareText;
+import com.example.fyp_found.datastru.Current_Lost_Record;
 import com.example.fyp_found.datastru.non_str.Text_Recognize;
 import com.example.fyp_found.datastru.non_str.User;
+import com.example.fyp_found.setup.staticclass;
 
 import org.junit.Test;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Random;
 
+import static com.example.fyp_found.setup.staticclass.final_static_str_array_Current_Lost_Array;
 import static org.junit.Assert.*;
 
 /**
@@ -21,21 +26,47 @@ public class ExampleUnitTest {
     @Test
     public void addition_isCorrect() {
         assertEquals(4, 2 + 2);
+        HashMap<String, String> hashMap = new HashMap<>();
+        Current_Lost_Record record = new Current_Lost_Record("ID " + getRandomIndex(),"Name" + getRandomIndex(),"TITLE" + getRandomIndex(),
+                "QA1 " + getRandomIndex(),"QA2 " + getRandomIndex(),"QA1A " + getRandomIndex(),
+                "QA2A " + getRandomIndex(),
+                "ADDRESS" + getRandomIndex(),"T1" + getRandomIndex(),
+                "T2" + getRandomIndex(),"T3" + getRandomIndex(),
+                "T4" + getRandomIndex(),"T5" + getRandomIndex(),
+                "OTHER" + getRandomIndex(),"URL " + getRandomIndex(),"BOOLEAN" + getRandomIndex());
+        String[] array = record.getArray();
+        for (int i =0; i<array.length; i++){
+            hashMap.put(staticclass.final_static_str_array_Current_Lost_Array[i], array[i]);
+        }
+//        System.out.println(hashMap.toString());
+        for(String key: final_static_str_array_Current_Lost_Array){
+            System.out.println(hashMap.get(key));
 
-        String s = new String("RM. 1514, 15/F, BLK. A, SHEK TO HSE., SHEK WAI KOK EST., TSUEN WAN, NT, Hong Kong");
-        String b = s;
-        assert s != null;
-        String a = " shek wai kok";
-        String aa = "shek kok house";
-        CompareText compareText = new CompareText(s, a);
-        System.out.println(compareText.compareText());
-
-        System.out.println(s.toLowerCase().contains(a));
-
-        Text_Recognize text_recognize = new Text_Recognize();
-        Enumeration<User> e = text_recognize.getClasss();
-
+        }
     }
+        private int getRandomIndex(){
+            Random random = new Random();
+            int randomnum = random.nextInt(10);
+            System.out.println(randomnum);
+            return randomnum;
+        }
+        private void basicTextTast(){
+            String s = new String("RM. 1514, 15/F, BLK. A, SHEK TO HSE., SHEK WAI KOK EST., TSUEN WAN, NT, Hong Kong");
+            String b = s;
+            assert s != null;
+            String a = " shek wai kok";
+            String aa = "shek kok house";
+            CompareText compareText = new CompareText(s, a);
+            System.out.println(compareText.compareText());
+
+            System.out.println(s.toLowerCase().contains(a));
+
+            Text_Recognize text_recognize = new Text_Recognize();
+            Enumeration<User> e = text_recognize.getClasss();
+            for (String key : final_static_str_array_Current_Lost_Array){
+                System.out.println(key);
+            }
+        }
 
         private double compareText(String firstText , String secondText){
         double mark = 0;

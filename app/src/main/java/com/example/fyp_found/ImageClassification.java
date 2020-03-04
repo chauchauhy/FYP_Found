@@ -77,6 +77,7 @@ import java.util.Locale;
 
 import static com.example.fyp_found.datastru.Chat_record.getUnixTime;
 import static com.example.fyp_found.datastru.Current_Lost_Record.bitmaptoString;
+import static com.example.fyp_found.setup.staticclass.IntentTAG;
 import static com.example.fyp_found.setup.staticclass.current_dev_code;
 import static com.example.fyp_found.setup.staticclass.final_static_str_Current_Lost_Boolean;
 import static com.example.fyp_found.setup.staticclass.final_static_str_Current_Lost_Text;
@@ -95,6 +96,7 @@ import static com.example.fyp_found.setup.staticclass.final_static_str_Current_L
 import static com.example.fyp_found.setup.staticclass.final_static_str_Current_Lost_type4;
 import static com.example.fyp_found.setup.staticclass.final_static_str_Current_Lost_type5;
 import static com.example.fyp_found.setup.staticclass.final_static_str_db_name_current;
+import static com.example.fyp_found.setup.staticclass.image_Anchor;
 import static com.example.fyp_found.setup.staticclass.question_arr_final;
 
 public class ImageClassification extends AppCompatActivity {
@@ -276,13 +278,21 @@ public class ImageClassification extends AppCompatActivity {
                 if(url_uploaded.isEmpty()){
                     Snackbar.make(mainLayout, "please try again after a few minutes" , Snackbar.LENGTH_LONG).show();
                 }else {
-                    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference(final_static_str_db_name_current);
                     Current_Lost_Record record = getBasieData();
+                    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference(final_static_str_db_name_current);
                     HashMap<String, String> hashMap = returnHashMapData(record);
-                    Log.i(staticclass.TAG, hashMap.toString());
-                    databaseReference.push().setValue(hashMap);
-                    startActivity(new Intent(ImageClassification.this, HomePage.class));
-                    progressBar.setVisibility(View.GONE);
+                    databaseReference.push().setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()){
+                                startActivity(new Intent(ImageClassification.this, HomePage.class));
+                                progressBar.setVisibility(View.GONE);
+                            }else{
+                                Snackbar.make(mainLayout, "please try again after a few minutes" , Snackbar.LENGTH_LONG).show();
+                                Log.i(staticclass.TAG, task.getException().toString());
+                            }
+                        }
+                    });
 
 
 
@@ -300,22 +310,11 @@ public class ImageClassification extends AppCompatActivity {
         if(current_lost_record!=null) {
             Current_Lost_Record record = current_lost_record;
             HashMap<String, String> hashMap = new HashMap<>();
-            hashMap.put(final_static_str_Current_Lost_ID, record.getCurrent_Lost_ID());
-            hashMap.put(final_static_str_Current_Lost_User_ID, record.getCurrent_Lost_User_ID());
-            hashMap.put(final_static_str_Current_Lost_Property_Name, record.getCurrent_Lost_Property_Name());
-            hashMap.put(final_static_str_Current_Lost_Property_QA1, record.getCurrent_Lost_Property_QA1());
-            hashMap.put(final_static_str_Current_Lost_Property_QA2, record.getCurrent_Lost_Property_QA2());
-            hashMap.put(final_static_str_Current_Lost_Property_QA1_Ans, record.getCurrent_Lost_Property_QA1_Ans());
-            hashMap.put(final_static_str_Current_Lost_Property_QA2_Ans, record.getCurrent_Lost_Property_QA2_Ans());
-            hashMap.put(final_static_str_Current_Lost_Address, record.getCurrent_Lost_Address());
-            hashMap.put(final_static_str_Current_Lost_Property_MainType, record.getCurrent_Lost_Property_MainType());
-            hashMap.put(final_static_str_Current_Lost_type2, record.getCurrent_Lost_type2());
-            hashMap.put(final_static_str_Current_Lost_type3, record.getCurrent_Lost_type3());
-            hashMap.put(final_static_str_Current_Lost_type4, record.getCurrent_Lost_type4());
-            hashMap.put(final_static_str_Current_Lost_type5, record.getCurrent_Lost_type5());
-            hashMap.put(final_static_str_Current_Lost_Boolean, record.getFound().toString());
-            hashMap.put(final_static_str_Current_Lost_URL, record.getImageURL());
-            hashMap.put(final_static_str_Current_Lost_Text, record.getCurrent_Lost_Text());
+            String[] array = record.getArray();
+            for (int i =0; i<array.length; i++){
+                hashMap.put(staticclass.final_static_str_array_Current_Lost_Array[i], array[i]);
+            }
+            Log.i(staticclass.TAG, hashMap.toString());
             return hashMap;
         }else{
             return null;
@@ -755,7 +754,10 @@ public class ImageClassification extends AppCompatActivity {
                             reload();
                             break;
                         case R.id.bottom_nav_bar_profile:
-                            startActivity(new Intent(context, Profile.class));
+                            Intent intent = new Intent(context, Profile.class);
+                            intent.putExtra(IntentTAG, String.valueOf(image_Anchor));
+                            Log.i(staticclass.TAG, String.valueOf(image_Anchor));
+                            startActivity(intent);
                             break;
                         default:
                     }

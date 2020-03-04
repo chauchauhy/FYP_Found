@@ -1,5 +1,7 @@
 package com.example.fyp_found.datastru;
 
+import androidx.annotation.NonNull;
+
 import com.example.fyp_found.datastru.non_str.User;
 
 public class Firebase_User {
@@ -9,6 +11,14 @@ public class Firebase_User {
     String User_Login_Method;
     String User_dev_code;
     String token;
+    String icon_URL;
+
+    public void setIcon_URL(String url){
+        icon_URL = url;
+    }
+    public String getIcon_URL(){
+        return icon_URL;
+    }
 
     public String getToken() {
         return token;
@@ -19,6 +29,15 @@ public class Firebase_User {
     }
 
     public Firebase_User() {
+    }
+
+    public Firebase_User(String user_Id, String user_Name, String user_Email, String user_Login_Method, String user_dev_code, String icon_URL) {
+        User_Id = user_Id;
+        User_Email = user_Email;
+        this.User_dev_code = "unknown";
+        this.User_Login_Method = "unknown";
+        setUser_Name(user_Name);
+        setIcon_URL(icon_URL);
     }
 
     public Firebase_User(String user_Id, String user_Name, String user_Email) {
@@ -39,6 +58,7 @@ public class Firebase_User {
                 ", User_Login_Method='" + User_Login_Method + '\'' +
                 ", User_dev_code='" + User_dev_code + '\'' +
                 ", token='" + token + '\'' +
+                ", icon_URL='" + icon_URL + '\'' +
                 '}';
     }
 

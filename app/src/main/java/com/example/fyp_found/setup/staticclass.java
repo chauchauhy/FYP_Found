@@ -11,16 +11,13 @@ import com.google.firebase.iid.FirebaseInstanceId;
 
 public final class staticclass {
     public static String current_dev_code = null;
-    public static FirebaseUser currentUser = null;
     public static String currentUserID = "";
     public final static String TAG = "IAMLOG";
-    public final static String localdb_URL = "http:192.168.137.1/dashboard/new/";
-    // check ip is needed
-    //    http://localhost/dashboard/new/php_get/runq.php
-//    public final static String localdb_URL_get = localdb_URL + "php_get/";
-//    public final static String localdb_URL_php = ".php";
-//    public final static String localdb_URL_test = localdb_URL_get + "runq.php";
-//    public final static String localdb_URL_
+    public final static String IntentTAG = "IntentTAG";
+    public final static int home_Anchor = 0;
+    public final static int image_Anchor = 1;
+    public final static int post_Anchor = 2;
+
 
 
     // db col name
@@ -35,7 +32,7 @@ public final class staticclass {
     public final static String final_static_str_Chat_Date = "Chat_Date";
     public final static String final_static_str_Chat_unixTime = "unixTime";
     // User'
-    public final static String final_static_str_db_name_user = "User";
+    public final static String final_static_str_db_name_user = "Users";
     public final static String final_static_str_User_Id = "user_id";
     public final static String final_static_str_User_Name = "User_Name";
     public final static String final_static_str_User_Account = "User_Account";
@@ -44,6 +41,7 @@ public final class staticclass {
     public final static String final_static_str_User_Login_Method = "User_Login_Method";
     public final static String final_static_str_User_Level = "User_Level";
     public final static String final_static_str_User_dev_code = "User_dev_code";
+    public final static String final_static_str_User_Icon_URL = "User_Icon_URL";
 
     //Reward
     public final static String final_static_str_db_name_reward = "Reward";
@@ -69,7 +67,6 @@ public final class staticclass {
     // current lost record
     public final static String final_static_str_db_name_current = "Current_lost_record";
     public static final String final_static_str_Current_Lost_ID = "Current_Lost_ID";
-    public static final String final_static_str_Current_Lost_Status = "Current_Lost_Status";
     public static final String final_static_str_Current_Lost_User_ID = "Current_Lost_User_ID";
     public static final String final_static_str_Current_Lost_Property_QA1 = "Current_Lost_Property_QA1";
     public static final String final_static_str_Current_Lost_Property_QA2 = "Current_Lost_Property_QA2";
@@ -109,5 +106,29 @@ public final class staticclass {
     public static String FCM_TOKEN = "";
 
 
-
+    // array
+    public static final String[] final_static_str_array_Current_Lost_Array = {final_static_str_Current_Lost_ID,
+            final_static_str_Current_Lost_User_ID,
+            final_static_str_Current_Lost_Property_Name,
+            final_static_str_Current_Lost_Property_QA1,
+            final_static_str_Current_Lost_Property_QA2,
+            final_static_str_Current_Lost_Property_QA1_Ans,
+            final_static_str_Current_Lost_Property_QA2_Ans,
+            final_static_str_Current_Lost_Address,
+            final_static_str_Current_Lost_Property_MainType,
+            final_static_str_Current_Lost_type2,
+            final_static_str_Current_Lost_type3,
+            final_static_str_Current_Lost_type4,
+            final_static_str_Current_Lost_type5,
+            final_static_str_Current_Lost_Boolean,
+            final_static_str_Current_Lost_Text,
+            final_static_str_Current_Lost_URL
+         };
+    public static final String[] final_static_str_array_reward = {final_static_str_db_name_reward,
+            final_static_str_Reward_ID,
+            final_static_str_Reward_Title,
+            final_static_str_Reward_Content,
+            final_static_str_Reward_UserID,
+            final_static_str_Reward_property_Type,
+            final_static_str_Reward_Lost_Address};
 }

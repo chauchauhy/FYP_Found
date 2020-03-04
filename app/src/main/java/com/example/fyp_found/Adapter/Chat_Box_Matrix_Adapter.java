@@ -60,6 +60,7 @@ public class Chat_Box_Matrix_Adapter extends RecyclerView.Adapter<RecyclerView.V
         vh.username.setText(firebase_user.getUser_Name());
         vh.username.setClickable(true);
         vh.imageView.setClickable(true);
+        // icon url needed
         vh.username.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

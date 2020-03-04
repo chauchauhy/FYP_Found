@@ -68,7 +68,7 @@ public class ChatBoxMatrix extends AppCompatActivity{
         setBottomNavigationView();
 
          final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-         final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users");
+         final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference(staticclass.final_static_str_db_name_user);
 
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -85,6 +85,7 @@ public class ChatBoxMatrix extends AppCompatActivity{
                             Firebase_User f = new Firebase_User();
                             f.setUser_Id((String)users.get(final_static_str_User_Id));
                             f.setUser_Email((String)users.get(final_static_str_User_Email));
+                            // icon url needed
                             if(users.get(final_static_str_User_Name) == null){
                                 f.setUser_Name((String)users.get(final_static_str_User_Email));
 

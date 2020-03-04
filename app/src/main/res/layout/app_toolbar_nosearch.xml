@@ -51,6 +51,33 @@
             android:clickable="true"
             />
 
+        <ImageButton
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:id="@+id/toolbar_logout"
+            android:layout_gravity="end"
+            android:gravity="center"
+            android:clickable="true"
+            android:background="@null"
+            android:visibility="gone"
+            android:src="@drawable/ic_logout_black_24dp"
+            />
+
+        <ImageButton
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:id="@+id/toolbar_edit"
+            android:layout_gravity="end"
+            android:gravity="center"
+            android:clickable="true"
+            android:background="@null"
+            android:visibility="gone"
+            android:src="@drawable/ic_edit_24dp"
+            />
+
+
+
+
     </androidx.appcompat.widget.Toolbar>
 
 </RelativeLayout>
