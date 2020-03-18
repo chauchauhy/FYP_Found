@@ -79,7 +79,8 @@
     <string name="email">Email</string>
     <string name="dob">Date of Birth</string>
     <string name="phoneno">Phone Number</string>
-    <string name="profile_openORclose">Open/Close</string>
+    <string name="profile_open">Open</string>
+    <string name="profile_cloas">Close</string>
 
 
 </resources>

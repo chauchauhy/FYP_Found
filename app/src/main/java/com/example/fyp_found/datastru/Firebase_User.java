@@ -2,7 +2,6 @@ package com.example.fyp_found.datastru;
 
 import androidx.annotation.NonNull;
 
-import com.example.fyp_found.datastru.non_str.User;
 
 public class Firebase_User {
     String User_Id;

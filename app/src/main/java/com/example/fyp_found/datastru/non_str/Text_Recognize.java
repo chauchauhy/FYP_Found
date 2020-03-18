@@ -5,7 +5,8 @@ package com.example.fyp_found.datastru.non_str;
 
 import java.util.Enumeration;
 import java.util.Vector;
-
+// only user for
+// store result of text recognize
 public class Text_Recognize {
 
     String text;
@@ -26,8 +27,7 @@ public class Text_Recognize {
     }
 
     public Text_Recognize() {
-        vector = new Vector();
-        vector.add(new User("aaa"));
+
     }
     public Enumeration getClasss(){
         return vector.elements();

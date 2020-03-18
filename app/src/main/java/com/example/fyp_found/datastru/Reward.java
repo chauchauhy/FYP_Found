@@ -1,12 +1,11 @@
 package com.example.fyp_found.datastru;
 
-import com.example.fyp_found.datastru.non_str.User;
 
 public class Reward {
     String Reward_ID;
     String Reward_Title;
     String Reward_Content;
-    User Reward_UserID;
+    String Reward_UserID;
     String Reward_property_Type;
     String Reward_Lost_Address;
 
@@ -25,7 +24,7 @@ public class Reward {
                 '}';
     }
 
-    public Reward(String reward_ID, String reward_Title, String reward_Content, User reward_UserID, String reward_property_Type, String reward_Lost_Address) {
+    public Reward(String reward_ID, String reward_Title, String reward_Content, String reward_UserID, String reward_property_Type, String reward_Lost_Address) {
         Reward_ID = reward_ID;
         Reward_Title = reward_Title;
         Reward_Content = reward_Content;
@@ -58,11 +57,11 @@ public class Reward {
         Reward_Content = reward_Content;
     }
 
-    public User getReward_UserID() {
+    public String getReward_UserID() {
         return Reward_UserID;
     }
 
-    public void setReward_UserID(User reward_UserID) {
+    public void setReward_UserID(String reward_UserID) {
         Reward_UserID = reward_UserID;
     }
 

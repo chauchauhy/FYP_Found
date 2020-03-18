@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
@@ -21,8 +22,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.fyp_found.Adapter.Profile_Post_Adapter;
+import com.example.fyp_found.datastru.Current_Lost_Record;
 import com.example.fyp_found.datastru.Firebase_User;
 import com.example.fyp_found.datastru.Reward;
+
 import com.example.fyp_found.setup.staticclass;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -41,9 +45,32 @@ import com.squareup.picasso.Picasso;
 
 import static com.example.fyp_found.setup.staticclass.IntentTAG;
 import static com.example.fyp_found.setup.staticclass.TAG;
+import static com.example.fyp_found.setup.staticclass.final_static_str_Current_Lost_Address;
+import static com.example.fyp_found.setup.staticclass.final_static_str_Current_Lost_Boolean;
+import static com.example.fyp_found.setup.staticclass.final_static_str_Current_Lost_ID;
+import static com.example.fyp_found.setup.staticclass.final_static_str_Current_Lost_Property_MainType;
+import static com.example.fyp_found.setup.staticclass.final_static_str_Current_Lost_Property_Name;
+import static com.example.fyp_found.setup.staticclass.final_static_str_Current_Lost_Property_QA1;
+import static com.example.fyp_found.setup.staticclass.final_static_str_Current_Lost_Property_QA1_Ans;
+import static com.example.fyp_found.setup.staticclass.final_static_str_Current_Lost_Property_QA2;
+import static com.example.fyp_found.setup.staticclass.final_static_str_Current_Lost_Property_QA2_Ans;
+import static com.example.fyp_found.setup.staticclass.final_static_str_Current_Lost_Text;
+import static com.example.fyp_found.setup.staticclass.final_static_str_Current_Lost_URL;
+import static com.example.fyp_found.setup.staticclass.final_static_str_Current_Lost_User_ID;
+import static com.example.fyp_found.setup.staticclass.final_static_str_Current_Lost_type2;
+import static com.example.fyp_found.setup.staticclass.final_static_str_Current_Lost_type3;
+import static com.example.fyp_found.setup.staticclass.final_static_str_Current_Lost_type4;
+import static com.example.fyp_found.setup.staticclass.final_static_str_Current_Lost_type5;
 import static com.example.fyp_found.setup.staticclass.final_static_str_Found_property_Content;
+import static com.example.fyp_found.setup.staticclass.final_static_str_Reward_Content;
+import static com.example.fyp_found.setup.staticclass.final_static_str_Reward_ID;
+import static com.example.fyp_found.setup.staticclass.final_static_str_Reward_Lost_Address;
+import static com.example.fyp_found.setup.staticclass.final_static_str_Reward_Title;
+import static com.example.fyp_found.setup.staticclass.final_static_str_Reward_UserID;
+import static com.example.fyp_found.setup.staticclass.final_static_str_Reward_property_Type;
 import static com.example.fyp_found.setup.staticclass.final_static_str_User_Email;
 import static com.example.fyp_found.setup.staticclass.final_static_str_User_Name;
+import static com.example.fyp_found.setup.staticclass.final_static_str_db_name_current;
 import static com.example.fyp_found.setup.staticclass.final_static_str_firebasedatabase_child_users;
 import static com.example.fyp_found.setup.staticclass.image_Anchor;
 import static com.example.fyp_found.setup.staticclass.post_Anchor;
@@ -63,11 +90,13 @@ public class Profile extends AppCompatActivity {
     FirebaseUser firebaseUser;
     Firebase_User firebase_user;
     int previousActivity;
-    SwitchCompat gender_selecter;
     EditText username_edit, useremail_edit;
     ImageView usericon_imageView;
     ImageButton logout, editPersonalInfo;
     TextView done;
+    ArrayList<Current_Lost_Record> records = new ArrayList<>();
+    Profile_Post_Adapter profile_post_adapter;
+
 
     // other UI View
     // including display lost record and post
@@ -76,6 +105,8 @@ public class Profile extends AppCompatActivity {
 
     RecyclerView post, reword;
     ArrayList<Reward> rewards = new ArrayList<>();
+    boolean post_state = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +115,7 @@ public class Profile extends AppCompatActivity {
         context = this;
         getprevious();
         firstCheckingUserInfo();
+
     }
     private void getprevious(){
         Intent i = getIntent();
@@ -94,7 +126,10 @@ public class Profile extends AppCompatActivity {
 
         }
     }
-
+    private void loadData(){
+//        loadPostData();
+        loadRecordData();
+    }
 
     private void firstCheckingUserInfo(){
         if (FirebaseAuth.getInstance().getCurrentUser() == null){
@@ -104,7 +139,7 @@ public class Profile extends AppCompatActivity {
             initVar();
             initUI();
             loadUserInfo();
-
+            loadRecordData();
         }
     }
 
@@ -206,7 +241,6 @@ public class Profile extends AppCompatActivity {
         nav_bar_subView = findViewById(R.id.profile_bottom_nav_bar);
         toolbar = toolbar_subview.findViewById(R.id.app_toolbar_nosearch_1);
         main_Layout = findViewById(R.id.profile_main_layout);
-        gender_selecter = findViewById(R.id.profile_gender_switch);
         useremail_edit = findViewById(R.id.profile_email);
         username_edit = findViewById(R.id.profile_username);
         usericon_imageView = findViewById(R.id.profile_user_icon);
@@ -219,7 +253,6 @@ public class Profile extends AppCompatActivity {
 
         // other ui view
         open_post = findViewById(R.id.profile_LostPost_open);
-        final boolean post_state = false;
         post = findViewById(R.id.profile_lostPost);
         post.setVisibility(View.GONE);
         open_post.setOnClickListener(new View.OnClickListener() {
@@ -227,26 +260,113 @@ public class Profile extends AppCompatActivity {
             public void onClick(View view) {
                 if (!post_state){
                     post.setVisibility(View.VISIBLE);
+                    open_post.setText(getResources().getString(R.string.profile_cloas));
                 }else{
                     post.setVisibility(View.GONE);
+                    open_post.setText(getResources().getString(R.string.profile_open));
+
+
                 }
+                post_state = !post_state;
             }
         });
 
         setToolbar();
         setBottomNavigationView();
+
     }
 
-    private void setOpen_post(){
+    private void loadRecordData(){
+        final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference(final_static_str_db_name_current);
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    records.clear();
+                    HashMap<String, Object> hashMap;
+                    hashMap = (HashMap<String, Object>) dataSnapshot.getValue();
+                    for (String key : hashMap.keySet()) {
+                        Object key_ = hashMap.get(key);
+                        try {
+                            HashMap<String, Object> data = (HashMap<String, Object>) key_;
+                            Current_Lost_Record record =
+                                    new Current_Lost_Record(
+                                            (String) data.get(final_static_str_Current_Lost_ID),
+                                            (String) data.get(final_static_str_Current_Lost_User_ID),
+                                            (String) data.get(final_static_str_Current_Lost_Property_Name),
+                                            (String) data.get(final_static_str_Current_Lost_Property_QA1),
+                                            (String) data.get(final_static_str_Current_Lost_Property_QA2),
+                                            (String) data.get(final_static_str_Current_Lost_Property_QA1_Ans),
+                                            (String) data.get(final_static_str_Current_Lost_Property_QA2_Ans),
+                                            (String) data.get(final_static_str_Current_Lost_Address),
+                                            (String) data.get(final_static_str_Current_Lost_Property_MainType),
+                                            (String) data.get(final_static_str_Current_Lost_type2),
+                                            (String) data.get(final_static_str_Current_Lost_type3),
+                                            (String) data.get(final_static_str_Current_Lost_type4),
+                                            (String) data.get(final_static_str_Current_Lost_type5),
+                                            (String) data.get(final_static_str_Current_Lost_Text),
+                                            (String) data.get(final_static_str_Current_Lost_URL),
+                                            (String) data.get(final_static_str_Current_Lost_Boolean)
+                                    );
+                            if (!record.getFound()) {
+                                records.add(record);
+                                Log.i(TAG, record.toString());
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                    setPost_List(context, records);
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+    }
+
+    private void setPost_List(Context context, ArrayList<Current_Lost_Record> records){
+        profile_post_adapter = new Profile_Post_Adapter(context, records);
+        post.setLayoutManager(new LinearLayoutManager(context));
+        post.setAdapter(profile_post_adapter);
 
         // load post data from firebase realtime DB..
-    }private void loadPostData(){
+    }
+    private void loadPostData(){
         final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference(staticclass.final_static_str_db_name_reward);
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists()){
-                    // check
+                if (dataSnapshot.exists()) {
+                    rewards.clear();
+                    // real time update the user personal info
+                    HashMap<String, Object> hashMap = (HashMap) dataSnapshot.getValue();
+                    for (String key : hashMap.keySet()) {
+                        Object key_ = hashMap.get(key);
+                        try {
+                            HashMap<String, Object> rewardCollection = (HashMap<String, Object>) key_;
+                            if (rewardCollection.get(staticclass.final_static_str_Reward_UserID).equals(firebase_user.getUser_Id())){
+                                Reward reward = new Reward();
+                                reward.setReward_ID((String) rewardCollection.get(final_static_str_Reward_ID));
+                                reward.setReward_UserID((String) rewardCollection.get(final_static_str_Reward_UserID));
+                                reward.setReward_Content((String) rewardCollection.get(final_static_str_Reward_Content));
+                                reward.setReward_Lost_Address((String) rewardCollection.get(final_static_str_Reward_Lost_Address));
+                                reward.setReward_Title((String) rewardCollection.get(final_static_str_Reward_Title));
+
+                                // need modify data type
+                                reward.setReward_property_Type((String) rewardCollection.get(final_static_str_Reward_property_Type));
+                                if (reward!=null) {
+                                    rewards.add(reward);
+                                    Log.i(TAG, reward.toString());
+                                }
+                            }
+
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
                 }
             }
 
@@ -255,8 +375,6 @@ public class Profile extends AppCompatActivity {
 
             }
         });
-
-
 
     }
     private void setBottomNavigationView(){
@@ -285,6 +403,7 @@ public class Profile extends AppCompatActivity {
         });
 
     }
+
     private void setToolbar(){
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Profile");
@@ -324,6 +443,7 @@ public class Profile extends AppCompatActivity {
         });
 
     }
+
     // new
     private void saveData(String name, String email){
         if(firebase_user.getUser_Login_Method().equals("Firebase Email Checking")) {
@@ -418,12 +538,7 @@ public class Profile extends AppCompatActivity {
     }
 
     // re store the profile data
-    private void reload(){
-        Intent i = new Intent(Profile.this, Profile.class);
-        finish();
-        startActivity(i);
 
-    }
 
     // apply menu to toolbar ( logout function)
 //    @Override
@@ -447,6 +562,13 @@ public class Profile extends AppCompatActivity {
 //    }
 
     // override superclass function to relaod
+
+    private void reload(){
+        Intent i = new Intent(Profile.this, Profile.class);
+        finish();
+        startActivity(i);
+
+    }
     @Override
     public void finish() {
         super.finish();

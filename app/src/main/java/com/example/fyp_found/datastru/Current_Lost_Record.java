@@ -27,6 +27,9 @@ public class Current_Lost_Record {
     String forFilter;
     ArrayList<String> array;
 
+    public Current_Lost_Record(){}
+
+
     public String[] getArray(){
         String[] returnarray = new String[array.size()];
         returnarray = array.toArray(returnarray);

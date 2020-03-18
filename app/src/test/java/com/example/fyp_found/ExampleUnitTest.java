@@ -3,7 +3,7 @@ package com.example.fyp_found;
 import com.example.fyp_found.class_Package.CompareText;
 import com.example.fyp_found.datastru.Current_Lost_Record;
 import com.example.fyp_found.datastru.non_str.Text_Recognize;
-import com.example.fyp_found.datastru.non_str.User;
+
 import com.example.fyp_found.setup.staticclass;
 
 import org.junit.Test;
@@ -62,7 +62,6 @@ public class ExampleUnitTest {
             System.out.println(s.toLowerCase().contains(a));
 
             Text_Recognize text_recognize = new Text_Recognize();
-            Enumeration<User> e = text_recognize.getClasss();
             for (String key : final_static_str_array_Current_Lost_Array){
                 System.out.println(key);
             }
