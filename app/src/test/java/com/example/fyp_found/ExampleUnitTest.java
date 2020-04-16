@@ -26,24 +26,25 @@ public class ExampleUnitTest {
     @Test
     public void addition_isCorrect() {
         assertEquals(4, 2 + 2);
-        HashMap<String, String> hashMap = new HashMap<>();
-        Current_Lost_Record record = new Current_Lost_Record("ID " + getRandomIndex(),"Name" + getRandomIndex(),"TITLE" + getRandomIndex(),
-                "QA1 " + getRandomIndex(),"QA2 " + getRandomIndex(),"QA1A " + getRandomIndex(),
-                "QA2A " + getRandomIndex(),
-                "ADDRESS" + getRandomIndex(),"T1" + getRandomIndex(),
-                "T2" + getRandomIndex(),"T3" + getRandomIndex(),
-                "T4" + getRandomIndex(),"T5" + getRandomIndex(),
-                "OTHER" + getRandomIndex(),"URL " + getRandomIndex(),"BOOLEAN" + getRandomIndex());
-        String[] array = record.getArray();
-        for (int i =0; i<array.length; i++){
-            hashMap.put(staticclass.final_static_str_array_Current_Lost_Array[i], array[i]);
-        }
-//        System.out.println(hashMap.toString());
-        for(String key: final_static_str_array_Current_Lost_Array){
-            System.out.println(hashMap.get(key));
+        Current_Lost_Record record = new Current_Lost_Record();
+        record.setCurrent_Lost_Property_MainType("ASV1");
+        record.setCurrent_Lost_type2("ASV2");
+        record.setCurrent_Lost_type3("ASV3");
+        record.setCurrent_Lost_type5("ASV5");
+        record.setCurrent_Lost_type4("");
+        String[] a = record.getTags();
+        for (int i = 0 ; i <5 ; i++){
+            System.out.println(a[i]);
 
         }
+
     }
+
+
+
+
+
+
         private int getRandomIndex(){
             Random random = new Random();
             int randomnum = random.nextInt(10);
@@ -66,7 +67,6 @@ public class ExampleUnitTest {
                 System.out.println(key);
             }
         }
-
         private double compareText(String firstText , String secondText){
         double mark = 0;
         double total_Mark = 0;

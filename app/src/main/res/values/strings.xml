@@ -81,6 +81,7 @@
     <string name="phoneno">Phone Number</string>
     <string name="profile_open">Open</string>
     <string name="profile_cloas">Close</string>
+    <string name="found">Someone claim the property</string>
 
 
 </resources>

@@ -85,6 +85,7 @@ import com.example.fyp_found.setup.cloudmes;
 public class HomePage extends AppCompatActivity /*implements Toolbar.OnMenuItemClickListener */ {
     RecyclerView recyclerView, reward_recyclerView;
     public static ArrayList<Current_Lost_Record> records = new ArrayList<>();
+    public static ArrayList<Current_Lost_Record> Allrecord = new ArrayList<>();
     View subView_bottom_Nav_bar, subView_toolbar;
     BottomNavigationView navigationView;
     View linearLayout;
@@ -432,6 +433,7 @@ public class HomePage extends AppCompatActivity /*implements Toolbar.OnMenuItemC
                                 // Remarks :
                                 //there need a error checking for same images which should not append into records!
                             }
+                            Allrecord.add(record);
 
 
                         } catch (Exception e) {

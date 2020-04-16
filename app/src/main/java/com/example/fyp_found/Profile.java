@@ -19,6 +19,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -86,6 +87,7 @@ public class Profile extends AppCompatActivity {
     Toolbar toolbar;
     BottomNavigationView bottomNavigationView;
     ConstraintLayout main_Layout;
+
     Context context;
     FirebaseUser firebaseUser;
     Firebase_User firebase_user;
@@ -94,14 +96,15 @@ public class Profile extends AppCompatActivity {
     ImageView usericon_imageView;
     ImageButton logout, editPersonalInfo;
     TextView done;
-    ArrayList<Current_Lost_Record> records = new ArrayList<>();
+    public static ArrayList<Current_Lost_Record> records = new ArrayList<>();
     Profile_Post_Adapter profile_post_adapter;
 
+// var
+    boolean editmode = false;
 
     // other UI View
     // including display lost record and post
-    TextView open_post;
-    TextView open_Reword;
+
 
     RecyclerView post, reword;
     ArrayList<Reward> rewards = new ArrayList<>();
@@ -252,24 +255,8 @@ public class Profile extends AppCompatActivity {
         done.setClickable(true);
 
         // other ui view
-        open_post = findViewById(R.id.profile_LostPost_open);
         post = findViewById(R.id.profile_lostPost);
-        post.setVisibility(View.GONE);
-        open_post.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (!post_state){
-                    post.setVisibility(View.VISIBLE);
-                    open_post.setText(getResources().getString(R.string.profile_cloas));
-                }else{
-                    post.setVisibility(View.GONE);
-                    open_post.setText(getResources().getString(R.string.profile_open));
-
-
-                }
-                post_state = !post_state;
-            }
-        });
+        post.setVisibility(View.VISIBLE);
 
         setToolbar();
         setBottomNavigationView();
@@ -308,10 +295,11 @@ public class Profile extends AppCompatActivity {
                                             (String) data.get(final_static_str_Current_Lost_URL),
                                             (String) data.get(final_static_str_Current_Lost_Boolean)
                                     );
-                            if (!record.getFound()) {
-                                records.add(record);
-                                Log.i(TAG, record.toString());
-                            }
+                                if (record.getCurrent_Lost_User_ID().equals(firebaseUser.getUid())){
+                                    records.add(record);
+
+                                }
+
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -358,7 +346,6 @@ public class Profile extends AppCompatActivity {
                                 reward.setReward_property_Type((String) rewardCollection.get(final_static_str_Reward_property_Type));
                                 if (reward!=null) {
                                     rewards.add(reward);
-                                    Log.i(TAG, reward.toString());
                                 }
                             }
 
@@ -414,7 +401,13 @@ public class Profile extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setToolbarNavBtn(previousActivity);
+                if (editmode){
+                    updateToolbarView(false);
+                    setEditTextAble(false);
+                    editmode = false;
+                }else{
+                    setToolbarNavBtn(previousActivity);
+                }
             }
         });
         logout.setOnClickListener(new View.OnClickListener() {
@@ -430,6 +423,7 @@ public class Profile extends AppCompatActivity {
             public void onClick(View view) {
                 updateToolbarView(true);
                 setEditTextAble(true);
+                editmode = true;
 
             }
         });
@@ -438,6 +432,7 @@ public class Profile extends AppCompatActivity {
             public void onClick(View view) {
                 updateToolbarView(false);
                 setEditTextAble(false);
+                editmode = false;
                 saveData(username_edit.getText().toString().trim(), useremail_edit.getText().toString().trim());
             }
         });
@@ -502,10 +497,7 @@ public class Profile extends AppCompatActivity {
 
 
         }
-        for (int i =0 ; i< result.length; i++){
-            Log.i(TAG, String.valueOf(result[i]));
 
-        }
         setSnackbar("The User information has been updata", 1);
 
 

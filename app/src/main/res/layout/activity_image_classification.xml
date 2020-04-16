@@ -168,7 +168,6 @@
                     android:clickable="false"
                     android:focusable="true"
                     android:tag="0"
-
                     android:textSize="10dp"
                     android:visibility="gone" />
 

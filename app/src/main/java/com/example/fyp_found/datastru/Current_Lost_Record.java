@@ -26,9 +26,44 @@ public class Current_Lost_Record {
     Boolean found;
     String forFilter;
     ArrayList<String> array;
+    String[] tags = new String[5];
+
 
     public Current_Lost_Record(){}
 
+    private void setTags(String tag, int position){
+        if (position >= 0 && position < 5) {
+            tags[position] = tag;
+        }
+    }
+
+    public void setAllType(String[] tags){
+        if (tags.length == 5){
+            tags[0] = this.Current_Lost_Property_MainType;
+            tags[1] = this.Current_Lost_type2;
+            tags[2] = this.Current_Lost_type3;
+            tags[3] = this.Current_Lost_type4;
+            tags[4] = this.Current_Lost_type5;
+        }else if (tags.length == 4 ){
+            tags[0] = this.Current_Lost_Property_MainType;
+            tags[1] = this.Current_Lost_type2;
+            tags[2] = this.Current_Lost_type3;
+            tags[3] = this.Current_Lost_type4;
+        }else if (tags.length == 3){
+            tags[0] = this.Current_Lost_Property_MainType;
+            tags[1] = this.Current_Lost_type2;
+            tags[2] = this.Current_Lost_type3;
+        }else if (tags.length == 2){
+            tags[0] = this.Current_Lost_Property_MainType;
+            tags[1] = this.Current_Lost_type2;
+        }else if (tags.length == 1){
+            tags[0] = this.Current_Lost_Property_MainType;
+        }
+    }
+
+    public String[] getTags(){
+        return tags;
+    }
 
     public String[] getArray(){
         String[] returnarray = new String[array.size()];
@@ -45,11 +80,11 @@ public class Current_Lost_Record {
         array.add(Current_Lost_Property_QA1_Ans);
         array.add(Current_Lost_Property_QA2_Ans);
         array.add(Current_Lost_Address);
-        array.add(Current_Lost_Property_MainType);
+        array.add(Current_Lost_Property_MainType); //8
         array.add(Current_Lost_type2);
         array.add(Current_Lost_type3);
         array.add(Current_Lost_type4);
-        array.add(Current_Lost_type5);
+        array.add(Current_Lost_type5); //12
         array.add(getFound().toString());
         array.add(Current_Lost_Text);
         array.add(ImageURL);
@@ -222,8 +257,11 @@ public class Current_Lost_Record {
     public void setCurrent_Lost_Property_MainType(String current_Lost_Property_MainType) {
         if (!current_Lost_Property_MainType.isEmpty()) {
             this.Current_Lost_Property_MainType = current_Lost_Property_MainType;
+            setTags(current_Lost_Property_MainType, 0);
         }else{
             this.Current_Lost_Property_MainType = "Unknown";
+            setTags( "Unknown", 0);
+
         }
     }
 
@@ -234,8 +272,12 @@ public class Current_Lost_Record {
     public void setCurrent_Lost_type2(String current_Lost_type2) {
         if (!current_Lost_type2.isEmpty()) {
             this.Current_Lost_type2 = current_Lost_type2;
-        }else if (current_Lost_type2.equals("") ){
+            setTags(current_Lost_type2, 1);
+
+        }else{
             this.Current_Lost_type2 = "Unknown";
+            setTags( "Unknown", 1);
+
         }
     }
 
@@ -246,8 +288,11 @@ public class Current_Lost_Record {
     public void setCurrent_Lost_type3(String current_Lost_type3) {
         if (!current_Lost_type3.isEmpty()) {
             this.Current_Lost_type3 = current_Lost_type3;
+            setTags(current_Lost_type3, 2);
         }else{
             this.Current_Lost_type3 = "Unknown";
+            setTags( "Unknown", 2);
+
         }
     }
 
@@ -258,8 +303,11 @@ public class Current_Lost_Record {
     public void setCurrent_Lost_type4(String current_Lost_type4) {
         if (!current_Lost_type4.isEmpty()) {
             this.Current_Lost_type4 = current_Lost_type4;
+            setTags(current_Lost_type4, 3);
         } else{
             this.Current_Lost_type4 = "Unknown";
+            setTags( "Unknown", 3);
+
         }
     }
 
@@ -270,8 +318,11 @@ public class Current_Lost_Record {
     public void setCurrent_Lost_type5(String current_Lost_type5) {
         if (!current_Lost_type5.isEmpty()) {
             this.Current_Lost_type5 = current_Lost_type5;
+            setTags(current_Lost_type5, 4);
         } else{
             this.Current_Lost_type5 = "Unknown";
+            setTags( "Unknown", 4);
+
         }
     }
 

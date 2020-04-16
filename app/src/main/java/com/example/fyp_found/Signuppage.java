@@ -207,7 +207,7 @@ public class Signuppage extends AppCompatActivity {
                         hashMap.put(final_static_str_User_dev_code, current_dev_code);
 
                         hashMap.put(staticclass.firebase_FCM_Token, FCM_TOKEN);
-                        Log.i(staticclass.TAG, hashMap.toString());
+
 
                         reference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
@@ -225,7 +225,7 @@ public class Signuppage extends AppCompatActivity {
                         Toast.makeText(Signuppage.this, "Google sign in success", Toast.LENGTH_SHORT).show();
 
                     } else {
-                        Toast.makeText(Signuppage.this, "Sign in faild",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Signuppage.this, getResources().getString(R.string.sorry),Toast.LENGTH_SHORT).show();
                     }
 
                 }

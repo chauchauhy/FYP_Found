@@ -107,7 +107,8 @@ public final class staticclass {
 
 
     // array
-    public static final String[] final_static_str_array_Current_Lost_Array = {final_static_str_Current_Lost_ID,
+    public static final String[] final_static_str_array_Current_Lost_Array = {
+            final_static_str_Current_Lost_ID,
             final_static_str_Current_Lost_User_ID,
             final_static_str_Current_Lost_Property_Name,
             final_static_str_Current_Lost_Property_QA1,
@@ -115,11 +116,11 @@ public final class staticclass {
             final_static_str_Current_Lost_Property_QA1_Ans,
             final_static_str_Current_Lost_Property_QA2_Ans,
             final_static_str_Current_Lost_Address,
-            final_static_str_Current_Lost_Property_MainType,
+            final_static_str_Current_Lost_Property_MainType, //8
             final_static_str_Current_Lost_type2,
             final_static_str_Current_Lost_type3,
             final_static_str_Current_Lost_type4,
-            final_static_str_Current_Lost_type5,
+            final_static_str_Current_Lost_type5, //12
             final_static_str_Current_Lost_Boolean,
             final_static_str_Current_Lost_Text,
             final_static_str_Current_Lost_URL

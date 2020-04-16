@@ -200,15 +200,15 @@ public class ImageClassification extends AppCompatActivity {
         progressBar = findViewById(R.id.image_label_progressbar);
     }
     private void setAddNewTag(){
+        // add next tag
+        // if the tag more than 5 the application will show a snackbar to alert user the tag maximum is 5
+        // otherwise will show next tag position
         int nowTagCount = 0;
         try {
-            Log.i(staticclass.TAG, "cc" + nowTagCount+ " wwww " + t_array.length);
             for (int i = 0 ;i<t_array.length; i++) {
                 if (!t_array[i].getText().toString().isEmpty()) {
                     nowTagCount++;
                 }
-
-
             }
             if (nowTagCount > t_array.length) {
                 Toast.makeText(context, "The Tag maximum is 5", Toast.LENGTH_LONG).show();
@@ -216,7 +216,6 @@ public class ImageClassification extends AppCompatActivity {
                 if (nowTagCount <= t_array.length) {
                     t_array[nowTagCount].setVisibility(View.VISIBLE);
                     t_array[nowTagCount].setHint(getResources().getString(R.string.tag_here) + (nowTagCount + 1));
-                    Log.i(staticclass.TAG, "ccfff" + nowTagCount + " wwww " + t_array.length);
                 }
             }
       } catch (Exception e) {
@@ -279,9 +278,9 @@ public class ImageClassification extends AppCompatActivity {
                     Snackbar.make(mainLayout, "please try again after a few minutes" , Snackbar.LENGTH_LONG).show();
                 }else {
                     Current_Lost_Record record = getBasieData();
-                    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference(final_static_str_db_name_current);
+                    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference(final_static_str_db_name_current).child(record.getCurrent_Lost_ID());
                     HashMap<String, String> hashMap = returnHashMapData(record);
-                    databaseReference.push().setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    databaseReference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()){
