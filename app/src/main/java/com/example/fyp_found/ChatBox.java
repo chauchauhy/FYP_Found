@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -75,7 +76,7 @@ public class ChatBox extends AppCompatActivity {
     DatabaseReference databaseReference;
     String receiverID;
     EditText message_edit;
-    Button send;
+    ImageButton send;
     RecyclerView recyclerView;
     Intent intent;
     Context context;
@@ -134,7 +135,6 @@ public class ChatBox extends AppCompatActivity {
         setSupportActionBar(toolbar);
         context = this;
         setToolbar();
-        send.setText(getResources().getString(R.string.send));
     }
     private void setToolbar(){
         getSupportActionBar().setHomeButtonEnabled(true);

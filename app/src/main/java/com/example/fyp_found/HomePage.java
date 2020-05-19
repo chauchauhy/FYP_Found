@@ -53,6 +53,8 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 
 import static com.example.fyp_found.datastru.Current_Lost_Record.bitmaptoString;
@@ -73,6 +75,7 @@ import static com.example.fyp_found.setup.staticclass.final_static_str_Current_L
 import static com.example.fyp_found.setup.staticclass.final_static_str_Current_Lost_type3;
 import static com.example.fyp_found.setup.staticclass.final_static_str_Current_Lost_type4;
 import static com.example.fyp_found.setup.staticclass.final_static_str_Current_Lost_type5;
+import static com.example.fyp_found.setup.staticclass.final_static_str_Current_Lost_unix_time;
 import static com.example.fyp_found.setup.staticclass.final_static_str_User_Email;
 import static com.example.fyp_found.setup.staticclass.final_static_str_User_Id;
 import static com.example.fyp_found.setup.staticclass.final_static_str_User_Name;
@@ -161,8 +164,6 @@ public class HomePage extends AppCompatActivity /*implements Toolbar.OnMenuItemC
                         progressBar.setVisibility(View.GONE);
                         break;
                     case R.id.bottom_nav_bar_post:
-                        Log.i(staticclass.TAG, "Run snackbar");
-
                         if (firebaseUser != null) {
                             final AlertDialog.Builder builder = new AlertDialog.Builder(context);
                             final CharSequence[] options = {"Post Lost Property", "Post Reward", getResources().getString(R.string.cancel) };
@@ -254,7 +255,18 @@ public class HomePage extends AppCompatActivity /*implements Toolbar.OnMenuItemC
     }
 
     private void setRecyclerView_View_Current_Lost() {
-        homePage_adapter = new HomePage_Adapter(records, context, logined);
+        // sort the list
+        ArrayList<Current_Lost_Record> orginList = new ArrayList<>();
+        ArrayList<Current_Lost_Record> newList = new ArrayList<>();
+        orginList = records;
+        Collections.sort(orginList, Current_Lost_Record.getCombyTime());
+        for (int i = orginList.size()-1; i>=0 ; i-- ){
+            newList.add(orginList.get(i));
+        }
+
+
+
+        homePage_adapter = new HomePage_Adapter(newList, context, logined);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.setAdapter(homePage_adapter);
     }
@@ -425,7 +437,8 @@ public class HomePage extends AppCompatActivity /*implements Toolbar.OnMenuItemC
                                             (String) data.get(final_static_str_Current_Lost_type5),
                                             (String) data.get(final_static_str_Current_Lost_Text),
                                             (String) data.get(final_static_str_Current_Lost_URL),
-                                            (String) data.get(final_static_str_Current_Lost_Boolean)
+                                            (String) data.get(final_static_str_Current_Lost_Boolean),
+                                            (String) data.get(final_static_str_Current_Lost_unix_time)
 
                                     );
                             if (!record.getFound()) {
@@ -462,7 +475,6 @@ public class HomePage extends AppCompatActivity /*implements Toolbar.OnMenuItemC
             try {
                 bitmap = BitmapFactory.decodeStream((InputStream) new URL(url).getContent());
                 String bi = bitmaptoString(bitmap);
-                Log.i(staticclass.TAG, bi);
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             } catch (IOException e) {

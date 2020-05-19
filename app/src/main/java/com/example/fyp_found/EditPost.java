@@ -87,7 +87,6 @@ public class EditPost extends AppCompatActivity {
 
             }
         }
-        Log.i(staticclass.TAG,  "XXX" + current_lost_record.toString());
     }
 
     private void initUI(){

@@ -25,6 +25,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Currency;
 import java.util.List;
 
@@ -39,11 +40,24 @@ public class HomePage_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     List<Current_Lost_Record> records_All;
 
     public HomePage_Adapter(ArrayList<Current_Lost_Record> records, Context context, Boolean logined){
+        ArrayList<Current_Lost_Record> orginList = records;
+        ArrayList<Current_Lost_Record> newList = new ArrayList<>();
         this.context = context;
         this.layoutInflater = LayoutInflater.from(context);
         this.records = records;
-        records_All =  records;
         this.logined = logined;
+        newList = orginList;
+        records_All = newList;
+
+
+//        for (Current_Lost_Record c : orginList){
+//            newList.add(c);
+//        }
+//        for (int i = newList.size()-1; i>=0; i--){
+//            records_All.add(newList.get(i));
+//            records.add(newList.get(i));
+//        }
+
     }
     @NonNull
     @Override

@@ -5,9 +5,12 @@ import android.graphics.BitmapFactory;
 import android.util.Base64;
 
 import java.io.ByteArrayOutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Date;
 
-public class Current_Lost_Record {
+public class Current_Lost_Record  {
     String Current_Lost_ID;
     String Current_Lost_User_ID;
     String Current_Lost_Property_Name;
@@ -28,8 +31,16 @@ public class Current_Lost_Record {
     ArrayList<String> array;
     String[] tags = new String[5];
 
+    // date time
+
+    Date date;
+    Long unix;
+    SimpleDateFormat simpleDateFormat;
+
 
     public Current_Lost_Record(){}
+
+
 
     private void setTags(String tag, int position){
         if (position >= 0 && position < 5) {
@@ -88,6 +99,7 @@ public class Current_Lost_Record {
         array.add(getFound().toString());
         array.add(Current_Lost_Text);
         array.add(ImageURL);
+        array.add(String.valueOf(unix));
 
     }
 
@@ -174,8 +186,10 @@ public class Current_Lost_Record {
                                String current_Lost_Property_QA1, String current_Lost_Property_QA2, String current_Lost_Property_QA1_Ans, String current_Lost_Property_QA2_Ans
             , String current_Lost_Address, String current_Lost_Property_MainType, String current_Lost_type2,
                                String current_Lost_type3, String current_Lost_type4, String current_Lost_type5,
-                               String current_Lost_Text, String imageURL, String found) {
-        Current_Lost_ID = current_Lost_ID;
+                               String current_Lost_Text, String imageURL, String found, String time) {
+        this.unix = Long.valueOf(time);
+        setCurrent_Lost_ID(current_Lost_ID);
+        setTime(time);
         Current_Lost_User_ID = current_Lost_User_Name;
         Current_Lost_Property_Name = current_Lost_Property_Name;
         Current_Lost_Property_QA1 = current_Lost_Property_QA1;
@@ -201,8 +215,8 @@ public class Current_Lost_Record {
         return Current_Lost_ID;
     }
 
-    public void setCurrent_Lost_ID(String current_Lost_ID) {
-        Current_Lost_ID = current_Lost_ID;
+    public void setCurrent_Lost_ID(String id) {
+        this.Current_Lost_ID = id;
     }
 
     public String getCurrent_Lost_User_ID() {
@@ -376,4 +390,64 @@ public class Current_Lost_Record {
     }
 
     // end of bitmap convert
+
+
+    public void setTime(String unix){
+        this.unix = Long.valueOf(unix);
+        this.date = new Date(this.unix*1000L);
+    }
+
+    public String getHours(){
+        simpleDateFormat = new SimpleDateFormat("HH");
+        return (simpleDateFormat.format(date));
+    }
+    public String getSecounds(){
+        simpleDateFormat = new SimpleDateFormat("ss");
+        return (simpleDateFormat.format(date));
+    }
+    public String getMinutes(){
+        simpleDateFormat = new SimpleDateFormat("mm");
+        return (simpleDateFormat.format(date));
+    }
+    public  String getTime(){
+        simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
+        return (simpleDateFormat.format(date));
+    }
+    public String getDay(){
+        simpleDateFormat = new SimpleDateFormat("dd");
+        return (simpleDateFormat.format(date));
+    }
+    public String getMouth(){
+        simpleDateFormat = new SimpleDateFormat("MM");
+        return (simpleDateFormat.format(date));
+    }
+    public String getYear(){
+        simpleDateFormat = new SimpleDateFormat("yyyy");
+        return (simpleDateFormat.format(date));
+    }
+    public String getAllDate(){
+        return getYear() + "-" + getMouth() + "-" + getDay();
+    }
+    public String getAllTime(){
+        return getYear() + "-" + getMouth() + "-" + getDay() + "  " + getHours() + ":" + getMinutes() + ":" + getSecounds();
+    }
+
+    public String getunix(){
+        return String.valueOf(unix);
+    }
+
+    public static Comparator<Current_Lost_Record> getCombyTime(){
+        Comparator comparator = new Comparator<Current_Lost_Record>() {
+            @Override
+            public int compare(Current_Lost_Record current_lost_record, Current_Lost_Record t1) {
+                return current_lost_record.getunix().compareTo(t1.getunix());
+
+
+            }
+        };
+        return comparator;
+
+
+    }
+
 }

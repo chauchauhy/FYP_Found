@@ -52,6 +52,7 @@ public final class staticclass {
     public final static String final_static_str_Reward_property_Type = "Reward_Property_Type";
     public final static String final_static_str_Reward_Lost_Address = "Reward_Lost_Address";
     // Found_record
+    // people who loss a property
     public final static String final_static_str_db_name_found = "Found_record";
     public final static String final_static_str_Found_Property_ID = "Found_property_ID ";
     public final static String final_static_str_Found_Property_Name = "Found_property_Name";
@@ -64,7 +65,10 @@ public final class staticclass {
     public final static String final_static_str_Found_Property_type3 = "Found_Property_type3";
     public final static String final_static_str_Found_Property_type4 = "Found_Property_type4";
     public final static String final_static_str_Found_Property_type5 = "Found_property_type5";
+    public static final String final_static_str_Found_Property_URL = "ImageURL";
+
     // current lost record
+    // people who found a property
     public final static String final_static_str_db_name_current = "Current_lost_record";
     public static final String final_static_str_Current_Lost_ID = "Current_Lost_ID";
     public static final String final_static_str_Current_Lost_User_ID = "Current_Lost_User_ID";
@@ -82,6 +86,7 @@ public final class staticclass {
     public static final String final_static_str_Current_Lost_Text = "Current_Lost_Property_Text";
     public static final String final_static_str_Current_Lost_URL = "ImageURL";
     public static final String final_static_str_Current_Lost_Boolean = "Found";
+    public static final String final_static_str_Current_Lost_unix_time = "Time";
 
     // firebase
     public static final String final_static_str_firebasedatabase_child_users = "Users";
@@ -123,7 +128,8 @@ public final class staticclass {
             final_static_str_Current_Lost_type5, //12
             final_static_str_Current_Lost_Boolean,
             final_static_str_Current_Lost_Text,
-            final_static_str_Current_Lost_URL
+            final_static_str_Current_Lost_URL,
+            final_static_str_Current_Lost_unix_time
          };
     public static final String[] final_static_str_array_reward = {final_static_str_db_name_reward,
             final_static_str_Reward_ID,

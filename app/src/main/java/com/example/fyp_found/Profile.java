@@ -62,6 +62,7 @@ import static com.example.fyp_found.setup.staticclass.final_static_str_Current_L
 import static com.example.fyp_found.setup.staticclass.final_static_str_Current_Lost_type3;
 import static com.example.fyp_found.setup.staticclass.final_static_str_Current_Lost_type4;
 import static com.example.fyp_found.setup.staticclass.final_static_str_Current_Lost_type5;
+import static com.example.fyp_found.setup.staticclass.final_static_str_Current_Lost_unix_time;
 import static com.example.fyp_found.setup.staticclass.final_static_str_Found_property_Content;
 import static com.example.fyp_found.setup.staticclass.final_static_str_Reward_Content;
 import static com.example.fyp_found.setup.staticclass.final_static_str_Reward_ID;
@@ -78,6 +79,7 @@ import static com.example.fyp_found.setup.staticclass.post_Anchor;
 
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -293,7 +295,8 @@ public class Profile extends AppCompatActivity {
                                             (String) data.get(final_static_str_Current_Lost_type5),
                                             (String) data.get(final_static_str_Current_Lost_Text),
                                             (String) data.get(final_static_str_Current_Lost_URL),
-                                            (String) data.get(final_static_str_Current_Lost_Boolean)
+                                            (String) data.get(final_static_str_Current_Lost_Boolean),
+                                            (String) data.get(final_static_str_Current_Lost_unix_time)
                                     );
                                 if (record.getCurrent_Lost_User_ID().equals(firebaseUser.getUid())){
                                     records.add(record);
@@ -315,7 +318,18 @@ public class Profile extends AppCompatActivity {
     }
 
     private void setPost_List(Context context, ArrayList<Current_Lost_Record> records){
-        profile_post_adapter = new Profile_Post_Adapter(context, records);
+
+        ArrayList<Current_Lost_Record> orginList = new ArrayList<>();
+        ArrayList<Current_Lost_Record> newList = new ArrayList<>();
+        orginList = records;
+        Collections.sort(orginList, Current_Lost_Record.getCombyTime());
+        for (int i = orginList.size()-1; i>=0 ; i-- ){
+            newList.add(orginList.get(i));
+        }
+
+
+
+        profile_post_adapter = new Profile_Post_Adapter(context, newList);
         post.setLayoutManager(new LinearLayoutManager(context));
         post.setAdapter(profile_post_adapter);
 

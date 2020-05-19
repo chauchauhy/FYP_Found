@@ -66,12 +66,13 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <Button
+                <ImageButton
                     android:id="@+id/image_label_select_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start|end"
-                    android:text="@string/select"
+                    android:src="@drawable/image_classifier_select"
+                    android:background="@null"
 
                     />
 
@@ -96,6 +97,7 @@
                 android:gravity="start"
                 android:text="question A"
                 app:layout_constraintEnd_toEndOf="parent"
+                android:visibility="gone"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/property_name" />
@@ -126,6 +128,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="229dp"
                 android:text="question B"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/questionA_Ans" />
@@ -277,12 +280,13 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/image_label_otherinfo_text" />
 
-            <Button
+            <ImageButton
                 android:id="@+id/image_label_upload"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                android:text="@string/upload"
+                android:background="@null"
+                android:src="@drawable/image_classifier_post"
                 app:layout_constraintBottom_toTopOf="@+id/textView5"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/image_label_otherinfo" />

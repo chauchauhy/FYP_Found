@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- 实心 -->
     <solid android:color="@android:color/white"/>
-    <!-- 边框 -->
     <stroke
         android:width="0.5dp"
         android:color="@color/chat_bg"/>
-    <!-- 圆角 -->
     <corners android:radius="8dp"/>
-    <!-- 边距 -->
     <padding
         android:top="2dp"
         android:bottom="2dp"

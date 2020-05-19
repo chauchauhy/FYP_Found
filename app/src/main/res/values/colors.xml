@@ -10,4 +10,6 @@
     <color name="toolbar_text">#B4FFFAFA</color>
     <color name="switchOn">#313582F7</color>
     <color name="switchOff">#3193F834</color>
+    <color name="cardview_dark_background">#002C7E</color>
+    <color name="btn_color_chatbox">#0047C0</color>
 </resources>

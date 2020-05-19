@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.example.fyp_found.datastru.Firebase_User;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 
 public class Post extends AppCompatActivity {
@@ -24,12 +25,22 @@ public class Post extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
-
+        initVar();
 
     }
 
+    private void checkUserlogined(){
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (firebaseUser == null){
+            startActivity(new Intent(context, HomePage.class));
+        }
+
+    }
+
+
     private void initVar(){
         context = this;
+        checkUserlogined();
         firebase_user = HomePage.firebase_user_current;
 
     }

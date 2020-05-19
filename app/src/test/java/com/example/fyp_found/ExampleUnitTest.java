@@ -10,6 +10,7 @@ import org.junit.Test;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Random;
@@ -26,17 +27,31 @@ public class ExampleUnitTest {
     @Test
     public void addition_isCorrect() {
         assertEquals(4, 2 + 2);
-        Current_Lost_Record record = new Current_Lost_Record();
-        record.setCurrent_Lost_Property_MainType("ASV1");
-        record.setCurrent_Lost_type2("ASV2");
-        record.setCurrent_Lost_type3("ASV3");
-        record.setCurrent_Lost_type5("ASV5");
-        record.setCurrent_Lost_type4("");
-        String[] a = record.getTags();
-        for (int i = 0 ; i <5 ; i++){
-            System.out.println(a[i]);
+        Current_Lost_Record t1 = new Current_Lost_Record();
+        Current_Lost_Record t2 = new Current_Lost_Record();
+        Current_Lost_Record t3 = new Current_Lost_Record();
+        Current_Lost_Record t4 = new Current_Lost_Record();
+        Current_Lost_Record t5 = new Current_Lost_Record();
+        Current_Lost_Record t6 = new Current_Lost_Record();
+        t1.setTime(String.valueOf(22222222));
+        t2.setTime(String.valueOf(22222));
+        t3.setTime(String.valueOf(222222));
+        t4.setTime(String.valueOf(222298765));
+        t5.setTime(String.valueOf(2822222));
+        t6.setTime(String.valueOf(622222222));
+        ArrayList<Current_Lost_Record> c = new ArrayList<>();
+        c.add(t1);
+        c.add(t2);
+        c.add(t3);
+        c.add(t4);
+        c.add(t5);
+        c.add(t6);
+        Collections.sort(c, new Current_Lost_Record());
+        for (Current_Lost_Record c1 : c){
+            System.out.println(c1.getAllTime());
 
         }
+
 
     }
 

@@ -20,9 +20,9 @@
         android:backgroundTint="@color/transparent"
         android:selectAllOnFocus="false"
         android:singleLine="false" />
+
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:background="@color/cardview_dark_background"
-        />
+        android:layout_height="8dp"
+        android:background="@color/cardview_dark_background" />
 </LinearLayout>

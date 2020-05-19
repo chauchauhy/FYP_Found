@@ -3,14 +3,19 @@
 
 
     <item android:id="@+id/bottom_nav_bar_home"
-        android:title="@string/btm_nav_bar_title_home"
-
+        android:icon="@drawable/btn_home"
+        android:checked="false"
+        android:title=""
         />
     <item android:id="@+id/bottom_nav_bar_post"
-        android:title="@string/btm_nav_bar_title_post"
-        />
+        android:icon="@drawable/btn_post"
+          android:title=""
+
+    />
     <item android:id="@+id/bottom_nav_bar_profile"
-        android:title="@string/btm_nav_bar_title_profile"
+        android:icon="@drawable/btn_profile"
+        android:title=""
+
         />
 
 </menu>

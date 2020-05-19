@@ -25,6 +25,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
@@ -103,7 +104,7 @@ public class ImageClassification extends AppCompatActivity {
     ProgressBar progressBar;
     TextView text, text1 , showlocation, newTag;
     ImageView showimage;
-    Button select, upload;
+    ImageButton select, upload;
     Context context;
     Bitmap bitmap;
     Spinner questionA, questionB;
@@ -323,9 +324,9 @@ public class ImageClassification extends AppCompatActivity {
     }
 
     private Current_Lost_Record getBasieData(){
-        Current_Lost_Record record = new Current_Lost_Record(String.valueOf(getUnixTime()) + firebaseUser.getUid(), firebaseUser.getUid(), property_name.getText().toString(), questionA_str, questionB_str
+        Current_Lost_Record record = new Current_Lost_Record(String.valueOf(getUnixTime() + firebaseUser.getUid()) , firebaseUser.getUid(), property_name.getText().toString(), questionA_str, questionB_str
                 , questionA_ans.getText().toString(), questionB_ans.getText().toString(), location_edition.getText().toString(), t_array[0].getText().toString(), t_array[1].getText().toString(), t_array[2].getText().toString(),
-                t_array[3].getText().toString(), t_array[4].getText().toString(), other_info.getText().toString(), url_uploaded, "false");
+                t_array[3].getText().toString(), t_array[4].getText().toString(), other_info.getText().toString(), url_uploaded, "false", String.valueOf(getUnixTime()));
         return record;
     }
 
@@ -396,8 +397,8 @@ public class ImageClassification extends AppCompatActivity {
 
                 if (checkPermissionsForSelectImageMethods()) {
                     final AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                    final CharSequence[] options = {"Take picture", "Select picture", "Cancel"};
-                    final String[] option = {"Take picture", "Select picture", "Cancel"};
+                    final CharSequence[] options = {"New Picture", "Select picture", "Cancel"};
+                    final String[] option = {"New Picture", "Select picture", "Cancel"};
                     builder.setTitle("Select options ...").setItems(options, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
@@ -494,7 +495,7 @@ public class ImageClassification extends AppCompatActivity {
                 e.printStackTrace();
             }
         }else{
-            Log.i(staticclass.TAG, "loss");
+            Log.i(staticclass.TAG, "take image fail");
         }
     }
     // mlkit firebase
@@ -528,7 +529,7 @@ public class ImageClassification extends AppCompatActivity {
 
                         text_recognation();
                     }else if (firebaseVisionImageLabels.size() <= 0) {
-                        createDialog(getResources().getString(R.string.cannotfindout));
+                        createDialog(getResources().getString(R.string.cannotfindout), true);
                         text_recognation();
                     }
                 }
@@ -548,10 +549,12 @@ public class ImageClassification extends AppCompatActivity {
                         text_re_Str = text_re_Str + block.getText();
                         // this part should be add an error checking such as if else to confirm the firebasevision text array 0 position not null, if not  there will be crash
                         text_re.add(new Text_Recognize(block.getText()));
-                        if(text_re.get(0).getText().length()>2 && text_re.get(0).getText().length()<14) {
+//                        if(text_re.get(0).getText().length()>2 && text_re.get(0).getText().length()<14) {
+                        if(text_re.get(0).getText().length()>0) {
                             text.setText(text_re.get(0).getText());
+
                             // show text in the image
-                            text.setVisibility(View.GONE);
+                            createDialog("Show the text on the image?", false);
                         }else{
                             text.setText("");
                             text.setVisibility(View.GONE);
@@ -566,19 +569,40 @@ public class ImageClassification extends AppCompatActivity {
             });
         } else {
             // if there not any text the app will show up a dialog to note user
-            createDialog(getResources().getString(R.string.warring_no_select_picture));
+            createDialog(getResources().getString(R.string.warring_no_select_picture), true);
+        }
+    }
+// 27/04/2020
+//    update the create dialog method and change the method of show text on the image
+    private void createDialog(String exception, boolean error) {
+        // the context for the activity ...
+        String errorMessage = getResources().getString(R.string.error) + "\n" + exception;
+        if (error){
+            new AlertDialog.Builder(context).setTitle(errorMessage).setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                }
+            }).show();
+
+        }else{
+            new AlertDialog.Builder(context).setTitle(exception).setPositiveButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    text.setText("");
+                    text.setVisibility(View.GONE);
+                    dialogInterface.dismiss();
+
+                }
+            }).setNegativeButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    text.setVisibility(View.VISIBLE);
+                }
+            }).show();
         }
     }
 
-    private void createDialog(String exception) {
-        // the context for the activity ...
-        new AlertDialog.Builder(context).setTitle(getResources().getString(R.string.warning)).setMessage(getResources().getString(R.string.error) + "\n" + exception).setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-            }
-        }).show();
-    }
     private void PermissionsAction(){
         String[] permissions = {Manifest.permission.READ_PHONE_STATE,Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
         ActivityCompat.requestPermissions(this, permissions, PERMISSIONS_ID);
@@ -729,7 +753,7 @@ public class ImageClassification extends AppCompatActivity {
 
             return formate;
         }else{
-            createDialog("We cannot find your current location ");
+            createDialog("We cannot find your current location ", true);
             return "";
         }
     }
@@ -755,7 +779,6 @@ public class ImageClassification extends AppCompatActivity {
                         case R.id.bottom_nav_bar_profile:
                             Intent intent = new Intent(context, Profile.class);
                             intent.putExtra(IntentTAG, String.valueOf(image_Anchor));
-                            Log.i(staticclass.TAG, String.valueOf(image_Anchor));
                             startActivity(intent);
                             break;
                         default:
