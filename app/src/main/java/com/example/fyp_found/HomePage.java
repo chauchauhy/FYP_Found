@@ -103,7 +103,7 @@ public class HomePage extends AppCompatActivity /*implements Toolbar.OnMenuItemC
     ImageButton messagebox;
     public static Firebase_User firebase_user_current;
 
-    // firebase
+    // firebase variable
     FirebaseUser firebaseUser;
     Boolean logined;
 
