@@ -13,4 +13,4 @@ constant may be need to unify.</br>
 file name need to normailze.</br>
 there is many burdensome variable and function.</br>
 
-// but it is the frist application in my life. i think it is acceptable. </br>
+// but it is the first team application in my life. i think it is acceptable. </br>
