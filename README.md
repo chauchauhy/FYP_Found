@@ -1,13 +1,28 @@
 # FYP_Found
+## Project name: Found it 
 this is a final year project in IVE MAD HD.</br>
 features of Found:</br>
-Chat box </br>
-membership</br>
-upload post</br>
-classifier image</br>
-GPS</br>
-immediately message notification </br>
-Edit user profile </br>
+- [x] Chat box </br>
+- [x] membership</br>
+- [x] upload post</br>
+- [x] classifier image with ML kit of from firebase </br>
+- [x] GPS</br>
+- [x] immediately message notification (the application will show a notification when someone send a message to other one) </br>
+- [x] Edit user profile </br>
+- [ ] classifier image with self-model </br>
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 FIRSEBASE, MLKIT have been used in this project
@@ -59,7 +74,7 @@ the guilde in application
 
 Review/improvement:</br>
 the project no use any design pattern to design.</br>
-constant name may be need to uniform.</br>
+variable name may be need to uniform.</br>
 file name need to normailze.</br>
 there is many burdensome variable and function.</br>
 
